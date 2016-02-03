@@ -1,0 +1,16 @@
+{
+  "name": "ixitbot",
+  "version": "1.0.0",
+  "description": "go yee and conquer downloads says the lord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "hooks": "^0.3.2",
+    "mongoose": "^4.4.0",
+    "x-ray": "^2.0.3"
+  }
+}
