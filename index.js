@@ -61,7 +61,7 @@ function initialize () {
                     var x = Xray();
                     x(doc.proceed_from_url, doc['job_record.scope'], doc.schema)
                     .limit(10)
-                    .write('results.json')
+                    // .write('results.json')
                     (function (err, obj) {
                         console.log(err, obj);
                     });
