@@ -9,10 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "agenda": "^0.7.8",
     "colors": "^1.1.2",
+    "fb": "^1.0.2",
     "hooks": "^0.3.2",
     "mongoose": "^4.4.1",
     "q": "^1.4.1",
+    "request": "^2.69.0",
+    "twitter": "^1.2.5",
     "x-ray": "^2.0.3",
     "yargs": "^3.32.0"
   },

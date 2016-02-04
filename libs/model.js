@@ -137,7 +137,6 @@ MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (
         jp.status_log = [doc.statusLog];
       }
       jp.save(function (err, saved) {
-        console.log(err, saved);
         if (err) {
           return q.reject(err);
         }

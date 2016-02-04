@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
     Q = require('q'),
     defer = Q.defer(),
     Models = require('./libs/model'),
+    Social = require('./libs/share'),
     argv = require('yargs').argv,
     Xray = require('x-ray'),
     fs = require('fs'),
@@ -60,10 +61,27 @@ function initialize () {
                     //processing crawler jobs
                     var x = Xray();
                     x(doc.proceed_from_url, doc['job_record.scope'], doc.schema)
-                    .limit(10)
+                    // .limit(3)
                     // .write('results.json')
                     (function (err, obj) {
-                        console.log(err, obj);
+                        if (err) {
+                            throw err;
+                        }
+                        if (obj.length) {
+                            //upload thumbnail then
+                            //send tweets and
+                            var tweet = new Social().tweet;
+                            tweet({
+                                status: obj[0].title
+                            });
+                            //send facebook and
+                            //send gplus
+                            //send instagram
+                            //keep sending
+                            return console.log('No of records crawled: %d', obj.length);
+                            // process.exit();
+                        }
+                        console.log('Nothing to crawl!!! Check config in jobdef.json');
                     });
                 }
             });
