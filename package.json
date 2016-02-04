@@ -10,7 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "hooks": "^0.3.2",
-    "mongoose": "^4.4.0",
+    "mongoose": "^4.4.1",
+    "q": "^1.4.1",
     "x-ray": "^2.0.3"
+  },
+  "devDependencies": {
+    "gulp-jasmine-node": "^1.0.6",
+    "gulp-jshint": "^2.0.0",
+    "jshint": "^2.9.1"
   }
 }
