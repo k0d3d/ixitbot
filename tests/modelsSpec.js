@@ -7,11 +7,12 @@ describe('running test on models', function () {
     'starting_url' : 'http://www.i-x.it'
   };
 
-  it('should add a new job description to the database', function (done) {
+
+  xit('should add a new job Definition to the database', function (done) {
     stance
     .then(function () {
       var models =  new Model(sampleJob.job_name, sampleJob.starting_url);
-      models.addJobDescription({
+      models.addJobDefinition({
         title: 'Spider Bot is Here',
         limit: 5
       })
@@ -26,19 +27,35 @@ describe('running test on models', function () {
     });
   }, 20000);
 
-  xit('should instantiate class with and without arguments', function (done) {
+  it('should instantiate class with and without arguments', function (done) {
     var inA = new Model(sampleJob.job_name, sampleJob.starting_url);
     sampleJob.modelInstance = new Model();
     expect(inA).toBe(sampleJob.modelInstance);
   });
 
-
-  it('should should remove a job description', function (done) {
+  it ('should add a new job to the processing queue', function (done) {
     stance
     .then(function () {
       // console.log('db');
       var models = new Model();
-      models.removeDescription(sampleJob.id)
+      models.findOrUpdateJobProgress(sampleJob.id)
+      .then(function (status) {
+        console.log(status);
+        expect(status.result.ok).toBe(1);
+        expect(status.result.n).toBe(1);
+        done();
+      });
+    }, function (err) {
+      fail(err);
+    });
+  }, 20000);
+
+  xit('should should remove a job Definition', function (done) {
+    stance
+    .then(function () {
+      // console.log('db');
+      var models = new Model();
+      models.removeDefinition(sampleJob.id)
       .then(function (status) {
         expect(status.result.ok).toBe(1);
         expect(status.result.n).toBe(1);
@@ -48,4 +65,5 @@ describe('running test on models', function () {
       fail(err);
     });
   }, 20000);
+
 });

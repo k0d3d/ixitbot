@@ -9,10 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "colors": "^1.1.2",
     "hooks": "^0.3.2",
     "mongoose": "^4.4.1",
     "q": "^1.4.1",
-    "x-ray": "^2.0.3"
+    "x-ray": "^2.0.3",
+    "yargs": "^3.32.0"
   },
   "devDependencies": {
     "gulp-jasmine-node": "^1.0.6",

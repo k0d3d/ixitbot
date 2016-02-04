@@ -5,7 +5,10 @@
 var mongoose = require('mongoose'),
     Q = require('q'),
     defer = Q.defer(),
-    // Models = require('models/model'),
+    Models = require('./libs/model'),
+    argv = require('yargs').argv,
+    fs = require('fs'),
+    path = require('path'),
     dbURI = 'mongodb://localhost:27017/bot';
 
 var db = mongoose.connection;
@@ -36,5 +39,36 @@ process.on('SIGINT', function() {
         process.exit(0);
     });
 });
+
+
+
+
+if (!argv.command) {
+    //show help
+}
+//Commands
+//addJob,removeJob,clearComplete,listProgress
+switch (argv.command) {
+    case 'add_job':
+        var doc = Models.jobaway(argv.job_name);
+        var save_doc = new Models(doc['job_record.job_name'], doc['job_record.starting_url']);
+        save_doc.findOrUpdateJobProgress(null, doc)
+        .then(function (gen) {
+            if (gen.ok) {
+                //start timer and begin
+                //processing crawler jobs
+            }
+        });
+    break;
+    case 'remove_job':
+    break;
+    case 'clear_complete':
+    break;
+    case 'list_progress':
+    break;
+    default:
+        //return or echo out help.
+    break;
+}
 
 module.exports = defer.promise;
