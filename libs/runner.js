@@ -1,24 +1,19 @@
-var Agenda = require('agenda'),
+var
+    kue = require('kue'),
+    queue = kue.createQueue(),
     request = require('request'),
     Models = require('./model'),
     JSONStream = require('JSONStream'),
     es = require('event-stream'),
     Xray = require('x-ray');
-var mongoConnectionString = "mongodb://127.0.0.1/bot";
 
-var agenda = new Agenda({
-  db: {
-    address: mongoConnectionString
-  },
-  processEvery: '10 seconds'
-});
 
 
 function startXRay (job) {
   console.log('starting xray');
   var x = Xray(),
       count = 0,
-      job_data = job.attrs.data;
+      job_data = job.data;
   var resultStream = x(job_data.proceed_from_url,
       job_data.job_record.scope,
       job_data.schema)
@@ -40,10 +35,11 @@ function startXRay (job) {
       // to update our database with the row
       // count after we have totally sent them
       // to the Vault,
-
-      agenda.now('send to vault', data);
+      if (count < 2) {
+        queue.create('send to vault', data).save();
+      }
       count++;
-  })
+  });
   // .pipe(es.mapSync(function (data) {
   //     console.log(data);
   // }));
@@ -52,27 +48,31 @@ function startXRay (job) {
 
 
 function startjob (job, done) {
-  var jobData = job.attrs.data;
+  var jobData = job.data;
   console.log('Running Job on: %s', jobData.job_name);
   var doc = Models.prepareInitialDocument(jobData);
   var save_doc = new Models();
   save_doc.findOrUpdateJobProgress(doc)
   .then(function (useThisD) {
     var preped = Models.prepareUpdatedDocument(useThisD, doc.schema);
-    agenda.now('start xray',
+    queue.create('start xray',
       preped,
       function () {
-      });
+      })
+    .save();
     done();
   });
 }
 
 function sendToVault (job, done) {
-  var jobData = job.attrs.data;
+
+  var jobData = job.data;
+  // console.log(job);
+  // console.log(jobData);
   request({
     method: 'POST',
-    url: process.env.VAULT_RESOURCE + '/uploads/automate',
-    data: jobData,
+    url: process.env.VAULT_RESOURCE + '/upload/automate',
+    body: jobData,
     json: true
   }, function (err, r, ixitFile) {
     console.log(err);
@@ -81,11 +81,11 @@ function sendToVault (job, done) {
   });
 }
 
+queue.process('start job', startjob);
+queue.process('start xray', startXRay);
+queue.process('send to vault', sendToVault);
 
-agenda.define('start xray', startXRay);
 
-agenda.define('start job', startjob);
+module.exports = queue;
 
-agenda.define('send to vault', sendToVault);
 
-module.exports.agenda = agenda;

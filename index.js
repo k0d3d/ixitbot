@@ -48,10 +48,11 @@
  * page on each iteration.
 */
 var mongoose = require('mongoose'),
-    Q = require('q'),
-    defer = Q.defer(),
+    // Q = require('q'),
+    // defer = Q.defer(),
+    runner = require('./libs/runner'),
+    CronJob = require('cron').CronJob,
     fs = require('fs'),
-    agenda = require('./libs/agenda'),
     dbURI = 'mongodb://localhost:27017/bot';
 
 var db = mongoose.connection;
@@ -62,14 +63,29 @@ mongoose.connect(dbURI);
 // When successfully connected
 db.on('connected', function() {
     console.log('database connected');
-    initialize();
-    defer.resolve();
+        return initialize();
+    var job = new CronJob({
+      cronTime: '* * * 1/1 *',
+      onTick: function() {
+        console.log('inits');
+        /*
+         * Runs every weekday (Monday through Friday)
+         * at 11:30:00 AM. It does not run on Saturday
+         * or Sunday.
+         */
+        initialize();
+      },
+      start: false,
+      timeZone: 'America/Los_Angeles'
+    });
+    job.start();
+    // defer.resolve();
 });
 
 // If the connection throws an error
 db.on('error', function(err) {
     console.log('Mongoose default connection error: ' + err);
-    defer.reject(err);
+    // defer.reject(err);
 
 });
 // When the connection is disconnected
@@ -105,26 +121,18 @@ function initialize () {
             //first we have to process each json into
             //a collection
             var defDocument = [];
-            for (var a in files) {
-                if (files.hasOwnProperty(a)) {
-                    var d = require('./def/' + files[a]);
-                    defDocument.push(d);
-                    //An agenda job right here, should include a function
-                    //that fetches the status of the job to be executed
-                    //per iteration and uses that to construct the task to
-                    //be carried out when ever that definition is used.
-                    //
-                }
+            for (var a = 0; a < files.length; a++) {
+                var d = require('./def/' + files[a]);
+                defDocument.push(d);
+                //An agenda job right here, should include a function
+                //that fetches the status of the job to be executed
+                //per iteration and uses that to construct the task to
+                //be carried out when ever that definition is used.
+                //
             }
-            agenda.agenda.on('ready', function() {
-                // Well we need to start two crons for each
-                for (var i = 0; i < defDocument.length; i++) {
-                    console.log('adding located definitions: %s', defDocument[i].job_name);
-                    agenda.agenda.now('start job', defDocument[i], function () {console.log('start job');});
-                }
-                console.log('started');
-                agenda.agenda.start();
-            });
+            for (var i = 0; i < defDocument.length; i++) {
+                runner.create('start job', defDocument[i]).save();
+            };
         } else {
             handleError('No definitions found, Read it up somewhere. I know I told u how to work this');
         }
@@ -169,4 +177,4 @@ function initialize () {
 // }
 
 
-module.exports = defer.promise;
+// module.exports = defer.promise;
