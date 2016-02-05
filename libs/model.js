@@ -3,50 +3,12 @@ var Schema = require('./schema/index'),
 
 
 /**
- * standard crud class I guesss. if the constructor
- * is called with arguments, a new instance is created
- * and returned. if the contructor is called without
- * arguments, the existing instance is returned
- * or an error thrown.
+ * standard crud class I guesss.
  * @param {[type]} job_name     [Definition]
  * @param {[type]} starting_url [Definition]
  */
-var MainClass = (function MainClass () {
-  // this.jobId = '';
-  "use strict";
-
-
-  var instance;
-
-  //else lets return what ever instance we can find
-  //if arguments are not passed in.
-  function One_Stance (job_name, starting_url) {
-    //if arguments are passed in, overide the this values
-    //so we can setup a new instance.
-    if (job_name) {
-      this.job_name = job_name;
-    }
-    if(starting_url) {
-      this.starting_url = starting_url;
-    }
-
-    this.setId = function setId (id) {
-      this.jobId = id;
-    };
-
-    if (instance) {
-      return instance;
-    }
-    instance = this;
-    return this;
-  }
-
-  One_Stance.getInstance = function () {
-    return instance || new One_Stance();
-  };
-
-  return One_Stance;
-})();
+var MainClass = function MainClass () {
+};
 
 
 MainClass.prototype.constructor = MainClass;
@@ -57,33 +19,33 @@ MainClass.prototype.constructor = MainClass;
  * you can save as a new 'job progress'
  * @param {[type]} job_name [description]
  */
-MainClass.jobaway = function jobaway (job_name) {
+MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
     var updateDocument = {};
-    if (job_name) {
-        //show help
-    }
-    //read config file
-    //this could also fetch
-    //definitions from a database
-    var job_def_collection = {};
-    try {
-      job_def_collection = require('../jobdef.json');
-    } catch(e) {
-      console.log('Error opening file: jobdef.json');
-      throw e;
-    }
+    // if (job_name) {
+    //     //show help
+    // }
+    // //read config file
+    // //this could also fetch
+    // //definitions from a database
+    // var job_def_collection = {};
+    // try {
+    //   job_def_collection = require('../def/' + job_name + '.json');
+    // } catch(e) {
+    //   console.log('Error opening file:  job_name .json');
+    //   throw e;
+    // }
 
-    var card = job_def_collection[job_name];
+    // var card = job_def_collection[job_name];
 
     if (!card) {
-        throw new Error ('Job not found. Check jobdef.json');
+        throw new Error ('Job not found. Check job_name .json');
     }
 
     updateDocument.statusLog = {
         status_date: Date.now(),
         status: 'active',
         no_of_records: 0
-    }
+    };
 
     updateDocument['job_record.job_name'] = card.job_name;
     updateDocument['job_record.scope'] = card.scope;
@@ -91,9 +53,19 @@ MainClass.jobaway = function jobaway (job_name) {
     updateDocument.current_status = 'active';
     updateDocument.no_of_records_saved = 0;
     updateDocument.proceed_from_url = card.starting_url;
+    updateDocument.paginate = card.paginate;
     updateDocument.schema = card.schema;
     return updateDocument;
-}
+};
+
+MainClass.prepareUpdatedDocument = function prepareUpdatedDocument (d, schema) {
+  d = d.toObject();
+  d.schema = schema;
+  delete d._id;
+  delete d.__v;
+  // console.log(d);
+  return d;
+};
 
 /**
  * updates a job progress. This method performs
@@ -101,26 +73,40 @@ MainClass.jobaway = function jobaway (job_name) {
  * a job progress record, It updates the status
  * of the job and returns the result of the update.
  * it also records a log of what was updated.
- * @param  {[type]} id Supply an Id to locate a record
- * @param  {[type]} doc a document to update the record
+ * @param  {[type]} doc a criteria to find the record
+ * @param  {[type]} changes a document to update the record
  * @return {[type]}     [Definition]
  */
-MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (id,doc) {
+MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (doc, changes) {
   var q = Q.defer(),
-      self = this,
       updateDoc = {} ;
-      updateDoc.$set = {};
 
   Schema.JobProgress
   .findOne({
-    '_id': id
+    'starting_url': doc.starting_url,
+    'job_name': doc.job_name
   })
   .exec(function (err, found) {
     if (err) {
       return q.reject(err);
     }
-    //no need to update
-    if (found)  {
+    //update
+    if (found && changes)  {
+      found.status_log.push(changes.statusLog);
+      for (var p in changes) {
+        if (doc.hasOwnProperty(p) && p !== 'statusLog') {
+          found[p] = doc[p];
+        }
+      }
+      found.save(function (err, updated) {
+        if (err) {
+          return q.reject(err);
+        }
+        return q.resolve(updated);
+      });
+    }
+    // no updates
+    if (found && !changes) {
       return q.resolve(found);
     }
     //create a new doc,
@@ -154,7 +140,6 @@ MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (
  */
 MainClass.prototype.removeDefinition = function removeDefinition(id) {
   var q = Q.defer(),
-      self = this,
       criteria = {};
   if (id) {
     criteria._id = id;

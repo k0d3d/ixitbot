@@ -1,12 +1,11 @@
 {
-  "lindaikeji" : {
     "job_name" : "lindaikeji",
     "starting_url" : "http://www.lindaikejisblog.com/",
-    "scope" : ".post-outer",
+    "paginate" : ".blog-pager-older-link@href",
     "limit" : 100,
     "schema" : [{
+      "page-title" : "title",
       "title": ".post-title.entry-title",
       "thumbnail": ".post-body.entry-content img@src"
       }]
-  }
 }

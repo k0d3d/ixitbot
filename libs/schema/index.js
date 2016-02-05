@@ -38,7 +38,8 @@ var JobProgressSchema = new Schema ({
     status: {type: String},
     no_of_records: {type: Number}
   }],
-  no_of_records_saved: {type: Number},
+  no_of_records_saved: {type: Number, default: 0},
+  page_so_far: {type: Number},
   //this should be the last url
   //processed by the no_of_records
   //saved

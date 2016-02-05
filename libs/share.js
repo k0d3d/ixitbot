@@ -1,4 +1,5 @@
 var Twitter = require('twitter');
+var FB = require('fb');
 
 function SocialClass (title, body, attach) {
 
