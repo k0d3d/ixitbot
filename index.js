@@ -12,10 +12,10 @@
  * Each iteration contains a minimum of one
  * element in an array.
  * Each element/item in the array is sent to
- * agenda, to be executed in increments of
+ * kue, to be executed in increments of
  * 3mins. Use a schedule and a forLoop.
  *
- * The agenda task will make a request to
+ * The kue task will make a request to
  * VAULT when it is run.
  * This data is forwarded
  * in its schema to the API Server and VAULT,
@@ -65,18 +65,16 @@ db.on('connected', function() {
     console.log('database connected');
         return initialize();
     var job = new CronJob({
+    /*
+     * Runs every minute of every day.
+     */
       cronTime: '* * * 1/1 *',
       onTick: function() {
         console.log('inits');
-        /*
-         * Runs every weekday (Monday through Friday)
-         * at 11:30:00 AM. It does not run on Saturday
-         * or Sunday.
-         */
         initialize();
       },
       start: false,
-      timeZone: 'America/Los_Angeles'
+      timeZone: 'Africa/Lagos'
     });
     job.start();
     // defer.resolve();
