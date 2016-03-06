@@ -248,8 +248,26 @@ MainClass.prototype.listJobProgress = function listJobProgress (options) {
   return q.promise;
 };
 
+MainClass.prototype.saveFileMeta = function saveFileMeta(fileData, jobData) {
+  var q = Q.defer();
+
+  var newFile = new Schema.File();
+  newFile.identifier =  fileData.identifier;
+  newFile.mediaNumber = fileData.mediaNumber;
+  newFile.jobId =   jobData._id;
+  newFile.title =  jobData.title || jobData.filename;
+  newFile.targetSrc =  jobData.targetSrc;
+  newFile.save(function (err, saved) {
+    if (err) {
+      return q.reject(err);
+    }
+    return q.resolve(saved);
+  });
+  return q.promise;
+};
+
 MainClass.prototype.toString = function toString () {
-  return "MainClass";
+  return 'MainClass';
 };
 
 

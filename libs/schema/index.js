@@ -48,7 +48,17 @@ var JobProgressSchema = new Schema ({
   proceed_from_url: {type: String}
 });
 
+var FileMetaSchema = new Schema ({
+  identifier: {type: String},
+  mediaNumber: {type: Number},
+  jobId:  {type: Schema.ObjectId, ref: 'JobProgressSchema'},
+  title: {type: String},
+  targetSrc: {type: String},
+});
+
 mongoose.model('progress', JobProgressSchema);
 mongoose.model('Definition', JobDefinitionSchema);
+mongoose.model('file', FileMetaSchema);
 module.exports.JobProgress = mongoose.model('progress');
 module.exports.JobDefinition = mongoose.model('Definition');
+module.exports.File = mongoose.model('file');

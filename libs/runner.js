@@ -3,8 +3,9 @@ var
     queue = kue.createQueue(),
     request = require('request'),
     Models = require('./model'),
-    utils = require('./utils'),
-    debug = require('debug')('ixitbot:runner'),
+    _ = require('lodash'),
+    debug = require('debug')('xixitbot:runner'),
+    counter_debug = require('debug')('xixitbot:counter'),
     JSONStream = require('JSONStream'),
     es = require('event-stream'),
     xray = require('x-ray');
@@ -16,7 +17,6 @@ function startXRay (job) {
   var x = xray(),
       count = 0,
       job_data = job.data;
-      console.log(job_data.job_record);
   var resultStream = x(job_data.proceed_from_url,
       job_data.job_record.scope,
       job_data.schema)
@@ -35,12 +35,8 @@ function startXRay (job) {
       // to the Vault,
       queue.create('send to vault', data).save();
       count++;
-      debug(count);
-      // utils.debounce(function () {
-      //    job_data.no_of_records_saved = job_data.no_of_records_saved + count;
-      //    queue.create('save progress to db', job_data).save();
-      //    count = 0;
-      //  },10000);
+      counter_debug(count);
+
   });
 }
 
@@ -83,8 +79,8 @@ function sendToVault (job, done) {
   jobData.chunkNumber = 1;
   jobData.totalChunks = 1;
   jobData.filename = jobData.filename || md5(jobData.title);
-  // jobData.owner = jobData.job_record.job_name || 'www-anon';
-  // debug(job);
+  jobData.owner = jobData.job_name || 'www-anon';
+  jobData.folder = jobData.job_name || 'ixitbot';
   debug(jobData);
   request({
     method: 'POST',
@@ -92,19 +88,43 @@ function sendToVault (job, done) {
     body: jobData,
     json: true
   }, function (err, r, ixitFile) {
-    debug(ixitFile);
+    if (!err) {
+      jobData.no_of_records_saved = jobData.no_of_records_saved || 0 + 1;
+      // queue.create('save progress to db', [ixitFile, jobData]).save();
+      var new_model = new Models();
+      new_model.saveFileMeta(ixitFile, jobData)
+      .then(function () {
+        console.log('saved and updated including file meta');
+        done();
+      }, function (err) {
+        console.log(err);
+        console.log('we got an error');
+        done(err);
+      });
+    }
     done();
   });
 }
 
 function updateJobCount (job, done) {
   var new_model = new Models();
-  var jobData = job.data;
-  new_model.findOrUpdateJobProgress(jobData.job_record, {
+  debug(job.data);
+  var fileData = job.data[0];
+  var jobData = job.data[1];
+  new_model.findOrUpdateJobProgress(jobData, {
     no_of_records_saved: jobData.no_of_records_saved
   })
-  .then(function () {
-    done();
+  .then(function (progressData) {
+    new_model.saveFileMeta(fileData, progressData)
+    .then(function () {
+      console.log('saved and updated including file meta');
+      done();
+    }, function (err) {
+      console.log(err);
+      console.log('we got an error');
+      done(err);
+    });
+
   });
 }
 

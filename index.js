@@ -129,7 +129,7 @@ function initialize () {
             }
             for (var i = 0; i < defDocument.length; i++) {
                 var this_doc = defDocument[i];
-                if (!this_doc.schema || (!this_doc.schema.title && !this_doc.schema.filename)) {
+                if (!this_doc.schema && (!this_doc.schema.title || !this_doc.schema.filename)) {
                     throw new Error('required filename or title not present in schema');
                 }
                 runner.create('start job', this_doc).save();
