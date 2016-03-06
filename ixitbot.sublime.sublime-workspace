@@ -1,0 +1,1302 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"this",
+				"this_doc〔variable〕"
+			],
+			[
+				"filedta",
+				"filedata"
+			],
+			[
+				"chu",
+				"chunkNumber"
+			],
+			[
+				"fileda",
+				"filedata"
+			],
+			[
+				"filedat",
+				"filedata〔argument〕"
+			],
+			[
+				"font",
+				"font-weight"
+			],
+			[
+				"margin",
+				"margin-top"
+			],
+			[
+				"fon",
+				"font-family"
+			],
+			[
+				"p",
+				"padding-top"
+			],
+			[
+				"padd",
+				"padding-bottom"
+			],
+			[
+				"backgr",
+				"background-color"
+			],
+			[
+				"border-rad",
+				"border-radius: 〔property〕"
+			],
+			[
+				"mar",
+				"margin-top: 〔property〕"
+			],
+			[
+				"co",
+				"color"
+			],
+			[
+				"bor",
+				"border"
+			],
+			[
+				"hd",
+				"header	Tag"
+			],
+			[
+				"ipc",
+				"ipcRenderer"
+			],
+			[
+				"cal",
+				"callShellCommand〔function〕"
+			],
+			[
+				"class",
+				"class=〔attribute〕"
+			],
+			[
+				"form",
+				"formType"
+			],
+			[
+				"crea",
+				"createInsertWindow〔function〕"
+			],
+			[
+				"call",
+				"callback"
+			],
+			[
+				"boot",
+				"bootstrap-material-design.min.css"
+			],
+			[
+				"ro",
+				"row"
+			],
+			[
+				"ma",
+				"material.min.js"
+			],
+			[
+				"main",
+				"mainWindow"
+			],
+			[
+				"bac",
+				"background-position"
+			],
+			[
+				"Mar",
+				"Married"
+			],
+			[
+				"opt",
+				"option	Tag"
+			],
+			[
+				"in",
+				"input"
+			],
+			[
+				"fi",
+				"fi_payload"
+			],
+			[
+				"defa",
+				"default_xml_data〔argument〕"
+			],
+			[
+				"JSON",
+				"JSONdir〔variable〕"
+			],
+			[
+				"ass",
+				"assets/"
+			],
+			[
+				"w",
+				"write"
+			],
+			[
+				"st",
+				"stringify"
+			],
+			[
+				"config",
+				"config_file〔variable〕"
+			],
+			[
+				"te",
+				"text-align"
+			],
+			[
+				"t",
+				"text-decoration"
+			],
+			[
+				"no",
+				"none"
+			],
+			[
+				"cla",
+				"class=〔attribute〕"
+			],
+			[
+				"inser",
+				"insertWindow〔variable〕"
+			],
+			[
+				"ins",
+				"insertWindow〔variable〕"
+			],
+			[
+				"ac",
+				"activeWindows"
+			],
+			[
+				"imag",
+				"images"
+			],
+			[
+				"lo",
+				"logo.png	w:194 h:65"
+			],
+			[
+				"pl",
+				"plugins"
+			],
+			[
+				"com",
+				"component.css"
+			],
+			[
+				"nor",
+				"normalize.css"
+			],
+			[
+				"item",
+				"itemsPerPage"
+			],
+			[
+				"pag",
+				"pagination"
+			],
+			[
+				"fun",
+				"function〔keyword〕"
+			],
+			[
+				"loca",
+				"locationId"
+			],
+			[
+				"res",
+				"resource〔argument〕"
+			],
+			[
+				"upda",
+				"updateJobCount"
+			],
+			[
+				"new",
+				"new_model〔variable〕"
+			],
+			[
+				"up",
+				"updateJobCount"
+			],
+			[
+				"sa",
+				"save"
+			],
+			[
+				"start",
+				"startXRay〔function〕"
+			],
+			[
+				"path",
+				"pathToWrite"
+			],
+			[
+				"req",
+				"require〔function〕"
+			],
+			[
+				"requ",
+				"require〔function〕"
+			],
+			[
+				"job",
+				"jobData〔variable〕"
+			],
+			[
+				"defini",
+				"definitions"
+			],
+			[
+				"jo",
+				"job_record"
+			],
+			[
+				"for",
+				"for	for (…) {…}"
+			],
+			[
+				"prep",
+				"preped〔variable〕"
+			],
+			[
+				"def",
+				"defDocument"
+			],
+			[
+				"send",
+				"sendToVault"
+			],
+			[
+				"prepa",
+				"prepareUpdatedDocument"
+			],
+			[
+				"sta",
+				"startjob"
+			],
+			[
+				"ever",
+				"every_job"
+			],
+			[
+				"update",
+				"updateDoc"
+			],
+			[
+				"find",
+				"findOrUpdateJobProgress"
+			],
+			[
+				"add",
+				"add_new_job"
+			],
+			[
+				"jobdef",
+				"jobdef.json"
+			],
+			[
+				"jb",
+				"job_name"
+			],
+			[
+				"doc",
+				"docx〔argument〕"
+			],
+			[
+				"do",
+				"document"
+			],
+			[
+				"J",
+				"JobProgress"
+			],
+			[
+				"thr",
+				"throw〔keyword〕"
+			],
+			[
+				"descri",
+				"description"
+			],
+			[
+				"mode",
+				"models"
+			],
+			[
+				"model",
+				"models〔variable〕"
+			],
+			[
+				"status",
+				"statusLog"
+			],
+			[
+				"de",
+				"describe"
+			],
+			[
+				"desc",
+				"describe〔variable〕"
+			],
+			[
+				"prot",
+				"prototype"
+			],
+			[
+				"eny",
+				"entry_type"
+			],
+			[
+				"author",
+				"authority"
+			],
+			[
+				"coso",
+				"console.log();"
+			],
+			[
+				"entry",
+				"entry_type〔variable〕"
+			],
+			[
+				"evet",
+				"eventName"
+			],
+			[
+				"index",
+				"indexNextQ"
+			],
+			[
+				"padding",
+				"padding-top"
+			],
+			[
+				"inlin",
+				"inline-block"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"m",
+				"masonry.pkgd.min.js"
+			],
+			[
+				"min-",
+				"min-width"
+			],
+			[
+				"list",
+				"listQuestionsByParams"
+			],
+			[
+				"device",
+				"deviceFn〔variable〕"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "index.js",
+			"settings":
+			{
+				"buffer_size": 5457,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "libs/runner.js",
+			"settings":
+			{
+				"buffer_size": 3241,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "def/lindaikeji.json",
+			"settings":
+			{
+				"buffer_size": 339,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "todo",
+			"settings":
+			{
+				"buffer_size": 397,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "libs/model.js",
+			"settings":
+			{
+				"buffer_size": 5907,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "insta",
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"i",
+				"Package Control: Install Package"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			]
+		],
+		"width": 593.0
+	},
+	"console":
+	{
+		"height": 153.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/k1ngk0d3d/Projects/ixitbot",
+		"/home/k1ngk0d3d/Projects/ixitbot/libs",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public"
+	],
+	"file_history":
+	[
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/lib/file-manager.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/models/vault.js",
+		"/home/k1ngk0d3d/Projects/ixitbot/def/lindaikeji.___",
+		"/home/k1ngk0d3d/Projects/ixitbot/def/lindaikeji.json",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/lib/utility.js",
+		"/tmp/fz3temp-1/config.php",
+		"/tmp/fz3temp-1/ewcfg10.php",
+		"/tmp/fz3temp-1/ewcfg7.php",
+		"/home/k1ngk0d3d/Projects/ixitbot/expenses",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/bvn-opening/app.html",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/js/app.js",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/account-opening/app.html",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/css/fonts.css",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/js/components.js",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/widgets/splash.html",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/widgets/cards.html",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/widgets/xtmlogo.html",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/app.html",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/widgets/vtmcard.html",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/widgets/xtmclock.html",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/widgets/shapedlogo.html",
+		"/home/k1ngk0d3d/.cache/.fr-0Ea4lN/style.css",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/account-opening/css/style.css",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/background.js",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/start.js",
+		"/home/k1ngk0d3d/Projects/eigenvalue/tagchief-mon/public/js/app.js",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/client.js",
+		"/media/k1ngk0d3d/B2F5-AEBF/js/app.js",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/XML/SavingsAccountOpenRequest.xml",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/js/main.js",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/css/style.css",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/package.json",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/account-opening/index.html",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/AnimatedTextFillsAll/css/style12.css",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/AnimatedTextFillsAll/index12.html",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/AnimatedTextFillsAll/css/demo.css",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/widgets",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/account-opening/old-form/index.html",
+		"/home/k1ngk0d3d/Projects/avanage-e/gulpfile.js",
+		"/home/k1ngk0d3d/Projects/avanage-e/tasks/buildnow.js",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/account-opening/old-form/css/component.css",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/gulpfile.js",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/css/bootstrap.min.css",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/JSON/SavingsAccountOpenRequest.json",
+		"/home/k1ngk0d3d/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/defaults.xml",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/config.json",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/account-opening/css/component.css",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/app/html/css/originalstyle.css",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/vendor/electron_boilerplate/context_menu.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/d/source/background.js",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/vendor/electron_boilerplate/dev_helper.js",
+		"/home/k1ngk0d3d/Projects/avanage-e/source/vendor/electron_boilerplate/env_config.js",
+		"/home/k1ngk0d3d/Projects/avanage/index.html",
+		"/home/k1ngk0d3d/Projects/avanage/app/background.js",
+		"/home/k1ngk0d3d/Projects/avanage/electron-boilerplate/app/background.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/d/source/start.js",
+		"/home/k1ngk0d3d/Projects/avanage/electron-boilerplate/app/app.js",
+		"/home/k1ngk0d3d/Projects/avanage/electron-boilerplate/tasks/build.js",
+		"/home/k1ngk0d3d/Projects/avanage/electron-boilerplate/app/old/app.html",
+		"/home/k1ngk0d3d/Projects/avanage/electron-boilerplate/app/app.html",
+		"/home/k1ngk0d3d/Projects/avanage/css/style.css",
+		"/home/k1ngk0d3d/Projects/avanage/squeezebox-portfolio-template/index.html",
+		"/home/k1ngk0d3d/Projects/avanage/js/app.js",
+		"/home/k1ngk0d3d/Projects/avanage/templates/options.html",
+		"/home/k1ngk0d3d/Projects/eigenvalue/tagchief-mon/views/includes/foot-assets.jade",
+		"/home/k1ngk0d3d/Projects/eigenvalue/tagchief-mon/views/includes/head-assets.jade",
+		"/home/k1ngk0d3d/Projects/avanage/squeezebox-portfolio-template/css/style.css",
+		"/home/k1ngk0d3d/Projects/avanage/js/main.js",
+		"/home/k1ngk0d3d/Projects/avanage/avanage/templates/home.html",
+		"/home/k1ngk0d3d/Projects/avanage/avanage/js/app.js",
+		"/home/k1ngk0d3d/Projects/avanage/avanage/templates/options.html",
+		"/home/k1ngk0d3d/Projects/avanage/avanage/templates/account-create.html",
+		"/home/k1ngk0d3d/Projects/avanage/avanage/js/main.js",
+		"/home/k1ngk0d3d/Projects/avanage/swipe.html",
+		"/home/k1ngk0d3d/Projects/avanage/avanage/index.html",
+		"/home/k1ngk0d3d/Projects/avanage/avanage/templates",
+		"/home/k1ngk0d3d/Projects/eigenvalue/tagchief-mon/views/index.jade",
+		"/home/k1ngk0d3d/Projects/avanage/avanage/style.css",
+		"/home/k1ngk0d3d/Projects/avanage/css/reveal.css",
+		"/home/k1ngk0d3d/Projects/avanage/lib/js/head.min.js",
+		"/home/k1ngk0d3d/Projects/avanage/style.css",
+		"/home/k1ngk0d3d/Projects/avanage/oui/index.html",
+		"/home/k1ngk0d3d/Projects/avanage/home-1-style-6.html",
+		"/home/k1ngk0d3d/Projects/avanage/home-1-style-8.html",
+		"/home/k1ngk0d3d/.config/sublime-text-3/Packages/Sublime-HTMLPrettify/HTMLPrettify.sublime-settings",
+		"/home/k1ngk0d3d/Projects/avanage/oui/ShapeHoverEffectSVG/index2.html",
+		"/home/k1ngk0d3d/Projects/avanage/oui/3DGridEffect/index.html",
+		"/home/k1ngk0d3d/Projects/avanage/oui/ShapeHoverEffectSVG/index.html",
+		"/home/k1ngk0d3d/Projects/avanage/html/js/script.js",
+		"/home/k1ngk0d3d/Projects/avanage/html/old-index.html",
+		"/home/k1ngk0d3d/Projects/avanage/android/css/allinone_carousel.css",
+		"/home/k1ngk0d3d/Projects/avanage/html/index.html",
+		"/home/k1ngk0d3d/Projects/avanage/android/css/style.css",
+		"/home/k1ngk0d3d/Projects/avanage/html/style.css",
+		"/home/k1ngk0d3d/Projects/avanage/html/js/main.js",
+		"/home/k1ngk0d3d/Projects/avanage/html/js/reveal.js",
+		"/home/k1ngk0d3d/Projects/avanage/html/exindex.html",
+		"/home/k1ngk0d3d/Projects/avanage/html/r.html",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/views/locations/activities.jade",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/public/js/ckeditor/config.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-node/models/user.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/todo",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/public/js/app.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/public/js/modules/services.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/public/js/modules/location.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/public/js/modules/config.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/views/templates/pagination.jade",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/views/includes/foot-assets.jade",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-node/controllers/users.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/views/users/list.jade",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-node/controllers/apiv2/users.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/public/js/modules/users.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/controllers/resources/users.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/Procfile",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/models/user.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/config/default.json",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/views/locations/places.jade",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-node/controllers/routes.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-node/models/user/user.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/controllers/resources/locations.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/views/includes/sidebar.jade",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/server.js",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/controllers/routes/site.js",
+		"/home/k1ngk0d3d/Projects/ixitbot/libs/share.js",
+		"/home/k1ngk0d3d/Projects/ixitbot/libs/model.js",
+		"/home/k1ngk0d3d/Projects/ixitbot/package.json",
+		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/controllers/download.js"
+	],
+	"find":
+	{
+		"height": 25.0
+	},
+	"find_in_files":
+	{
+		"height": 133.0,
+		"where_history":
+		[
+			"/home/k1ngk0d3d/Projects/eigenvalue/tagchief/www/js"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"entry",
+			"_owner",
+			"_sum",
+			"_filename",
+			"_chunkNumber",
+			"mainheader",
+			"#base",
+			"woff",
+			"'woff'",
+			"woff",
+			"url('../",
+			"url('",
+			"25",
+			"angular",
+			".header",
+			"../../",
+			"trailer",
+			"260",
+			"slider",
+			"mainWindowState",
+			"account_opening_data",
+			"      callback: function (){\n        var ipcR = require('electron').ipcRenderer;\n        ipcR.send('open account window');\n        // ipcR.send('create account');\n      },",
+			" type",
+			"h2",
+			"260",
+			"url('",
+			"text",
+			"curs",
+			"250px",
+			"3 \"",
+			"3 ",
+			"col-md-3",
+			"li",
+			"ul",
+			"js",
+			"wrapper",
+			"10",
+			"6",
+			"4",
+			"email",
+			"4",
+			"id=\"exampleInputEmail1\" ",
+			"for=\"exampleInputEmail1\"",
+			"exampleInputEmail1",
+			"						</li>\n",
+			"						<li>\n",
+			"input",
+			"\"",
+			"……………………User Input (Drop Down)",
+			"………………Static Input",
+			"…………………………User Input",
+			"………………………………User Input",
+			"    …………………….Static Input",
+			"…………………………User Input",
+			"………………………………User Input",
+			"…………………….Static Input",
+			"…………………….Static Inpu",
+			";\n",
+			"$",
+			" id=\"q5",
+			"codrops-top",
+			"insertWindow",
+			"100%",
+			"\na {\n  color: #eebb00;\n  text-decoration: none;\n}\n",
+			"AnimationName",
+			" height=\"300\" width=\"480\"",
+			">\n",
+			"start",
+			"\n.cd-slider {\n  padding-top: 10vh;\n  height: 100%;\n  overflow-y: auto;\n}",
+			"slider",
+			"js",
+			"img/",
+			"type=\"text/javascript\" ",
+			"locations",
+			"content-wrapper",
+			"h2",
+			"The only people for me are the mad ones, the ones who are mad to live, mad to talk, mad to be saved, desirous of everything at the same time, the ones who never yawn or say a commonplace thing, but burn, burn, burn like fabulous yellow roman candles exploding like spiders across the stars.",
+			"The only people for me are the mad ones, the ones who are mad to live, mad to talk, mad to be saved, desirous of everything at the same time, the ones who never yawn or say a commonplace thing, but burn, burn, burn like fabulous yellow roman candles exploding like spiders across the stars.</",
+			"The only people for me are the mad ones, the ones who are mad to live, mad to talk, mad to be saved, desirous of everything at the same time, the ones who never yawn or say a commonplace thing, but burn, burn, burn like fabulous yellow roman candles exploding like spiders across the stars.",
+			" per ",
+			"per",
+			"form-group",
+			"=\"i",
+			"=\"",
+			"pagin",
+			"_ids",
+			"'#'",
+			"javascript:void(0)",
+			"page_ready_user_profile.html",
+			"',\n",
+			"send to vault",
+			"sendToVault",
+			"Things",
+			"defDocument",
+			"Prop",
+			"prop",
+			"for",
+			"xray",
+			"argv",
+			"doc",
+			"findO",
+			"//",
+			"process.env.",
+			"stamp_job",
+			"Description",
+			"docx",
+			"console",
+			"d",
+			"Description",
+			"Authority",
+			"authority",
+			"fetchLocationsByParams",
+			"exec",
+			"tag",
+			"google",
+			"fa-stack-1x",
+			"                      i.fa.fa-check-circle.fa-stack-1x\n",
+			".fa-stack-1x",
+			"                    span.fa-stack.fa-sm\n",
+			"fa-stack-2x",
+			"i.",
+			"answers[0].",
+			"Things",
+			"quest",
+			"indexOfNextQ",
+			"promptAfter",
+			"schedule",
+			"feedback"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"owner",
+			"sum",
+			"filename",
+			"chunkNumber",
+			"col-xs-3 col-sm-3 col-md-3 col-lg-3 ",
+			"'",
+			"images/",
+			"''",
+			"Definition"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "index.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5457,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3889,
+								3889
+							]
+						],
+						"settings":
+						{
+							"WordCountShouldRun": false,
+							"WordCountSyntax": "javascript",
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1989.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "libs/runner.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3241,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1280,
+								1280
+							]
+						],
+						"settings":
+						{
+							"WordCountShouldRun": false,
+							"WordCountSyntax": "javascript",
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1395.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "def/lindaikeji.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 339,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								275,
+								275
+							]
+						],
+						"settings":
+						{
+							"WordCountShouldRun": false,
+							"WordCountSyntax": "json",
+							"auto_complete": true,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "todo",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 397,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								84,
+								84
+							]
+						],
+						"settings":
+						{
+							"WordCountShouldRun": true,
+							"WordCountSyntax": "plaintasks",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PlainTasks/PlainTasks.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "libs/model.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5907,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								933,
+								933
+							]
+						],
+						"settings":
+						{
+							"WordCountShouldRun": false,
+							"WordCountSyntax": "javascript",
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 867.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 47.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.sftp":
+	{
+		"height": 0.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 98.0
+	},
+	"pinned_build_system": "",
+	"project": "ixitbot.sublime.project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"todo",
+				"ixitbot/todo"
+			],
+			[
+				"model/vsu",
+				"public/models/vault.js"
+			],
+			[
+				"splas",
+				"source/app/html/widgets/splash.html"
+			],
+			[
+				"app.js",
+				"source/app/html/js/app.js"
+			],
+			[
+				"xtm",
+				"source/app/html/widgets/xtmlogo.html"
+			],
+			[
+				"style.css",
+				"source/app/html/css/style.css"
+			],
+			[
+				"app",
+				"source/app/html/account-opening/app.html"
+			],
+			[
+				"xtml",
+				"source/app/html/widgets/xtmlogo.html"
+			],
+			[
+				"clock",
+				"source/app/html/widgets/xtmclock.html"
+			],
+			[
+				"main.",
+				"source/app/html/js/main.js"
+			],
+			[
+				"main.js",
+				"source/app/html/js/main.js"
+			],
+			[
+				"buil",
+				"electron-boilerplate/tasks/build.js"
+			],
+			[
+				"config",
+				"tagchief-mon/public/js/modules/config.js"
+			],
+			[
+				"acti",
+				"tagchief-mon/views/locations/activities.jade"
+			],
+			[
+				"pagin",
+				"tagchief-mon/views/templates/pagination.jade"
+			],
+			[
+				"app.",
+				"tagchief-mon/public/js/app.js"
+			],
+			[
+				"config.js",
+				"tagchief-mon/public/js/ckeditor/config.js"
+			],
+			[
+				"places",
+				"tagchief-mon/views/locations/places.jade"
+			],
+			[
+				"pagina",
+				"tagchief-mon/views/templates/pagination.jade"
+			],
+			[
+				"activi",
+				"tagchief-mon/views/locations/activities.jade"
+			],
+			[
+				"servic",
+				"tagchief-mon/public/js/modules/services.js"
+			],
+			[
+				"mon/service",
+				"tagchief-mon/public/js/modules/services.js"
+			],
+			[
+				"mon/pub/user",
+				"tagchief-mon/public/js/modules/users.js"
+			],
+			[
+				"list",
+				"tagchief-mon/views/users/list.jade"
+			],
+			[
+				"node/models/user",
+				"tagchief-node/models/user.js"
+			],
+			[
+				"",
+				"tagchief-mon/Procfile"
+			],
+			[
+				"lis",
+				"tagchief-mon/views/users/list.jade"
+			],
+			[
+				"user",
+				"tagchief-node/models/user.js"
+			],
+			[
+				"list.jade",
+				"tagchief-mon/views/users/list.jade"
+			],
+			[
+				"mon/publi/user",
+				"tagchief-mon/public/js/modules/users.js"
+			],
+			[
+				"services",
+				"tagchief-mon/public/js/modules/services.js"
+			],
+			[
+				"ser",
+				"tagchief-mon/public/js/modules/services.js"
+			],
+			[
+				"model",
+				"libs/model.js"
+			],
+			[
+				"models",
+				"tests/modelsSpec.js"
+			],
+			[
+				"device",
+				"tagchief-node/models/device.js"
+			],
+			[
+				"theme.css",
+				"tagchief-mon/public/css/themes.css"
+			],
+			[
+				"activit",
+				"tagchief-mon/views/locations/activities.jade"
+			],
+			[
+				"inde",
+				"tagchief/www/index.html"
+			],
+			[
+				"settings",
+				"tagchief/www/js/sharedlibs/settings.js"
+			],
+			[
+				"models/loca",
+				"tagchief-mon/models/user/locations.js"
+			],
+			[
+				"setting",
+				"tagchief/www/js/sharedlibs/settings.js"
+			],
+			[
+				"index.ht",
+				"tagchief/www/index.html"
+			],
+			[
+				"app.html",
+				"tagchief/www/templates/app.html"
+			],
+			[
+				"tagchief/.css",
+				"tagchief/www/css/themes.css"
+			],
+			[
+				"location.ht",
+				"tagchief/www/templates/location.html"
+			],
+			[
+				"server",
+				"tagchief-node/server.js"
+			],
+			[
+				"devie",
+				"tagchief-node/models/device.js"
+			],
+			[
+				"-node/model/l",
+				"tagchief-node/models/user/locations.js"
+			],
+			[
+				"loca",
+				"tagchief-mon/controllers/locations.js"
+			],
+			[
+				"-node/contro/us",
+				"tagchief-node/controllers/users.js"
+			],
+			[
+				"tagchief/app.js",
+				"tagchief/www/js/app.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 192.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

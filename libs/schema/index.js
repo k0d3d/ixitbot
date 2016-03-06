@@ -16,7 +16,8 @@ var JobDefinitionSchema = new Schema ({
   //this: $(scope).find(selector).
   scope: {type: String},
   // no of records to process before stopping.
-  limit: {type: Number}
+  limit: {type: Number},
+  bot_schema:{type: Schema.Types.Mixed}
 });
 
 /**
@@ -40,6 +41,7 @@ var JobProgressSchema = new Schema ({
   }],
   no_of_records_saved: {type: Number, default: 0},
   page_so_far: {type: Number},
+  scope: {type: String},
   //this should be the last url
   //processed by the no_of_records
   //saved

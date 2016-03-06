@@ -1,4 +1,6 @@
 var Schema = require('./schema/index'),
+    Base = require('./base.js'),
+    debug = require('debug')('ixitbot:models'),
     Q = require('q');
 
 
@@ -8,8 +10,10 @@ var Schema = require('./schema/index'),
  * @param {[type]} starting_url [Definition]
  */
 var MainClass = function MainClass () {
+  Base.call(this);
 };
 
+MainClass.prototype = Object.create(Base.prototype);
 
 MainClass.prototype.constructor = MainClass;
 
@@ -21,21 +25,6 @@ MainClass.prototype.constructor = MainClass;
  */
 MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
     var updateDocument = {};
-    // if (job_name) {
-    //     //show help
-    // }
-    // //read config file
-    // //this could also fetch
-    // //definitions from a database
-    // var job_def_collection = {};
-    // try {
-    //   job_def_collection = require('../def/' + job_name + '.json');
-    // } catch(e) {
-    //   console.log('Error opening file:  job_name .json');
-    //   throw e;
-    // }
-
-    // var card = job_def_collection[job_name];
 
     if (!card) {
         throw new Error ('Job not found. Check job_name .json');
@@ -54,6 +43,7 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
     updateDocument.no_of_records_saved = 0;
     updateDocument.proceed_from_url = card.starting_url;
     updateDocument.paginate = card.paginate;
+    updateDocument.scope = card.scope;
     updateDocument.schema = card.schema;
     return updateDocument;
 };
@@ -94,8 +84,8 @@ MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (
     if (found && changes)  {
       found.status_log.push(changes.statusLog);
       for (var p in changes) {
-        if (doc.hasOwnProperty(p) && p !== 'statusLog') {
-          found[p] = doc[p];
+        if (changes.hasOwnProperty(p) && p !== 'statusLog') {
+          found[p] = changes[p];
         }
       }
       found.save(function (err, updated) {

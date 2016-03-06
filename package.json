@@ -16,6 +16,8 @@
     "fb": "^1.0.2",
     "hooks": "^0.3.2",
     "kue": "^0.10.5",
+    "kue-ui": "^0.1.0",
+    "md5": "^2.0.0",
     "mongoose": "^4.4.1",
     "q": "^1.4.1",
     "request": "^2.69.0",
@@ -26,6 +28,8 @@
   "devDependencies": {
     "gulp-jasmine-node": "^1.0.6",
     "gulp-jshint": "^2.0.0",
-    "jshint": "^2.9.1"
+    "jasmine-node": "^1.14.5",
+    "jshint": "^2.9.1",
+    "prettyjson": "^1.1.3"
   }
 }
