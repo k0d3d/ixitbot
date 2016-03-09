@@ -5,3 +5,4 @@ node_modules/
 expenses
 *.project
 *.sublime
+tests/models_pec.js
