@@ -132,7 +132,9 @@ function initialize () {
                 if (!this_doc.schema && (!this_doc.schema.title || !this_doc.schema.filename)) {
                     throw new Error('required filename or title not present in schema');
                 }
-                runner.create('start job', this_doc).save();
+                // create dynamic job definitions, then start job
+                runner.defineJob(this_doc.job_name);
+                runner.queue.create(this_doc.job_name + '-start job', this_doc).save();
             }
         } else {
             handleError('No definitions found, Read it up somewhere. I know I told u how to work this');

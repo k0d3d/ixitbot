@@ -1,15 +1,15 @@
-var gulp = require("gulp");
-var jshint = require("gulp-jshint");
+var gulp = require('gulp');
+var jshint = require('gulp-jshint');
 var jasmineNode = require('gulp-jasmine-node');
 
-gulp.task("lint", function() {
+gulp.task('lint', function() {
     gulp.src([
-      "models/*.js",
-      "tests/*.js",
-      "index.js",
+      './models/*.js',
+      './tests/*.js',
+      './index.js',
       ])
         .pipe(jshint())
-        .pipe(jshint.reporter("default"));
+        .pipe(jshint.reporter('default'));
 });
 
 

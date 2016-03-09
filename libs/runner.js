@@ -1,16 +1,50 @@
 var
     kue = require('kue'),
-    queue = kue.createQueue(),
+    queue = kue.createQueue({
+      redis: process.env.REDIS_URL
+    }),
     request = require('request'),
     Models = require('./model'),
-    _ = require('lodash'),
+    // _ = require('lodash'),
     debug = require('debug')('xixitbot:runner'),
     counter_debug = require('debug')('xixitbot:counter'),
     JSONStream = require('JSONStream'),
-    es = require('event-stream'),
+    // es = require('event-stream'),
+    osmosis = require('osmosis'),
     xray = require('x-ray');
 
+var redis = require("redis");
+var client = redis.createClient({
+  detect_buffers: true,
+  url: process.env.REDIS_URL
+});
 
+function startOsmosis (job) {
+  debug('starting crawler');
+  var x = xray(),
+      count = 0,
+      job_data = job.data;
+      osmosis
+      .get(job_data.starting_url) //starting url
+      .find(job_data.scope)
+      .paginate(job_data.paginate, job_data.limit)
+      .set(job_data.schema[0])
+      .then(function (context, data, next) {
+          data.url = context.doc().request.url;
+          next(context, data);
+      })
+      .data(function(listing) {
+        // assuming this is going to fire for
+        // every row in our collection, we need
+        // to update our database with the row
+        // count after we have totally sent th       em
+        // to the Vault,
+        queue.create('send to vault', listing).save();
+      })
+      .log(console.log)
+      .error(console.log)
+      .debug(console.log);
+}
 
 function startXRay (job) {
   debug('starting xray');
@@ -54,7 +88,7 @@ function startjob (job, done) {
   save_doc.findOrUpdateJobProgress(doc)
   .then(function (useThisD) {
     var preped = Models.prepareUpdatedDocument(useThisD, doc.schema);
-    queue.create('start xray',
+    queue.create('start osmosis',
       preped,
       function () {
       })
@@ -89,17 +123,25 @@ function sendToVault (job, done) {
     json: true
   }, function (err, r, ixitFile) {
     if (!err) {
-      jobData.no_of_records_saved = jobData.no_of_records_saved || 0 + 1;
-      // queue.create('save progress to db', [ixitFile, jobData]).save();
-      var new_model = new Models();
-      new_model.saveFileMeta(ixitFile, jobData)
-      .then(function () {
-        console.log('saved and updated including file meta');
-        done();
-      }, function (err) {
-        console.log(err);
-        console.log('we got an error');
-        done(err);
+      //check the current job count in redis
+      client.incr(jobData.job_name + '_session_count', function (err, count) {
+        if (err) {
+          console.log(err);
+          return done(err);
+        }
+        if (!count) {
+          count = 1;
+        }
+        var new_model = new Models();
+        new_model.saveFileMeta(ixitFile, jobData)
+        .then(function () {
+          console.log('saved and updated including file meta');
+          done();
+        }, function (err) {
+          console.log(err);
+          console.log('we got an error');
+          done(err);
+        });
       });
     }
     done();
@@ -128,13 +170,19 @@ function updateJobCount (job, done) {
   });
 }
 
+function defineJobs (jobname) {
 
-queue.process('start job', startjob);
-queue.process('start xray', startXRay);
-queue.process('send to vault', sendToVault);
-queue.process('save progress to db', updateJobCount);
+  queue.process(jobname + '-start job', startjob);
+  queue.process(jobname + '-start xray', startXRay);
+  queue.process(jobname + '-start osmosis', startOsmosis);
+  queue.process(jobname + '-send to vault', sendToVault);
+  queue.process(jobname + '-save progress to db', updateJobCount);
+}
 
 
-module.exports = queue;
+
+
+module.exports.defineJobs = defineJobs;
+module.exports.queue = queue;
 
 

@@ -45,7 +45,8 @@ var JobProgressSchema = new Schema ({
   //this should be the last url
   //processed by the no_of_records
   //saved
-  proceed_from_url: {type: String}
+  proceed_from_url: {type: String},
+  last_crawled_url: {type: String}
 });
 
 var FileMetaSchema = new Schema ({
