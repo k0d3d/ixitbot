@@ -3,6 +3,11 @@ var Schema = require('./schema/index'),
     debug = require('debug')('ixitbot:models'),
     Q = require('q');
 
+var redis = require("redis");
+var client = redis.createClient({
+  detect_buffers: true,
+  url: process.env.REDIS_URL
+});
 
 /**
  * standard crud class I guesss.
@@ -25,6 +30,10 @@ MainClass.prototype.constructor = MainClass;
  */
 MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
     var updateDocument = {};
+    var q = Q.defer();
+
+
+
 
     if (!card) {
         throw new Error ('Job not found. Check job_name .json');
@@ -36,16 +45,28 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
         no_of_records: 0
     };
 
-    updateDocument['job_record.job_name'] = card.job_name;
-    updateDocument['job_record.scope'] = card.scope;
-    updateDocument['job_record.limit'] = card.limit;
-    updateDocument.current_status = 'active';
-    updateDocument.no_of_records_saved = 0;
-    updateDocument.proceed_from_url = card.starting_url;
-    updateDocument.paginate = card.paginate;
-    updateDocument.scope = card.scope;
-    updateDocument.schema = card.schema;
-    return updateDocument;
+    client.get(card.job_name + '_last_url', function (err, url) {
+      if (err && err instanceof Error) {
+        throw err;
+      }
+      if (url) {
+         updateDocument.proceed_from_url = url;
+      } else {
+         updateDocument.proceed_from_url = card.starting_url;
+      }
+
+      updateDocument['job_record.job_name'] = card.job_name;
+      updateDocument['job_record.scope'] = card.scope;
+      updateDocument['job_record.limit'] = card.limit;
+      updateDocument.current_status = 'active';
+      updateDocument.no_of_records_saved = 0;
+      updateDocument.paginate = card.paginate;
+      updateDocument.scope = card.scope;
+      updateDocument.schema = card.schema;
+      return q.resolve(updateDocument);
+
+    });
+      return q.promise;
 };
 
 MainClass.prepareUpdatedDocument = function prepareUpdatedDocument (d, schema) {

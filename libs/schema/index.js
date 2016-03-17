@@ -55,6 +55,7 @@ var FileMetaSchema = new Schema ({
   jobId:  {type: Schema.ObjectId, ref: 'JobProgressSchema'},
   title: {type: String},
   targetSrc: {type: String},
+  url: {type: String}
 });
 
 mongoose.model('progress', JobProgressSchema);

@@ -2,7 +2,7 @@
     "job_name" : "lindaikeji",
     "starting_url" : "http://www.lindaikejisblog.com/",
     "paginate" : ".blog-pager-older-link@href",
-    "limit" : 100,
+    "limit" : 1,
     "scope" : ".post-outer",
     "schema" : [{
       "page-title" : "title",
