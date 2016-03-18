@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"job",
+				"job_name"
+			],
+			[
+				"jo",
+				"job_data"
+			],
+			[
+				"name",
+				"nameString〔variable〕"
+			],
+			[
 				"pro",
 				"process"
 			],
@@ -18,10 +30,6 @@
 			[
 				"o",
 				"osmosis"
-			],
-			[
-				"jo",
-				"job"
 			],
 			[
 				"prog",
@@ -292,10 +300,6 @@
 				"require〔function〕"
 			],
 			[
-				"job",
-				"jobData〔variable〕"
-			],
-			[
 				"defini",
 				"definitions"
 			],
@@ -447,15 +451,39 @@
 			"file": "libs/runner.js",
 			"settings":
 			{
-				"buffer_size": 5182,
+				"buffer_size": 4933,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "libs/model.js",
+			"settings":
+			{
+				"buffer_size": 6846,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "web.js",
+			"settings":
+			{
+				"buffer_size": 408,
+				"line_ending": "Windows"
 			}
 		},
 		{
 			"file": "index.js",
 			"settings":
 			{
-				"buffer_size": 5604,
+				"buffer_size": 5629,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "libs/schema/index.js",
+			"settings":
+			{
+				"buffer_size": 1996,
 				"line_ending": "Unix"
 			}
 		},
@@ -476,38 +504,11 @@
 			}
 		},
 		{
-			"file": "def/lindaikeji.json",
-			"settings":
-			{
-				"buffer_size": 339,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "commit 938221e2dfb3c91e22053bc58bfbd230ae5b8802\nAuthor: Mykel Koded <michael.rhema@gmail.com>\nDate:   Sun Mar 6 17:00:28 2016 +0100\n\n    completed xray impl, switchin to osmosis\n\ndiff --git a/index.js b/index.js\nindex 852a81b..1e7a14e 100755\n--- a/index.js\n+++ b/index.js\n@@ -129,7 +129,7 @@ function initialize () {\n             }\n             for (var i = 0; i < defDocument.length; i++) {\n                 var this_doc = defDocument[i];\n-                if (!this_doc.schema || (!this_doc.schema.title && !this_doc.schema.filename)) {\n+                if (!this_doc.schema && (!this_doc.schema.title || !this_doc.schema.filename)) {\n                     throw new Error('required filename or title not present in schema');\n                 }\n                 runner.create('start job', this_doc).save();\ndiff --git a/ixitbot.sublime.sublime-workspace b/ixitbot.sublime.sublime-workspace\nindex 772cf7a..e4dc46f 100755\n--- a/ixitbot.sublime.sublime-workspace\n+++ b/ixitbot.sublime.sublime-workspace\n@@ -4,6 +4,42 @@\n    \"selected_items\":\n    [\n      [\n+       \"jo\",\n+       \"job\"\n+     ],\n+     [\n+       \"de\",\n+       \"debug\"\n+     ],\n+     [\n+       \"prog\",\n+       \"progressData〔argument〕\"\n+     ],\n+     [\n+       \"file\",\n+       \"fileData\"\n+     ],\n+     [\n+       \"ixi\",\n+       \"ixitFile\"\n+     ],\n+     [\n+       \"new\",\n+       \"new_model\"\n+     ],\n+     [\n+       \"sav\",\n+       \"saved〔argument〕\"\n+     ],\n+     [\n+       \"save\",\n+       \"saveFileMeta〔function〕\"\n+     ],\n+     [\n+       \"count\",\n+       \"counter_debug〔variable〕\"\n+     ],\n+     [\n        \"this\",\n        \"this_doc〔variable〕\"\n      ],\n@@ -224,10 +260,6 @@\n        \"updateJobCount\"\n      ],\n      [\n-       \"new\",\n-       \"new_model〔variable〕\"\n-     ],\n-     [\n        \"up\",\n        \"updateJobCount\"\n      ],\n@@ -260,10 +292,6 @@\n        \"definitions\"\n      ],\n      [\n-       \"jo\",\n-       \"job_record\"\n-     ],\n-     [\n        \"for\",\n        \"for  for (…) {…}\"\n      ],\n@@ -344,10 +372,6 @@\n        \"statusLog\"\n      ],\n      [\n-       \"de\",\n-       \"describe\"\n-     ],\n-     [\n        \"desc\",\n        \"describe〔variable〕\"\n      ],\n@@ -412,6 +436,14 @@\n  \"buffers\":\n  [\n    {\n+     \"file\": \"def/lindaikeji.json\",\n+     \"settings\":\n+     {\n+       \"buffer_size\": 339,\n+       \"line_ending\": \"Unix\"\n+     }\n+   },\n+   {\n      \"file\": \"index.js\",\n      \"settings\":\n      {\n@@ -420,26 +452,50 @@\n      }\n    },\n    {\n-     \"file\": \"libs/runner.js\",\n+     \"file\": \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/models/vault.js\",\n      \"settings\":\n      {\n-       \"buffer_size\": 3241,\n+       \"buffer_size\": 17211,\n        \"line_ending\": \"Unix\"\n      }\n    },\n    {\n-     \"file\": \"def/lindaikeji.json\",\n+     \"file\": \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/controllers/v4ult.js\",\n      \"settings\":\n      {\n-       \"buffer_size\": 339,\n+       \"buffer_size\": 2636,\n+       \"line_ending\": \"Windows\"\n+     }\n+   },\n+   {\n+     \"file\": \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/models/media/media.js\",\n+     \"settings\":\n+     {\n+       \"buffer_size\": 4440,\n+       \"line_ending\": \"Windows\"\n+     }\n+   },\n+   {\n+     \"file\": \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/lib/file-manager.js\",\n+     \"settings\":\n+     {\n+       \"buffer_size\": 7815,\n+       \"line_ending\": \"Unix\"\n+     }\n+   },\n+   {\n+     \"file\": \"libs/runner.js\",\n+     \"settings\":\n+     {\n+       \"buffer_size\": 3464,\n        \"line_ending\": \"Unix\"\n      }\n    },\n    {\n-     \"file\": \"todo\",\n+     \"file\": \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/lib/db.js\",\n      \"settings\":\n      {\n-       \"buffer_size\": 397,\n+       \"buffer_size\": 2236,\n        \"line_ending\": \"Windows\"\n      }\n    },\n@@ -447,7 +503,15 @@\n      \"file\": \"libs/model.js\",\n      \"settings\":\n      {\n-       \"buffer_size\": 5907,\n+       \"buffer_size\": 6409,\n+       \"line_ending\": \"Unix\"\n+     }\n+   },\n+   {\n+     \"file\": \"libs/schema/index.js\",\n+     \"settings\":\n+     {\n+       \"buffer_size\": 1939,\n        \"line_ending\": \"Unix\"\n      }\n    }\n@@ -516,12 +580,17 @@\n  },\n  \"expanded_folders\":\n  [\n-   \"/home/k1ngk0d3d/Projects/ixitbot\",\n-   \"/home/k1ngk0d3d/Projects/ixitbot/libs\",\n-   \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public\"\n+   \"/home/k1ngk0d3d/Projects/ixitbot\"\n  ],\n  \"file_history\":\n  [\n+   \"/home/k1ngk0d3d/Projects/ixitbot/libs/utils.js\",\n+   \"/home/k1ngk0d3d/Projects/ixitbot/package.json\",\n+   \"/home/k1ngk0d3d/Projects/ixitbot/index.js\",\n+   \"/home/k1ngk0d3d/Projects/ixitbot/libs/runner.js\",\n+   \"/home/k1ngk0d3d/Projects/ixitbot/tests/osmosis.spec.js\",\n+   \"/home/k1ngk0d3d/Projects/ixitbot/todo\",\n+   \"/home/k1ngk0d3d/Projects/ixitbot/libs/model.js\",\n    \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/lib/file-manager.js\",\n    \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/models/vault.js\",\n    \"/home/k1ngk0d3d/Projects/ixitbot/def/lindaikeji.___\",\n@@ -642,18 +711,11 @@\n    \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/views/locations/places.jade\",\n    \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-node/controllers/routes.js\",\n    \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-node/models/user/user.js\",\n-   \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/controllers/resources/locations.js\",\n-   \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/views/includes/sidebar.jade\",\n-   \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/server.js\",\n-   \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/controllers/routes/site.js\",\n-   \"/home/k1ngk0d3d/Projects/ixitbot/libs/share.js\",\n-   \"/home/k1ngk0d3d/Projects/ixitbot/libs/model.js\",\n-   \"/home/k1ngk0d3d/Projects/ixitbot/package.json\",\n-   \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/controllers/download.js\"\n+   \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/eigenvalue/tagchief-mon/controllers/resources/locations.js\"\n  ],\n  \"find\":\n  {\n-   \"height\": 25.0\n+   \"height\": 35.0\n  },\n  \"find_in_files\":\n  {\n@@ -668,6 +730,12 @@\n    \"case_sensitive\": false,\n    \"find_history\":\n    [\n+     \");\\n\",\n+     \"job_data\",\n+     \"type\",\n+     \"Fm\",\n+     \"';\\n\",\n+     \"anon\",\n      \"entry\",\n      \"_owner\",\n      \"_sum\",\n@@ -789,13 +857,7 @@\n      \"                    span.fa-stack.fa-sm\\n\",\n      \"fa-stack-2x\",\n      \"i.\",\n-     \"answers[0].\",\n-     \"Things\",\n-     \"quest\",\n-     \"indexOfNextQ\",\n-     \"promptAfter\",\n-     \"schedule\",\n-     \"feedback\"\n+     \"answers[0].\"\n    ],\n    \"highlight\": true,\n    \"in_selection\": false,\n@@ -822,107 +884,103 @@\n  \"groups\":\n  [\n    {\n-     \"selected\": 1,\n+     \"selected\": 6,\n      \"sheets\":\n      [\n        {\n          \"buffer\": 0,\n-         \"file\": \"index.js\",\n+         \"file\": \"def/lindaikeji.json\",\n          \"semi_transient\": false,\n          \"settings\":\n          {\n-           \"buffer_size\": 5457,\n+           \"buffer_size\": 339,\n            \"regions\":\n            {\n            },\n            \"selection\":\n            [\n              [\n-               3889,\n-               3889\n+               232,\n+               232\n              ]\n            ],\n            \"settings\":\n            {\n              \"WordCountShouldRun\": false,\n-             \"WordCountSyntax\": \"javascript\",\n-             \"auto_complete\": false,\n+             \"WordCountSyntax\": \"json\",\n+             \"auto_complete\": true,\n              \"incomplete_sync\": null,\n              \"remote_loading\": false,\n              \"synced\": false,\n-             \"syntax\": \"Packages/JavaScript/JavaScript.tmLanguage\",\n-             \"tab_size\": 4,\n+             \"syntax\": \"Packages/JavaScript/JSON.tmLanguage\",\n+             \"tab_size\": 2,\n              \"translate_tabs_to_spaces\": true\n            },\n            \"translation.x\": 0.0,\n-           \"translation.y\": 1989.0,\n+           \"translation.y\": 0.0,\n            \"zoom_level\": 1.0\n          },\n-         \"stack_index\": 1,\n+         \"stack_index\": 9,\n          \"type\": \"text\"\n        },\n        {\n          \"buffer\": 1,\n-         \"file\": \"libs/runner.js\",\n+         \"file\": \"index.js\",\n          \"semi_transient\": false,\n          \"settings\":\n          {\n-           \"buffer_size\": 3241,\n+           \"buffer_size\": 5457,\n            \"regions\":\n            {\n            },\n            \"selection\":\n            [\n              [\n-               1280,\n-               1280\n+               2925,\n+               2925\n              ]\n            ],\n            \"settings\":\n            {\n-             \"WordCountShouldRun\": false,\n-             \"WordCountSyntax\": \"javascript\",\n              \"auto_complete\": false,\n              \"incomplete_sync\": null,\n              \"remote_loading\": false,\n              \"synced\": false,\n-             \"syntax\": \"Packages/JavaScript/JavaScript.tmLanguage\",\n-             \"tab_size\": 2,\n+             \"syntax\": \"Packages/JavaScript/JavaScript.sublime-syntax\",\n+             \"tab_size\": 4,\n              \"translate_tabs_to_spaces\": true\n            },\n            \"translation.x\": 0.0,\n-           \"translation.y\": 1395.0,\n+           \"translation.y\": 1530.0,\n            \"zoom_level\": 1.0\n          },\n-         \"stack_index\": 0,\n+         \"stack_index\": 8,\n          \"type\": \"text\"\n        },\n        {\n          \"buffer\": 2,\n-         \"file\": \"def/lindaikeji.json\",\n+         \"file\": \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/models/vault.js\",\n          \"semi_transient\": false,\n          \"settings\":\n          {\n-           \"buffer_size\": 339,\n+           \"buffer_size\": 17211,\n            \"regions\":\n            {\n            },\n            \"selection\":\n            [\n              [\n-               275,\n-               275\n+               544,\n+               544\n              ]\n            ],\n            \"settings\":\n            {\n-             \"WordCountShouldRun\": false,\n-             \"WordCountSyntax\": \"json\",\n-             \"auto_complete\": true,\n+             \"auto_complete\": false,\n              \"incomplete_sync\": null,\n              \"remote_loading\": false,\n              \"synced\": false,\n-             \"syntax\": \"Packages/JavaScript/JSON.tmLanguage\",\n+             \"syntax\": \"Packages/JavaScript/JavaScript.sublime-syntax\",\n              \"tab_size\": 2,\n              \"translate_tabs_to_spaces\": true\n            },\n@@ -930,73 +988,237 @@\n            \"translation.y\": 0.0,\n            \"zoom_level\": 1.0\n          },\n-         \"stack_index\": 2,\n+         \"stack_index\": 6,\n          \"type\": \"text\"\n        },\n        {\n          \"buffer\": 3,\n-         \"file\": \"todo\",\n+         \"file\": \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/controllers/v4ult.js\",\n          \"semi_transient\": false,\n          \"settings\":\n          {\n-           \"buffer_size\": 397,\n+           \"buffer_size\": 2636,\n            \"regions\":\n            {\n            },\n            \"selection\":\n            [\n              [\n-               84,\n-               84\n+               322,\n+               322\n              ]\n            ],\n            \"settings\":\n            {\n-             \"WordCountShouldRun\": true,\n-             \"WordCountSyntax\": \"plaintasks\",\n              \"incomplete_sync\": null,\n              \"remote_loading\": false,\n              \"synced\": false,\n-             \"syntax\": \"Packages/PlainTasks/PlainTasks.tmLanguage\"\n+             \"syntax\": \"Packages/JavaScript/JavaScript.sublime-syntax\",\n+             \"tab_size\": 2,\n+             \"translate_tabs_to_spaces\": true\n            },\n            \"translation.x\": 0.0,\n-           \"translation.y\": 0.0,\n+           \"translation.y\": 90.0,\n            \"zoom_level\": 1.0\n          },\n-         \"stack_index\": 4,\n+         \"stack_index\": 5,\n          \"type\": \"text\"\n        },\n        {\n          \"buffer\": 4,\n+         \"file\": \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/models/media/media.js\",\n+         \"semi_transient\": false,\n+         \"settings\":\n+         {\n+           \"buffer_size\": 4440,\n+           \"regions\":\n+           {\n+           },\n+           \"selection\":\n+           [\n+             [\n+               808,\n+               808\n+             ]\n+           ],\n+           \"settings\":\n+           {\n+             \"auto_complete\": false,\n+             \"incomplete_sync\": null,\n+             \"remote_loading\": false,\n+             \"synced\": false,\n+             \"syntax\": \"Packages/JavaScript/JavaScript.sublime-syntax\"\n+           },\n+           \"translation.x\": 0.0,\n+           \"translation.y\": 315.0,\n+           \"zoom_level\": 1.0\n+         },\n+         \"stack_index\": 4,\n+         \"type\": \"text\"\n+       },\n+       {\n+         \"buffer\": 5,\n+         \"file\": \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/lib/file-manager.js\",\n+         \"semi_transient\": false,\n+         \"settings\":\n+         {\n+           \"buffer_size\": 7815,\n+           \"regions\":\n+           {\n+           },\n+           \"selection\":\n+           [\n+             [\n+               1218,\n+               1218\n+             ]\n+           ],\n+           \"settings\":\n+           {\n+             \"incomplete_sync\": null,\n+             \"remote_loading\": false,\n+             \"synced\": false,\n+             \"syntax\": \"Packages/JavaScript/JavaScript.sublime-syntax\",\n+             \"tab_size\": 2,\n+             \"translate_tabs_to_spaces\": true\n+           },\n+           \"translation.x\": 0.0,\n+           \"translation.y\": 199.0,\n+           \"zoom_level\": 1.0\n+         },\n+         \"stack_index\": 7,\n+         \"type\": \"text\"\n+       },\n+       {\n+         \"buffer\": 6,\n+         \"file\": \"libs/runner.js\",\n+         \"semi_transient\": false,\n+         \"settings\":\n+         {\n+           \"buffer_size\": 3464,\n+           \"regions\":\n+           {\n+           },\n+           \"selection\":\n+           [\n+             [\n+               3015,\n+               3015\n+             ]\n+           ],\n+           \"settings\":\n+           {\n+             \"auto_complete\": false,\n+             \"incomplete_sync\": null,\n+             \"remote_loading\": false,\n+             \"synced\": false,\n+             \"syntax\": \"Packages/JavaScript/JavaScript.sublime-syntax\",\n+             \"tab_size\": 2,\n+             \"translate_tabs_to_spaces\": true\n+           },\n+           \"translation.x\": 0.0,\n+           \"translation.y\": 1204.0,\n+           \"zoom_level\": 1.0\n+         },\n+         \"stack_index\": 0,\n+         \"type\": \"text\"\n+       },\n+       {\n+         \"buffer\": 7,\n+         \"file\": \"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/lib/db.js\",\n+         \"semi_transient\": false,\n+         \"settings\":\n+         {\n+           \"buffer_size\": 2236,\n+           \"regions\":\n+           {\n+           },\n+           \"selection\":\n+           [\n+             [\n+               316,\n+               316\n+             ]\n+           ],\n+           \"settings\":\n+           {\n+             \"incomplete_sync\": null,\n+             \"remote_loading\": false,\n+             \"synced\": false,\n+             \"syntax\": \"Packages/JavaScript/JavaScript.sublime-syntax\",\n+             \"tab_size\": 4,\n+             \"translate_tabs_to_spaces\": true\n+           },\n+           \"translation.x\": -0.0,\n+           \"translation.y\": 135.0,\n+           \"zoom_level\": 1.0\n+         },\n+         \"stack_index\": 2,\n+         \"type\": \"text\"\n+       },\n+       {\n+         \"buffer\": 8,\n          \"file\": \"libs/model.js\",\n          \"semi_transient\": false,\n          \"settings\":\n          {\n-           \"buffer_size\": 5907,\n+           \"buffer_size\": 6409,\n            \"regions\":\n            {\n            },\n            \"selection\":\n            [\n              [\n-               933,\n-               933\n+               2189,\n+               2189\n              ]\n            ],\n            \"settings\":\n            {\n-             \"WordCountShouldRun\": false,\n-             \"WordCountSyntax\": \"javascript\",\n              \"auto_complete\": false,\n              \"incomplete_sync\": null,\n              \"remote_loading\": false,\n              \"synced\": false,\n-             \"syntax\": \"Packages/JavaScript/JavaScript.tmLanguage\",\n+             \"syntax\": \"Packages/JavaScript/JavaScript.sublime-syntax\",\n              \"tab_size\": 2,\n              \"translate_tabs_to_spaces\": true\n            },\n            \"translation.x\": 0.0,\n-           \"translation.y\": 867.0,\n+           \"translation.y\": 952.0,\n+           \"zoom_level\": 1.0\n+         },\n+         \"stack_index\": 1,\n+         \"type\": \"text\"\n+       },\n+       {\n+         \"buffer\": 9,\n+         \"file\": \"libs/schema/index.js\",\n+         \"semi_transient\": false,\n+         \"settings\":\n+         {\n+           \"buffer_size\": 1939,\n+           \"regions\":\n+           {\n+           },\n+           \"selection\":\n+           [\n+             [\n+               1456,\n+               1456\n+             ]\n+           ],\n+           \"settings\":\n+           {\n+             \"auto_complete\": false,\n+             \"incomplete_sync\": null,\n+             \"remote_loading\": false,\n+             \"synced\": false,\n+             \"syntax\": \"Packages/JavaScript/JavaScript.sublime-syntax\",\n+             \"tab_size\": 2,\n+             \"translate_tabs_to_spaces\": true\n+           },\n+           \"translation.x\": 0.0,\n+           \"translation.y\": 405.0,\n            \"zoom_level\": 1.0\n          },\n          \"stack_index\": 3,\n@@ -1062,6 +1284,14 @@\n    \"selected_items\":\n    [\n      [\n+       \"runner\",\n+       \"ixitbot/libs/runner.js\"\n+     ],\n+     [\n+       \"model/va\",\n+       \"public/models/vault.js\"\n+     ],\n+     [\n        \"todo\",\n        \"ixitbot/todo\"\n      ],\ndiff --git a/libs/model.js b/libs/model.js\nindex 362fbb2..a1b70bc 100755\n--- a/libs/model.js\n+++ b/libs/model.js\n@@ -248,8 +248,26 @@ MainClass.prototype.listJobProgress = function listJobProgress (options) {\n   return q.promise;\n };\n \n+MainClass.prototype.saveFileMeta = function saveFileMeta(fileData, jobData) {\n+  var q = Q.defer();\n+\n+  var newFile = new Schema.File();\n+  newFile.identifier =  fileData.identifier;\n+  newFile.mediaNumber = fileData.mediaNumber;\n+  newFile.jobId =   jobData._id;\n+  newFile.title =  jobData.title || jobData.filename;\n+  newFile.targetSrc =  jobData.targetSrc;\n+  newFile.save(function (err, saved) {\n+    if (err) {\n+      return q.reject(err);\n+    }\n+    return q.resolve(saved);\n+  });\n+  return q.promise;\n+};\n+\n MainClass.prototype.toString = function toString () {\n-  return \"MainClass\";\n+  return 'MainClass';\n };\n \n \ndiff --git a/libs/runner.js b/libs/runner.js\nindex 02d84b0..b7e9011 100755\n--- a/libs/runner.js\n+++ b/libs/runner.js\n@@ -3,8 +3,9 @@ var\n     queue = kue.createQueue(),\n     request = require('request'),\n     Models = require('./model'),\n-    utils = require('./utils'),\n-    debug = require('debug')('ixitbot:runner'),\n+    _ = require('lodash'),\n+    debug = require('debug')('xixitbot:runner'),\n+    counter_debug = require('debug')('xixitbot:counter'),\n     JSONStream = require('JSONStream'),\n     es = require('event-stream'),\n     xray = require('x-ray');\n@@ -16,7 +17,6 @@ function startXRay (job) {\n   var x = xray(),\n       count = 0,\n       job_data = job.data;\n-      console.log(job_data.job_record);\n   var resultStream = x(job_data.proceed_from_url,\n       job_data.job_record.scope,\n       job_data.schema)\n@@ -35,12 +35,8 @@ function startXRay (job) {\n       // to the Vault,\n       queue.create('send to vault', data).save();\n       count++;\n-      debug(count);\n-      // utils.debounce(function () {\n-      //    job_data.no_of_records_saved = job_data.no_of_records_saved + count;\n-      //    queue.create('save progress to db', job_data).save();\n-      //    count = 0;\n-      //  },10000);\n+      counter_debug(count);\n+\n   });\n }\n \n@@ -83,8 +79,8 @@ function sendToVault (job, done) {\n   jobData.chunkNumber = 1;\n   jobData.totalChunks = 1;\n   jobData.filename = jobData.filename || md5(jobData.title);\n-  // jobData.owner = jobData.job_record.job_name || 'www-anon';\n-  // debug(job);\n+  jobData.owner = jobData.job_name || 'www-anon';\n+  jobData.folder = jobData.job_name || 'ixitbot';\n   debug(jobData);\n   request({\n     method: 'POST',\n@@ -92,19 +88,43 @@ function sendToVault (job, done) {\n     body: jobData,\n     json: true\n   }, function (err, r, ixitFile) {\n-    debug(ixitFile);\n+    if (!err) {\n+      jobData.no_of_records_saved = jobData.no_of_records_saved || 0 + 1;\n+      // queue.create('save progress to db', [ixitFile, jobData]).save();\n+      var new_model = new Models();\n+      new_model.saveFileMeta(ixitFile, jobData)\n+      .then(function () {\n+        console.log('saved and updated including file meta');\n+        done();\n+      }, function (err) {\n+        console.log(err);\n+        console.log('we got an error');\n+        done(err);\n+      });\n+    }\n     done();\n   });\n }\n \n function updateJobCount (job, done) {\n   var new_model = new Models();\n-  var jobData = job.data;\n-  new_model.findOrUpdateJobProgress(jobData.job_record, {\n+  debug(job.data);\n+  var fileData = job.data[0];\n+  var jobData = job.data[1];\n+  new_model.findOrUpdateJobProgress(jobData, {\n     no_of_records_saved: jobData.no_of_records_saved\n   })\n-  .then(function () {\n-    done();\n+  .then(function (progressData) {\n+    new_model.saveFileMeta(fileData, progressData)\n+    .then(function () {\n+      console.log('saved and updated including file meta');\n+      done();\n+    }, function (err) {\n+      console.log(err);\n+      console.log('we got an error');\n+      done(err);\n+    });\n+\n   });\n }\n \ndiff --git a/libs/schema/index.js b/libs/schema/index.js\nindex cac1577..3a8a839 100755\n--- a/libs/schema/index.js\n+++ b/libs/schema/index.js\n@@ -48,7 +48,17 @@ var JobProgressSchema = new Schema ({\n   proceed_from_url: {type: String}\n });\n \n+var FileMetaSchema = new Schema ({\n+  identifier: {type: String},\n+  mediaNumber: {type: Number},\n+  jobId:  {type: Schema.ObjectId, ref: 'JobProgressSchema'},\n+  title: {type: String},\n+  targetSrc: {type: String},\n+});\n+\n mongoose.model('progress', JobProgressSchema);\n mongoose.model('Definition', JobDefinitionSchema);\n+mongoose.model('file', FileMetaSchema);\n module.exports.JobProgress = mongoose.model('progress');\n-module.exports.JobDefinition = mongoose.model('Definition');\n\\ No newline at end of file\n+module.exports.JobDefinition = mongoose.model('Definition');\n+module.exports.File = mongoose.model('file');\n\\ No newline at end of file\ndiff --git a/package.json b/package.json\nindex f45fbd4..e75323a 100644\n--- a/package.json\n+++ b/package.json\n@@ -17,8 +17,10 @@\n     \"hooks\": \"^0.3.2\",\n     \"kue\": \"^0.10.5\",\n     \"kue-ui\": \"^0.1.0\",\n+    \"lodash\": \"^4.6.1\",\n     \"md5\": \"^2.0.0\",\n     \"mongoose\": \"^4.4.1\",\n+    \"osmosis\": \"^0.1.3\",\n     \"q\": \"^1.4.1\",\n     \"request\": \"^2.69.0\",\n     \"twitter\": \"^1.2.5\",\n",
-			"settings":
-			{
-				"buffer_size": 23328,
-				"line_ending": "Unix",
-				"name": "Git Commit Details",
-				"read_only": true,
-				"scratch": true
-			}
-		},
-		{
 			"file": "todo",
 			"settings":
 			{
-				"buffer_size": 1450,
+				"buffer_size": 1542,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "package.json",
-			"settings":
-			{
-				"buffer_size": 849,
-				"line_ending": "Unix"
 			}
 		}
 	],
@@ -578,13 +579,15 @@
 		"/home/k1ngk0d3d/Projects/ixitbot",
 		"/home/k1ngk0d3d/Projects/ixitbot/def",
 		"/home/k1ngk0d3d/Projects/ixitbot/libs",
+		"/home/k1ngk0d3d/Projects/ixitbot/libs/schema",
 		"/home/k1ngk0d3d/Projects/ixitbot/tests"
 	],
 	"file_history":
 	[
+		"/home/k1ngk0d3d/Projects/ixitbot/def/lindaikeji.json",
+		"/home/k1ngk0d3d/Projects/ixitbot/package.json",
 		"/home/k1ngk0d3d/Projects/ixitbot/Gulpfile.js",
 		"/home/k1ngk0d3d/Projects/ixitbot/tests/osmosis.spec.js",
-		"/home/k1ngk0d3d/Projects/ixitbot/def/lindaikeji.json",
 		"/home/k1ngk0d3d/Projects/ixitbot/index.js",
 		"/home/k1ngk0d3d/Projects/ixitbot/libs/schema/index.js",
 		"/home/k1ngk0d3d/Projects/ixitbot/web.js",
@@ -596,7 +599,6 @@
 		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/lib/file-manager.js",
 		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/lib/db.js",
 		"/home/k1ngk0d3d/Projects/ixitbot/libs/utils.js",
-		"/home/k1ngk0d3d/Projects/ixitbot/package.json",
 		"/home/k1ngk0d3d/Projects/ixitbot/todo",
 		"/home/k1ngk0d3d/Projects/ixitbot/def/lindaikeji.___",
 		"/media/k1ngk0d3d/c7a1b953-7ddf-4ee3-8ff9-8542d7ddc86c/kingkoded/Projects/ixit/dk33p/public/lib/utility.js",
@@ -728,6 +730,13 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"doc",
+			"eue.cre",
+			"queue.create",
+			"_",
+			"job_data",
+			"process",
+			"create",
 			"\"",
 			"client",
 			"Client",
@@ -848,14 +857,7 @@
 			"findO",
 			"//",
 			"process.env.",
-			"stamp_job",
-			"Description",
-			"docx",
-			"console",
-			"d",
-			"Description",
-			"Authority",
-			"authority"
+			"stamp_job"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -883,7 +885,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 7,
 			"sheets":
 			[
 				{
@@ -892,15 +894,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5182,
+						"buffer_size": 4933,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2813,
-								2813
+								1758,
+								1758
 							]
 						],
 						"settings":
@@ -915,27 +917,92 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2325.0,
+						"translation.y": 540.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "index.js",
+					"file": "libs/model.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5604,
+						"buffer_size": 6846,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3897,
-								3897
+								1759,
+								1759
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 585.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "web.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 408,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								352,
+								352
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "index.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5629,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4022,
+								4022
 							]
 						],
 						"settings":
@@ -950,14 +1017,48 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1698.0,
+						"translation.y": 1590.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 4,
+					"file": "libs/schema/index.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1996,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1688,
+								1688
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 495.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
 					"file": "tests/osmosis.spec.js",
 					"semi_transient": false,
 					"settings":
@@ -988,11 +1089,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 6,
 					"file": "tests/models_pec.js",
 					"semi_transient": false,
 					"settings":
@@ -1004,8 +1105,8 @@
 						"selection":
 						[
 							[
-								111,
-								111
+								147,
+								147
 							]
 						],
 						"settings":
@@ -1019,91 +1120,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "def/lindaikeji.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 339,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 90.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 23328,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								315,
-								315
-							]
-						],
-						"settings":
-						{
-							"default_dir": "/home/k1ngk0d3d/Projects/ixitbot",
-							"git_root_dir": "/home/k1ngk0d3d/Projects/ixitbot",
-							"incomplete_sync": null,
-							"syntax": "Packages/Git/syntax/Git Commit View.tmLanguage",
-							"word_wrap": false
-						},
-						"translation.x": -0.0,
-						"translation.y": 10350.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
+					"buffer": 7,
 					"file": "todo",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1450,
+						"buffer_size": 1542,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								605,
-								492
+								796,
+								796
 							]
 						],
 						"settings":
@@ -1114,43 +1151,10 @@
 							"syntax": "Packages/PlainTasks/PlainTasks.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 360.0,
+						"translation.y": 348.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "package.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 849,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -1158,7 +1162,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 25.0
+		"height": 23.0
 	},
 	"input":
 	{
@@ -1203,7 +1207,7 @@
 	"project": "ixitbot.sublime.project",
 	"replace":
 	{
-		"height": 64.0
+		"height": 42.0
 	},
 	"save_all_on_build": true,
 	"select_file":
