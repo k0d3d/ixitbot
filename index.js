@@ -50,6 +50,7 @@
 var mongoose = require('mongoose'),
     // Q = require('q'),
     // defer = Q.defer(),
+    debug = require('debug')('ixitbot:boot'),
     runner = require('./libs/runner'),
     CronJob = require('cron').CronJob,
     fs = require('fs'),
@@ -62,7 +63,7 @@ mongoose.connect(dbURI);
 // CONNECTION EVENTS
 // When successfully connected
 db.on('connected', function() {
-    console.log('database connected');
+    debug('database connected');
         return initialize();
     var job = new CronJob({
     /*
@@ -70,7 +71,7 @@ db.on('connected', function() {
      */
       cronTime: '* * * 1/1 *',
       onTick: function() {
-        console.log('inits');
+        debug('inits');
         initialize();
       },
       start: false,
@@ -82,18 +83,18 @@ db.on('connected', function() {
 
 // If the connection throws an error
 db.on('error', function(err) {
-    console.log('Mongoose default connection error: ' + err);
+    debug('Mongoose default connection error: ' + err);
     // defer.reject(err);
 
 });
 // When the connection is disconnected
 db.on('disconnected', function() {
-    console.log('Mongoose default connection disconnected');
+    debug('Mongoose default connection disconnected');
 });
 // If the Node process ends, close the Mongoose connection
 process.on('SIGINT', function() {
     db.close(function() {
-        console.log('Mongoose default connection disconnected through app termination');
+        debug('Mongoose default connection disconnected through app termination');
         process.exit(0);
     });
 });
@@ -120,17 +121,21 @@ function initialize () {
             //a collection
             var defDocument = [];
             for (var a = 0; a < files.length; a++) {
-                var d = require('./def/' + files[a]);
-                defDocument.push(d);
-                //An agenda job right here, should include a function
-                //that fetches the status of the job to be executed
-                //per iteration and uses that to construct the task to
-                //be carried out when ever that definition is used.
-                //
+                if (files[a].indexOf('.json') > -1) {
+                    var d = require('./def/' + files[a]);
+                    defDocument.push(d);
+                }
+
             }
             for (var i = 0; i < defDocument.length; i++) {
-                runner.create('start job', defDocument[i]).save();
-            };
+                var this_doc = defDocument[i];
+                if (!this_doc.schema && (!this_doc.schema.title || !this_doc.schema.filename)) {
+                    throw new Error('required filename or title not present in schema');
+                }
+                // create dynamic job definitions, then start job
+                runner.defineJobs(this_doc.job_name);
+                runner.queue.create(this_doc.job_name + '-start job', this_doc).removeOnComplete( true ).save();
+            }
         } else {
             handleError('No definitions found, Read it up somewhere. I know I told u how to work this');
         }
@@ -164,7 +169,7 @@ function initialize () {
 //                     //         //send gplus
 //                     //         //send instagram
 //                     //         //keep sending
-//                     //         return console.log('No of records crawled: %d', obj.length);
+//                     //         return debug('No of records crawled: %d', obj.length);
 //                     //         // process.exit();
 //                     //     }
 //                     //     console.log('Nothing to crawl!!! Check config in jobdef.json');

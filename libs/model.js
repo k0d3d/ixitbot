@@ -1,6 +1,13 @@
 var Schema = require('./schema/index'),
+    Base = require('./base.js'),
+    debug = require('debug')('ixitbot:models'),
     Q = require('q');
 
+var redis = require("redis");
+var client = redis.createClient({
+  detect_buffers: true,
+  url: process.env.REDIS_URL
+});
 
 /**
  * standard crud class I guesss.
@@ -8,8 +15,10 @@ var Schema = require('./schema/index'),
  * @param {[type]} starting_url [Definition]
  */
 var MainClass = function MainClass () {
+  Base.call(this);
 };
 
+MainClass.prototype = Object.create(Base.prototype);
 
 MainClass.prototype.constructor = MainClass;
 
@@ -21,21 +30,10 @@ MainClass.prototype.constructor = MainClass;
  */
 MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
     var updateDocument = {};
-    // if (job_name) {
-    //     //show help
-    // }
-    // //read config file
-    // //this could also fetch
-    // //definitions from a database
-    // var job_def_collection = {};
-    // try {
-    //   job_def_collection = require('../def/' + job_name + '.json');
-    // } catch(e) {
-    //   console.log('Error opening file:  job_name .json');
-    //   throw e;
-    // }
+    var q = Q.defer();
 
-    // var card = job_def_collection[job_name];
+
+
 
     if (!card) {
         throw new Error ('Job not found. Check job_name .json');
@@ -47,15 +45,28 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
         no_of_records: 0
     };
 
-    updateDocument['job_record.job_name'] = card.job_name;
-    updateDocument['job_record.scope'] = card.scope;
-    updateDocument['job_record.limit'] = card.limit;
-    updateDocument.current_status = 'active';
-    updateDocument.no_of_records_saved = 0;
-    updateDocument.proceed_from_url = card.starting_url;
-    updateDocument.paginate = card.paginate;
-    updateDocument.schema = card.schema;
-    return updateDocument;
+    client.get(card.job_name + '_last_url', function (err, url) {
+      if (err && err instanceof Error) {
+        throw err;
+      }
+      if (url) {
+         updateDocument.proceed_from_url = url;
+      } else {
+         updateDocument.proceed_from_url = card.starting_url;
+      }
+
+      updateDocument['job_record.job_name'] = card.job_name;
+      updateDocument['job_record.scope'] = card.scope;
+      updateDocument['job_record.limit'] = card.limit;
+      updateDocument.current_status = 'active';
+      updateDocument.no_of_records_saved = 0;
+      updateDocument.paginate = card.paginate;
+      updateDocument.scope = card.scope;
+      updateDocument.schema = card.schema;
+      return q.resolve(updateDocument);
+
+    });
+      return q.promise;
 };
 
 MainClass.prepareUpdatedDocument = function prepareUpdatedDocument (d, schema) {
@@ -94,8 +105,8 @@ MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (
     if (found && changes)  {
       found.status_log.push(changes.statusLog);
       for (var p in changes) {
-        if (doc.hasOwnProperty(p) && p !== 'statusLog') {
-          found[p] = doc[p];
+        if (changes.hasOwnProperty(p) && p !== 'statusLog') {
+          found[p] = changes[p];
         }
       }
       found.save(function (err, updated) {
@@ -258,8 +269,26 @@ MainClass.prototype.listJobProgress = function listJobProgress (options) {
   return q.promise;
 };
 
+MainClass.prototype.saveFileMeta = function saveFileMeta(fileData, jobData) {
+  var q = Q.defer();
+
+  var newFile = new Schema.File();
+  newFile.identifier =  fileData.identifier;
+  newFile.mediaNumber = fileData.mediaNumber;
+  newFile.jobId =   jobData._id;
+  newFile.title =  jobData.title || jobData.filename;
+  newFile.targetSrc =  jobData.targetSrc;
+  newFile.save(function (err, saved) {
+    if (err) {
+      return q.reject(err);
+    }
+    return q.resolve(saved);
+  });
+  return q.promise;
+};
+
 MainClass.prototype.toString = function toString () {
-  return "MainClass";
+  return 'MainClass';
 };
 
 

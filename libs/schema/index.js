@@ -16,7 +16,8 @@ var JobDefinitionSchema = new Schema ({
   //this: $(scope).find(selector).
   scope: {type: String},
   // no of records to process before stopping.
-  limit: {type: Number}
+  limit: {type: Number},
+  bot_schema:{type: Schema.Types.Mixed}
 });
 
 /**
@@ -40,13 +41,26 @@ var JobProgressSchema = new Schema ({
   }],
   no_of_records_saved: {type: Number, default: 0},
   page_so_far: {type: Number},
+  scope: {type: String},
   //this should be the last url
   //processed by the no_of_records
   //saved
-  proceed_from_url: {type: String}
+  proceed_from_url: {type: String},
+  last_crawled_url: {type: String}
+});
+
+var FileMetaSchema = new Schema ({
+  identifier: {type: String},
+  mediaNumber: {type: Number},
+  jobId:  {type: Schema.ObjectId, ref: 'JobProgressSchema'},
+  title: {type: String},
+  targetSrc: {type: String},
+  url: {type: String}
 });
 
 mongoose.model('progress', JobProgressSchema);
 mongoose.model('Definition', JobDefinitionSchema);
+mongoose.model('file', FileMetaSchema);
 module.exports.JobProgress = mongoose.model('progress');
 module.exports.JobDefinition = mongoose.model('Definition');
+module.exports.File = mongoose.model('file');

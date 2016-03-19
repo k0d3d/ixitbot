@@ -1,185 +1,77 @@
 var
     kue = require('kue'),
-    queue = kue.createQueue(),
+    queue = kue.createQueue({
+      redis: process.env.REDIS_URL
+    }),
     request = require('request'),
     Models = require('./model'),
+    _ = require('lodash'),
+    debug = require('debug')('ixitbot:runner'),
+    counter_debug = require('debug')('ixitbot:counter'),
     JSONStream = require('JSONStream'),
-    es = require('event-stream'),
-    Xray = require('x-ray');
+    // es = require('event-stream'),
+    osmosis = require('osmosis'),
+    xray = require('x-ray');
 
-function debounce(func, wait, options) {
-      var args,
-          maxTimeoutId,
-          result,
-          stamp,
-          thisArg,
-          timeoutId,
-          trailingCall,
-          lastCalled = 0,
-          leading = false,
-          maxWait = false,
-          trailing = true;
+var redis = require("redis");
+var client = redis.createClient({
+  detect_buffers: true,
+  url: process.env.REDIS_URL
+});
 
-      if (typeof func != 'function') {
-        throw new TypeError(FUNC_ERROR_TEXT);
-      }
-      wait = toNumber(wait) || 0;
-      if (isObject(options)) {
-        leading = !!options.leading;
-        maxWait = 'maxWait' in options && nativeMax(toNumber(options.maxWait) || 0, wait);
-        trailing = 'trailing' in options ? !!options.trailing : trailing;
-      }
+function startOsmosis (job) {
+  debug('starting crawler');
+  var job_data = job.data;
 
-      function cancel() {
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
-        if (maxTimeoutId) {
-          clearTimeout(maxTimeoutId);
-        }
-        lastCalled = 0;
-        args = maxTimeoutId = thisArg = timeoutId = trailingCall = undefined;
-      }
-
-      function complete(isCalled, id) {
-        if (id) {
-          clearTimeout(id);
-        }
-        maxTimeoutId = timeoutId = trailingCall = undefined;
-        if (isCalled) {
-          lastCalled = now();
-          result = func.apply(thisArg, args);
-          if (!timeoutId && !maxTimeoutId) {
-            args = thisArg = undefined;
-          }
-        }
-      }
-
-      function delayed() {
-        var remaining = wait - (now() - stamp);
-        if (remaining <= 0 || remaining > wait) {
-          complete(trailingCall, maxTimeoutId);
-        } else {
-          timeoutId = setTimeout(delayed, remaining);
-        }
-      }
-
-      function flush() {
-        if ((timeoutId && trailingCall) || (maxTimeoutId && trailing)) {
-          result = func.apply(thisArg, args);
-        }
-        cancel();
-        return result;
-      }
-
-      function maxDelayed() {
-        complete(trailing, timeoutId);
-      }
-
-      function debounced() {
-        args = arguments;
-        stamp = now();
-        thisArg = this;
-        trailingCall = trailing && (timeoutId || !leading);
-
-        if (maxWait === false) {
-          var leadingCall = leading && !timeoutId;
-        } else {
-          if (!maxTimeoutId && !leading) {
-            lastCalled = stamp;
-          }
-          var remaining = maxWait - (stamp - lastCalled),
-              isCalled = remaining <= 0 || remaining > maxWait;
-
-          if (isCalled) {
-            if (maxTimeoutId) {
-              maxTimeoutId = clearTimeout(maxTimeoutId);
-            }
-            lastCalled = stamp;
-            result = func.apply(thisArg, args);
-          }
-          else if (!maxTimeoutId) {
-            maxTimeoutId = setTimeout(maxDelayed, remaining);
-          }
-        }
-        if (isCalled && timeoutId) {
-          timeoutId = clearTimeout(timeoutId);
-        }
-        else if (!timeoutId && wait !== maxWait) {
-          timeoutId = setTimeout(delayed, wait);
-        }
-        if (leadingCall) {
-          isCalled = true;
-          result = func.apply(thisArg, args);
-        }
-        if (isCalled && !timeoutId && !maxTimeoutId) {
-          args = thisArg = undefined;
-        }
-        return result;
-      }
-      debounced.cancel = cancel;
-      debounced.flush = flush;
-      return debounced;
-}
-
-function startXRay (job) {
-  console.log('starting xray');
-  var x = Xray(),
-      count = 0,
-      job_data = job.data;
-  var resultStream = x(job_data.proceed_from_url,
-      job_data.job_record.scope,
-      job_data.schema)
-      .limit(1)
-      .paginate(job.paginate)
-      .write();
-      // (function(err, arr) {
-      //   for (var i = 0; i < arr.length; i++) {
-      //     agenda.now('send to vault', arr[i]);
-      //   }
-      //   done();
-      // });
-
-  resultStream
-  .pipe(JSONStream.parse('*'))
-  .on('data', function (data) {
-      // assuming this is going to fire for
-      // every row in our collection, we need
-      // to update our database with the row
-      // count after we have totally sent them
-      // to the Vault,
-      queue.create('send to vault', data).save();
-      count++;
-      // debounce(function () {
-      //   console.log('being saved');
-        console.log(count);
-      //   job_data.no_of_records_saved = job_data.no_of_records_saved + count;
-      //   queue.create('save progress to db', job_data).save();
-      //   count = 0;
-      // },10000);
-  });
-
-  // .pipe(es.mapSync(function (data) {
-  //     console.log(data);
-  // }));
-  // done();
+      osmosis
+      .get(job_data.proceed_from_url) //starting url
+      .find(job_data.scope)
+      .paginate(job_data.paginate, job_data.limit)
+      .set(job_data.schema[0])
+      .then(function (context, data, next) {
+          data.url = context.doc().request.url;
+          next(context, data);
+      })
+      .data(function(listing) {
+        // assuming this is going to fire for
+        // every row in our collection, we need
+        // to update our database with the row
+        // count after we have totally sent th       em
+        // to the Vault,
+        var nameString = (job_data.job_record) ? job_data.job_record.job_name : job_data.job_name;
+        queue.create(nameString+ '-send to vault', _.extend({}, listing, job_data))
+        .removeOnComplete( true )
+        .save();
+      })
+      .log(console.log)
+      .error(console.log)
+      .debug(console.log);
 }
 
 
 function startjob (job, done) {
   var jobData = job.data;
-  console.log('Running Job on: %s', jobData.job_name);
+  debug('Running Job on: %s', jobData.job_name);
   var doc = Models.prepareInitialDocument(jobData);
-  var save_doc = new Models();
-  save_doc.findOrUpdateJobProgress(doc)
-  .then(function (useThisD) {
-    var preped = Models.prepareUpdatedDocument(useThisD, doc.schema);
-    queue.create('start xray',
-      preped,
-      function () {
-      })
-    .save();
-    done();
+  doc.then(function (p) {
+
+    var save_doc = new Models();
+    //An kue job right here, should include a function
+    //that fetches the status of the job to be executed
+    //per iteration and uses that to construct the task to
+    //be carried out when ever that definition is used.
+    //
+    save_doc.findOrUpdateJobProgress(p)
+    .then(function (useThisD) {
+      var preped = Models.prepareUpdatedDocument(useThisD, p.schema);
+      queue.create(jobData.job_name + '-start osmosis',
+        preped,
+        function () {
+        })
+      .removeOnComplete( true )
+      .save();
+      done();
+    });
   });
 }
 /**
@@ -194,39 +86,83 @@ function startjob (job, done) {
  * @return {[type]}        [description]
  */
 function sendToVault (job, done) {
-
+  var md5 = require('md5');
   var jobData = job.data;
-  // console.log(job);
-  // console.log(jobData);
+  jobData.chunkNumber = 1;
+  jobData.totalChunks = 1;
+  jobData.filename = jobData.filename || md5(jobData.title);
+  jobData.owner = jobData.job_name || 'www-anon';
+  jobData.folder = jobData.job_name || 'ixitbot';
+  // debug(jobData);
   request({
     method: 'POST',
     url: process.env.VAULT_RESOURCE + '/upload/automate',
     body: jobData,
     json: true
   }, function (err, r, ixitFile) {
-    console.log(ixitFile);
+    if (!err) {
+      //increment the current job count in redis
+      var nameString = (jobData.job_record) ? jobData.job_record.job_name : jobData.job_name;
+      client.incr(nameString + '_session_count', function (err, count) {
+        if (err) {
+          console.log(err);
+          return done(err);
+        }
+        if (!count) {
+          count = 1;
+        }
+        //save the current url in redis also.
+        client.set(nameString + '_last_url', jobData.url);
+        var new_model = new Models();
+        new_model.saveFileMeta(ixitFile, jobData)
+        .then(function () {
+          console.log('saved and updated including file meta');
+          done();
+        }, function (err) {
+          console.log(err);
+          console.log('we got an error');
+          done(err);
+        });
+      });
+    }
     done();
   });
 }
 
 function updateJobCount (job, done) {
   var new_model = new Models();
-  var jobData = job.data;
-  new_model.findOrUpdateJobProgress(jobData.job_record, {
+  debug(job.data);
+  var fileData = job.data[0];
+  var jobData = job.data[1];
+  new_model.findOrUpdateJobProgress(jobData, {
     no_of_records_saved: jobData.no_of_records_saved
   })
-  .then(function () {
-    done();
+  .then(function (progressData) {
+    new_model.saveFileMeta(fileData, progressData)
+    .then(function () {
+      console.log('saved and updated including file meta');
+      done();
+    }, function (err) {
+      console.log(err);
+      console.log('we got an error');
+      done(err);
+    });
+
   });
 }
 
+function defineJobs (jobname) {
+  debug('defining jobs');
+  queue.process(jobname + '-start job', startjob);
+  queue.process(jobname + '-start osmosis', startOsmosis);
+  queue.process(jobname + '-send to vault', sendToVault);
+  queue.process(jobname + '-save progress to db', updateJobCount);
+}
 
-queue.process('start job', startjob);
-queue.process('start xray', startXRay);
-queue.process('send to vault', sendToVault);
-queue.process('save progress to db', updateJobCount);
 
 
-module.exports = queue;
+
+module.exports.defineJobs = defineJobs;
+module.exports.queue = queue;
 
 
