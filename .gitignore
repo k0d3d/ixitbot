@@ -6,3 +6,4 @@ expenses
 *.project
 *.sublime
 tests/models_pec.js
+ixitbot.sublime.sublime-workspace
