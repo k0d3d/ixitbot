@@ -278,6 +278,7 @@ MainClass.prototype.saveFileMeta = function saveFileMeta(fileData, jobData) {
   newFile.jobId =   jobData._id;
   newFile.title =  jobData.title || jobData.filename;
   newFile.targetSrc =  jobData.targetSrc;
+  newFile.url =  jobData.url;
   newFile.save(function (err, saved) {
     if (err) {
       return q.reject(err);

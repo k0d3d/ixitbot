@@ -1,4 +1,6 @@
-var mongoose = require('mongoose'),
+var mongoose = require('mongoose');
+var mongoosastic=require("mongoosastic"),
+    url = require('url'),
     Schema = require('mongoose').Schema;
 
 /**
@@ -53,9 +55,23 @@ var FileMetaSchema = new Schema ({
   identifier: {type: String},
   mediaNumber: {type: Number},
   jobId:  {type: Schema.ObjectId, ref: 'JobProgressSchema'},
-  title: {type: String},
+  title: {type: String,  es_indexed:true },
   targetSrc: {type: String},
-  url: {type: String}
+  url: {type: String,  es_indexed:true },
+  props: {type:[Schema.Types.Mixed], es_indexed:true}
+});
+
+
+if (!process.env.ELASTICSEARCH_URL) {
+  throw new Error('missing env var ELASTICSEARCH_URL');
+}
+var ELASTICSEARCH_URL = url.parse(process.env.ELASTICSEARCH_URL);
+FileMetaSchema.plugin(mongoosastic, {
+  host: ELASTICSEARCH_URL.hostname,
+  port: ELASTICSEARCH_URL.port,
+  protocol: ELASTICSEARCH_URL.protocol,
+  auth: ELASTICSEARCH_URL.auth
+
 });
 
 mongoose.model('progress', JobProgressSchema);

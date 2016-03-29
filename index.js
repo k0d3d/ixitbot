@@ -54,7 +54,7 @@ var mongoose = require('mongoose'),
     runner = require('./libs/runner'),
     CronJob = require('cron').CronJob,
     fs = require('fs'),
-    dbURI = 'mongodb://localhost:27017/bot';
+    dbURI = process.env.IXIT_APP_MONGO_DB || process.env.IAMDB;
 
 var db = mongoose.connection;
 // Create the database connection

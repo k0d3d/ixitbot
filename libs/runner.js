@@ -19,7 +19,7 @@ var client = redis.createClient({
   url: process.env.REDIS_URL
 });
 
-function startOsmosis (job) {
+function startOsmosis (job, done) {
   debug('starting crawler');
   var job_data = job.data;
 
@@ -39,6 +39,31 @@ function startOsmosis (job) {
         // count after we have totally sent th       em
         // to the Vault,
         var nameString = (job_data.job_record) ? job_data.job_record.job_name : job_data.job_name;
+
+          //increment the current job count in redis
+          client.incr(nameString + '_session_count', function (err, count) {
+            if (err) {
+              console.log(err);
+              return done(err);
+            }
+            if (!count) {
+              count = 1;
+            }
+            //save the current url in redis also.
+            client.set(nameString + '_last_url', job_data.url);
+            var new_model = new Models();
+            new_model.saveFileMeta({}, job_data)
+            .then(function () {
+              console.log('saved and updated including file meta');
+              done();
+            }, function (err) {
+              console.log(err);
+              console.log('we got an error');
+              done(err);
+            });
+          });
+
+        return done();
         queue.create(nameString+ '-send to vault', _.extend({}, listing, job_data))
         .removeOnComplete( true )
         .save();
