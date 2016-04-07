@@ -62,16 +62,16 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
       updateDocument.no_of_records_saved = 0;
       updateDocument.paginate = card.paginate;
       updateDocument.scope = card.scope;
-      updateDocument.schema = card.schema;
+//       updateDocument.schema = card.schema;
       return q.resolve(updateDocument);
 
     });
       return q.promise;
 };
 
-MainClass.prepareUpdatedDocument = function prepareUpdatedDocument (d, schema) {
+MainClass.prepareUpdatedDocument = function prepareUpdatedDocument (d) {
   d = d.toObject();
-  d.schema = schema;
+  
   delete d._id;
   delete d.__v;
   // console.log(d);

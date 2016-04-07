@@ -52,12 +52,25 @@ var JobProgressSchema = new Schema ({
 });
 
 var FileMetaSchema = new Schema ({
+  // identifier: string that identifies this download
+  // on ixits vault
   identifier: {type: String},
+  // mediaNUmber: Number that identifies.......
   mediaNumber: {type: Number},
+  // jobId: relative _id of the job that created this
   jobId:  {type: Schema.ObjectId, ref: 'JobProgressSchema'},
+  // title: the title for this job/page can be used as a filename
   title: {type: String,  es_indexed:true },
+  // targetSrc: the link that returns an actual download
   targetSrc: {type: String},
+  // url: this has to be the url where the file download
+  // and meta data is found
   url: {type: String,  es_indexed:true },
+  // props: should contain meta information.
+  // because scraped data is inconsistent.
+  // file properties which can be retrieved from
+  // the page like, date uploaded, author, filename
+  // etc. or even the redirect paths
   props: {type:[Schema.Types.Mixed], es_indexed:true}
 });
 

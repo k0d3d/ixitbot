@@ -7,13 +7,12 @@ var
     Models = require('./model'),
     _ = require('lodash'),
     debug = require('debug')('ixitbot:runner'),
-    counter_debug = require('debug')('ixitbot:counter'),
-    JSONStream = require('JSONStream'),
+    // counter_debug = require('debug')('ixitbot:counter'),
+    // JSONStream = require('JSONStream'),
     // es = require('event-stream'),
-    osmosis = require('osmosis'),
-    xray = require('x-ray');
+    osmosis = require('osmosis');
 
-var redis = require("redis");
+var redis = require('redis');
 var client = redis.createClient({
   detect_buffers: true,
   url: process.env.REDIS_URL
@@ -22,62 +21,56 @@ var client = redis.createClient({
 function startOsmosis (job, done) {
   debug('starting crawler');
   var job_data = job.data;
+  job_data.scraper = require('../def/' + job_data.job_record.job_name).scraper;
 
-      osmosis
-      .get(job_data.proceed_from_url) //starting url
-      .find(job_data.scope)
-      .paginate(job_data.paginate, job_data.limit)
-      .set(job_data.schema[0])
-      .then(function (context, data, next) {
-          data.url = context.doc().request.url;
-          next(context, data);
-      })
-      .data(function(listing) {
-        // assuming this is going to fire for
-        // every row in our collection, we need
-        // to update our database with the row
-        // count after we have totally sent th       em
-        // to the Vault,
-        var nameString = (job_data.job_record) ? job_data.job_record.job_name : job_data.job_name;
+  function _data(listing) {
+      // assuming this is going to fire for
+      // every row in our collection, we need
+      // to update our database with the row
+      // count after we have totally sent them
+      // to the Vault,
+      var nameString = (job_data.job_record) ? job_data.job_record.job_name : job_data.job_name;
 
-          //increment the current job count in redis
-          client.incr(nameString + '_session_count', function (err, count) {
-            if (err) {
-              console.log(err);
-              return done(err);
-            }
-            if (!count) {
-              count = 1;
-            }
-            //save the current url in redis also.
-            client.set(nameString + '_last_url', job_data.url);
-            var new_model = new Models();
-            new_model.saveFileMeta({}, job_data)
-            .then(function () {
-              console.log('saved and updated including file meta');
-              done();
-            }, function (err) {
-              console.log(err);
-              console.log('we got an error');
-              done(err);
-            });
+        //increment the current job count in redis
+        client.incr(nameString + '_session_count', function (err, count) {
+          if (err) {
+            console.log(err);
+            return done(err);
+          }
+          if (!count) {
+            count = 1;
+          }
+          //save the current url in redis also.
+          client.set(nameString + '_last_url', job_data.url);
+          var new_model = new Models();
+
+          //save data
+          new_model.saveFileMeta(listing, job_data)
+          .then(function () {
+            console.log('saved and updated including file meta');
+            done();
+          }, function (err) {
+            console.log(err);
+            console.log('we got an error');
+            done(err);
           });
+        });
 
-        return done();
-        queue.create(nameString+ '-send to vault', _.extend({}, listing, job_data))
-        .removeOnComplete( true )
-        .save();
-      })
-      .log(console.log)
-      .error(console.log)
-      .debug(console.log);
+      return done();
+      // queue.create(nameString+ '-send to vault', _.extend({}, listing, job_data))
+      // .removeOnComplete( true )
+      // .save();
+  };
+
+  //start scraper
+  job_data.scraper(osmosis, _data);
 }
 
 
 function startjob (job, done) {
   var jobData = job.data;
-  debug('Running Job on: %s', jobData.job_name);
-  var doc = Models.prepareInitialDocument(jobData);
+  debug('Running Job on: %s', jobData.def.job_name);
+  var doc = Models.prepareInitialDocument(jobData.def);
   doc.then(function (p) {
 
     var save_doc = new Models();
@@ -88,8 +81,8 @@ function startjob (job, done) {
     //
     save_doc.findOrUpdateJobProgress(p)
     .then(function (useThisD) {
-      var preped = Models.prepareUpdatedDocument(useThisD, p.schema);
-      queue.create(jobData.job_name + '-start osmosis',
+      var preped = Models.prepareUpdatedDocument(useThisD);
+      queue.create(jobData.def.job_name + '-start osmosis',
         preped,
         function () {
         })

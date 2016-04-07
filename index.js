@@ -1,3 +1,4 @@
+require('newrelic');
 /**
  * BOOTUP
  * *INDEXING*
@@ -56,6 +57,48 @@ var mongoose = require('mongoose'),
     fs = require('fs'),
     dbURI = process.env.IXIT_APP_MONGO_DB || process.env.IAMDB;
 
+
+function handleError (er) {
+    if (er instanceof Error) {
+        throw er;
+    } else {
+        throw new Error('' + er);
+    }
+}
+
+function initialize () {
+    // Lets read in the definitions directory
+    fs.readdir('./def', function (err, files) {
+        if (err) {
+            handleError(err);
+        }
+        if (files.length) {
+            //first we have to process each json into
+            //a collection
+            var defDocument = [];
+            for (var a = 0; a < files.length; a++) {
+                if (files[a].indexOf('.js') > -1) {
+                    var d = require('./def/' + files[a]);
+                    d.defUri =  './def/' + files[a];
+                    defDocument.push(d);
+                }
+
+            }
+            for (var i = 0; i < defDocument.length; i++) {
+                var this_doc = defDocument[i];
+                if (!this_doc.def && !this_doc.def.job_name) {
+                    throw new Error('required filename or title not present in schema');
+                }
+                // create dynamic job definitions, then start job
+                runner.defineJobs(this_doc.def.job_name);
+                runner.queue.create(this_doc.def.job_name + '-start job', this_doc).removeOnComplete( true ).save();
+            }
+        } else {
+            handleError('No definitions found, Read it up somewhere. I know I told u how to work this');
+        }
+    });
+}
+
 var db = mongoose.connection;
 // Create the database connection
 mongoose.connect(dbURI);
@@ -100,47 +143,10 @@ process.on('SIGINT', function() {
 });
 
 
-function handleError (er) {
-    if (er instanceof Error) {
-        throw er;
-    } else {
-        throw new Error('' + er);
-    }
-}
 
 
 
-function initialize () {
-    // Lets read in the definitions directory
-    fs.readdir('./def', function (err, files) {
-        if (err) {
-            handleError(err);
-        }
-        if (files.length) {
-            //first we have to process each json into
-            //a collection
-            var defDocument = [];
-            for (var a = 0; a < files.length; a++) {
-                if (files[a].indexOf('.json') > -1) {
-                    var d = require('./def/' + files[a]);
-                    defDocument.push(d);
-                }
 
-            }
-            for (var i = 0; i < defDocument.length; i++) {
-                var this_doc = defDocument[i];
-                if (!this_doc.schema && (!this_doc.schema.title || !this_doc.schema.filename)) {
-                    throw new Error('required filename or title not present in schema');
-                }
-                // create dynamic job definitions, then start job
-                runner.defineJobs(this_doc.job_name);
-                runner.queue.create(this_doc.job_name + '-start job', this_doc).removeOnComplete( true ).save();
-            }
-        } else {
-            handleError('No definitions found, Read it up somewhere. I know I told u how to work this');
-        }
-    });
-}
 
 
 
