@@ -71,7 +71,7 @@ var FileMetaSchema = new Schema ({
   // file properties which can be retrieved from
   // the page like, date uploaded, author, filename
   // etc. or even the redirect paths
-  props: {type:[Schema.Types.Mixed], es_indexed:true}
+  props: {type: Schema.Types.Mixed, es_indexed:true}
 });
 
 

@@ -1,3 +1,8 @@
+var redis = require('redis');
+var client = redis.createClient({
+  detect_buffers: true,
+  url: process.env.REDIS_URL
+});
 var
     kue = require('kue'),
     queue = kue.createQueue({
@@ -12,11 +17,6 @@ var
     // es = require('event-stream'),
     osmosis = require('osmosis');
 
-var redis = require('redis');
-var client = redis.createClient({
-  detect_buffers: true,
-  url: process.env.REDIS_URL
-});
 
 function startOsmosis (job, done) {
   debug('starting crawler');
@@ -41,13 +41,15 @@ function startOsmosis (job, done) {
             count = 1;
           }
           //save the current url in redis also.
-          client.set(nameString + '_last_url', job_data.url);
+          var saveUrl = job_data.proceed_from_url || job_data.proceed_from_url;
+          client.set(nameString + '_last_url', saveUrl);
           var new_model = new Models();
 
           //save data
           new_model.saveFileMeta(listing, job_data)
-          .then(function () {
-            console.log('saved and updated including file meta');
+          .then(function (saved) {
+            debug('saved and updated including file meta');
+            debug(saved);
             done();
           }, function (err) {
             console.log(err);
@@ -63,7 +65,7 @@ function startOsmosis (job, done) {
   };
 
   //start scraper
-  job_data.scraper(osmosis, _data);
+  job_data.scraper(osmosis, _data, job_data);
 }
 
 
@@ -79,7 +81,10 @@ function startjob (job, done) {
     //per iteration and uses that to construct the task to
     //be carried out when ever that definition is used.
     //
-    save_doc.findOrUpdateJobProgress(p)
+    save_doc.findOrUpdateJobProgress(p, {
+      no_of_records_saved: p.no_of_records_saved,
+      proceed_from_url: p.proceed_from_url
+    })
     .then(function (useThisD) {
       var preped = Models.prepareUpdatedDocument(useThisD);
       queue.create(jobData.def.job_name + '-start osmosis',
@@ -129,8 +134,9 @@ function sendToVault (job, done) {
         if (!count) {
           count = 1;
         }
-        //save the current url in redis also.
-        client.set(nameString + '_last_url', jobData.url);
+          var saveUrl = job_data.proceed_from_url || job_data.url || job_data.starting_url
+
+          client.set(nameString + '_last_url', saveUrl);
         var new_model = new Models();
         new_model.saveFileMeta(ixitFile, jobData)
         .then(function () {

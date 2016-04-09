@@ -5,5 +5,6 @@ node_modules/
 expenses
 *.project
 *.sublime
+newrelic_agent.log
 tests/models_pec.js
 ixitbot.sublime.sublime-workspace

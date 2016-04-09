@@ -1,13 +1,13 @@
-var Schema = require('./schema/index'),
-    Base = require('./base.js'),
-    debug = require('debug')('ixitbot:models'),
-    Q = require('q');
-
 var redis = require("redis");
 var client = redis.createClient({
   detect_buffers: true,
   url: process.env.REDIS_URL
 });
+var Schema = require('./schema/index'),
+    Base = require('./base.js'),
+    debug = require('debug')('ixitbot:models'),
+    Q = require('q');
+
 
 /**
  * standard crud class I guesss.
@@ -44,8 +44,9 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
         status: 'active',
         no_of_records: 0
     };
-
+    debug('card is like', card);
     client.get(card.job_name + '_last_url', function (err, url) {
+      debug(url);
       if (err && err instanceof Error) {
         throw err;
       }
@@ -59,11 +60,16 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
       updateDocument['job_record.scope'] = card.scope;
       updateDocument['job_record.limit'] = card.limit;
       updateDocument.current_status = 'active';
-      updateDocument.no_of_records_saved = 0;
       updateDocument.paginate = card.paginate;
       updateDocument.scope = card.scope;
 //       updateDocument.schema = card.schema;
-      return q.resolve(updateDocument);
+      var nameString = (card.job_record) ? card.job_record.job_name : card.job_name;
+      client.get(nameString + '_session_count', function (err, count) {
+        debug(count);
+        updateDocument.no_of_records_saved = count || 0;
+        return q.resolve(updateDocument);
+
+      })
 
     });
       return q.promise;
@@ -71,7 +77,7 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
 
 MainClass.prepareUpdatedDocument = function prepareUpdatedDocument (d) {
   d = d.toObject();
-  
+
   delete d._id;
   delete d.__v;
   // console.log(d);
@@ -94,7 +100,7 @@ MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (
 
   Schema.JobProgress
   .findOne({
-    'starting_url': doc.starting_url,
+    // 'starting_url': doc.proceed_from_url,
     'job_name': doc.job_name
   })
   .exec(function (err, found) {
@@ -103,6 +109,7 @@ MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (
     }
     //update
     if (found && changes)  {
+      debug('changes found with existing document');
       found.status_log.push(changes.statusLog);
       for (var p in changes) {
         if (changes.hasOwnProperty(p) && p !== 'statusLog') {
@@ -118,11 +125,13 @@ MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (
     }
     // no updates
     if (found && !changes) {
+      debug('document found but nothing to update so returning queried document')
       return q.resolve(found);
     }
     //create a new doc,
     //if not found
     if (!found) {
+      debug('document not found');
       for (var prop in doc) {
         if (doc.hasOwnProperty(prop) && prop !== 'statusLog') {
           updateDoc[prop] = doc[prop];
@@ -134,6 +143,7 @@ MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (
         jp.status_log = [doc.statusLog];
       }
       jp.save(function (err, saved) {
+        debug('document created and saved ')
         if (err) {
           return q.reject(err);
         }
@@ -271,14 +281,15 @@ MainClass.prototype.listJobProgress = function listJobProgress (options) {
 
 MainClass.prototype.saveFileMeta = function saveFileMeta(fileData, jobData) {
   var q = Q.defer();
-
+  debug(fileData)
   var newFile = new Schema.File();
-  newFile.identifier =  fileData.identifier;
-  newFile.mediaNumber = fileData.mediaNumber;
+  // newFile.identifier =  fileData.identifier;
+  // newFile.mediaNumber = fileData.mediaNumber;
   newFile.jobId =   jobData._id;
-  newFile.title =  jobData.title || jobData.filename;
-  newFile.targetSrc =  jobData.targetSrc;
-  newFile.url =  jobData.url;
+  newFile.title =  fileData.title || fileData.filename;
+  newFile.targetSrc =  fileData.targetSrc;
+  newFile.url =  fileData.url;
+  newFile.props =  fileData.props;
   newFile.save(function (err, saved) {
     if (err) {
       return q.reject(err);
