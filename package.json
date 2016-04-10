@@ -1,5 +1,5 @@
 {
-  "name": "ixitbot",
+  "name": "IXIT_AUTOMATION_SPIDER_SERVER",
   "version": "1.0.0",
   "description": "go yee and conquer downloads says the lord",
   "main": "index.js",
@@ -22,7 +22,7 @@
     "mongoose": "^4.4.1",
     "osmosis": "^0.1.3",
     "request": "^2.69.0",
-    "twitter": "^1.2.5",
+    "twitter": "^1.2.5"
   },
   "devDependencies": {
     "rewire": "^2.5.1",
