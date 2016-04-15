@@ -16,6 +16,7 @@ var
     // JSONStream = require('JSONStream'),
     // es = require('event-stream'),
     osmosis = require('osmosis');
+    var errors = require('common-errors');
 
 
 function startOsmosis (job, done) {
@@ -110,20 +111,21 @@ function startjob (job, done) {
  */
 function sendToVault (job, done) {
   var md5 = require('md5');
-  var jobData = job.data;
+  var jobData = (job.job_name)?job :job.data;
   jobData.chunkNumber = 1;
   jobData.totalChunks = 1;
   jobData.filename = jobData.filename || md5(jobData.title);
   jobData.owner = jobData.job_name || 'www-anon';
   jobData.folder = jobData.job_name || 'ixitbot';
-  // debug(jobData);
+  debug(jobData);
   request({
     method: 'POST',
     url: process.env.VAULT_RESOURCE + '/upload/automate',
     body: jobData,
     json: true
   }, function (err, r, ixitFile) {
-    if (!err) {
+    if (!err && r.statusCode <= 210) {
+      console.log('fgv');
       //increment the current job count in redis
       var nameString = (jobData.job_record) ? jobData.job_record.job_name : jobData.job_name;
       client.incr(nameString + '_session_count', function (err, count) {
@@ -134,20 +136,27 @@ function sendToVault (job, done) {
         if (!count) {
           count = 1;
         }
-          var saveUrl = job_data.proceed_from_url || job_data.url || job_data.starting_url
 
-          client.set(nameString + '_last_url', saveUrl);
+        var saveUrl = jobData.proceed_from_url || jobData.proceed_from_url;
+
+        client.set(nameString + '_last_url', saveUrl);
         var new_model = new Models();
         new_model.saveFileMeta(ixitFile, jobData)
         .then(function () {
           console.log('saved and updated including file meta');
-          done();
+          done(ixitFile);
         }, function (err) {
           console.log(err);
           console.log('we got an error');
-          done(err);
+           done(new errors.ConnectionError('vault resource operation error', err));
         });
       });
+    } else {
+      if (err) {
+        done(new errors.ConnectionError('vault resource connection error', err));
+      } else {
+        done(new errors.ConnectionError('vault resource connection no longer available'));
+      }
     }
     done();
   });
@@ -183,10 +192,68 @@ function defineJobs (jobname) {
   queue.process(jobname + '-save progress to db', updateJobCount);
 }
 
+function onePageCrawl (job, done) {
+  debug('starting onepage crawler');
+  var job_data = job;
+  var scraper = require('../def/' + job_data.job_name).onePage;
+  function _data(listing) {
+      // assuming this is going to fire for
+      // every row in our collection, we need
+      // to update our database with the row
+      // count after we have totally sent them
+      // to the Vault,
+      return done(listing);
+      var nameString = (job_data.job_record) ? job_data.job_record.job_name : job_data.job_name;
+
+        //increment the current job count in redis
+        client.incr(nameString + '_session_count', function (err, count) {
+          if (err) {
+            console.log(err);
+            return done(err);
+          }
+          if (!count) {
+            count = 1;
+          }
+            done(saved);
+          //save the current url in redis also.
+          var new_model = new Models();
+
+          //save data
+          new_model.saveFileMeta(listing, job_data)
+          .then(function (saved) {
+            debug('saved and updated including file meta');
+            debug(saved);
+          }, function (err) {
+            console.log(err);
+            console.log('we got an error');
+            done(err);
+          });
+        });
+
+      return done();
+
+  };
+
+  //start scraper
+  scraper(osmosis, _data, job_data);
+}
+
+function tweetAsPost (post) {
+  var tweet = new require('./share')(post.title, post.body);
+  tweet.tweet();
+
+};
 
 
 
-module.exports.defineJobs = defineJobs;
-module.exports.queue = queue;
+
+
+module.exports = {
+  queue: queue,
+  tweetAsPost: tweetAsPost,
+  sendToVault : sendToVault,
+  defineJobs : defineJobs,
+  onePageCrawl : onePageCrawl
+}
 
 

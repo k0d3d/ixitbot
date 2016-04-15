@@ -2,7 +2,8 @@ var Twitter = require('twitter');
 var FB = require('fb');
 
 function SocialClass (title, body, attach) {
-
+  this.title = title;
+  this.body = body;
 }
 
 SocialClass.prototype.constructor = SocialClass;
@@ -14,6 +15,8 @@ SocialClass.prototype.tweet = function tweet (params) {
     access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
     access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
   });
+
+  params = params || {};
 
   client.post('statuses/update', params, function (error, tweet, response) {
     console.log(response.body);

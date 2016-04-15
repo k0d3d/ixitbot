@@ -107,7 +107,8 @@ mongoose.connect(dbURI);
 // When successfully connected
 db.on('connected', function() {
     debug('database connected');
-        return initialize();
+        // return initialize();
+        return;
     var job = new CronJob({
     /*
      * Runs every minute of every day.
@@ -142,6 +143,7 @@ process.on('SIGINT', function() {
     });
 });
 
+module.exports.db = db;
 
 
 
@@ -155,35 +157,3 @@ process.on('SIGINT', function() {
 
 
 
-
-// function initialize () {
-//                // (function (err, obj) {
-//                     //     if (err) {
-//                     //         throw err;
-//                     //     }
-//                     //     if (obj.length) {
-//                     //         //for each object, schedule
-//                     //         //a task on agenda to be carried out
-//                     //         //
-//                     //         //upload thumbnail then
-//                     //         //send tweets and
-//                     //         var tweet = new Social().tweet;
-//                     //         tweet({
-//                     //             status: obj[0].title
-//                     //         });
-//                     //         //send facebook and
-//                     //         //send gplus
-//                     //         //send instagram
-//                     //         //keep sending
-//                     //         return debug('No of records crawled: %d', obj.length);
-//                     //         // process.exit();
-//                     //     }
-//                     //     console.log('Nothing to crawl!!! Check config in jobdef.json');
-//                     // });
-//                 } else {
-//                     throw new Error('No document returned. Possible internal error. idk, ehm!, Try something else.');
-//                 }
-// }
-
-
-// module.exports = defer.promise;

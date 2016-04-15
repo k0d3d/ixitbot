@@ -281,10 +281,9 @@ MainClass.prototype.listJobProgress = function listJobProgress (options) {
 
 MainClass.prototype.saveFileMeta = function saveFileMeta(fileData, jobData) {
   var q = Q.defer();
-  debug(fileData)
   var newFile = new Schema.File();
-  // newFile.identifier =  fileData.identifier;
-  // newFile.mediaNumber = fileData.mediaNumber;
+  newFile.identifier =  fileData.identifier;
+  newFile.mediaNumber = fileData.mediaNumber;
   newFile.jobId =   jobData._id;
   newFile.title =  fileData.title || fileData.filename;
   newFile.targetSrc =  fileData.targetSrc;

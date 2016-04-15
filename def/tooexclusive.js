@@ -26,6 +26,31 @@ var def = {
 
 
 module.exports = {
+  onePage: function (osmosis, cb, jb) {
+              return osmosis
+              .config({
+                'user_agent': 'Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36'
+              })
+              .get(jb.proceed_from_url)
+              .set({
+                'title': '#content h1',
+                'targetSrc': '#content p a@href',
+                // 'props' :
+              })
+              .set('props', {
+                  targetSrcString: '#content p a',
+                  mainImage: '#content p img@src'
+
+                })
+              .then(function (context, data, next) {
+                data.url = context.doc().request.url;
+                next(context, data);
+              })
+              .data(cb)
+              .log(console.log)
+              .error(console.log)
+              .debug(console.log);
+  },
   scraper : function (osmosis, cb, jb) {
               return osmosis
               .config({
