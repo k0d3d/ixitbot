@@ -113,11 +113,10 @@ function sendToVault (job, done) {
   var md5 = require('md5');
   var jobData = (job.job_name)?job :job.data;
   jobData.chunkNumber = 1;
-  jobData.totalChunks = 1;
+  jobData.totalChunks = 2;
   jobData.filename = jobData.filename || md5(jobData.title);
   jobData.owner = jobData.job_name || 'www-anon';
   jobData.folder = jobData.job_name || 'ixitbot';
-  debug(jobData);
   request({
     method: 'POST',
     url: process.env.VAULT_RESOURCE + '/upload/automate',
@@ -125,7 +124,6 @@ function sendToVault (job, done) {
     json: true
   }, function (err, r, ixitFile) {
     if (!err && r.statusCode <= 210) {
-      console.log('fgv');
       //increment the current job count in redis
       var nameString = (jobData.job_record) ? jobData.job_record.job_name : jobData.job_name;
       client.incr(nameString + '_session_count', function (err, count) {
@@ -155,10 +153,10 @@ function sendToVault (job, done) {
       if (err) {
         done(new errors.ConnectionError('vault resource connection error', err));
       } else {
-        done(new errors.ConnectionError('vault resource connection no longer available'));
+        done(new errors.ConnectionError('vault resource operation failure. This is a very strange event. Get bug buster'));
       }
     }
-    done();
+    // done();
   });
 }
 

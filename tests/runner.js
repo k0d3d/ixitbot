@@ -1,11 +1,9 @@
 describe('Runner contains functions which are run with jobs', function() {
   var rewire = require('rewire');
-  var runner = rewire('../libs/runner');
+  var runner = require('../libs/runner');
   var expect = require('chai').expect;
 
-  beforeEach(function () {
 
-  })
   it('should send an item to the ISAS', function (done) {
     var j = {
       targetPageUrl: 'http://tooxclusive.com/audio/emmcee-rnb-blessings-ft-jake-chowman-kaptain-oteaz/',
@@ -21,9 +19,14 @@ describe('Runner contains functions which are run with jobs', function() {
     proceed_from_url: 'http://tooxclusive.com/main/audio/'
     };
     runner.sendToVault(j, function (ixitFile) {
-      expect(ixitFile).to.be.ok;
-      expect(ixitFile.name).to.be.defined;
+      if (typeof ixitFile === 'string') {
+        ixitFile = JSON.parse(ixitFile);
+      }
+      console.log(ixitFile);
+      expect(false).to.be.true;
+      // expect(ixitFile.mediaNumber).to.be.ok;
+      expect(ixitFile.error).to.be.undefined;
       done();
     });
-  });
+  }, 25000);
 });
