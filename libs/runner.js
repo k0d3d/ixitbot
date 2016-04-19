@@ -16,7 +16,7 @@ var
     // JSONStream = require('JSONStream'),
     // es = require('event-stream'),
     osmosis = require('osmosis');
-    var errors = require('common-errors');
+var errors = require('common-errors');
 
 
 function startOsmosis (job, done) {
@@ -109,7 +109,7 @@ function startjob (job, done) {
  * @param  {Function} done [description]
  * @return {[type]}        [description]
  */
-function sendToVault (job, done) {
+function uploadWhileCrawling (job, done) {
   var md5 = require('md5');
   var jobData = (job.job_name)?job :job.data;
   jobData.chunkNumber = 1;
@@ -134,10 +134,11 @@ function sendToVault (job, done) {
         if (!count) {
           count = 1;
         }
-
         var saveUrl = jobData.proceed_from_url || jobData.proceed_from_url;
+        if (arguments.length > 2) {
+          client.set(nameString + '_last_url', saveUrl);
+        }
 
-        client.set(nameString + '_last_url', saveUrl);
         var new_model = new Models();
         new_model.saveFileMeta(ixitFile, jobData)
         .then(function () {
@@ -149,6 +150,33 @@ function sendToVault (job, done) {
            done(new errors.ConnectionError('vault resource operation error', err));
         });
       });
+    } else {
+      if (err) {
+        done(new errors.ConnectionError('vault resource connection error', err));
+      } else {
+        done(new errors.ConnectionError('vault resource operation failure. This is a very strange event. Get bug buster'));
+      }
+    }
+    // done();
+  });
+}
+
+
+function uploadOneFile (jobData, done) {
+  var md5 = require('md5');
+  jobData.chunkNumber = 1;
+  jobData.totalChunks = 2;
+  jobData.filename = jobData.filename || md5(jobData.title);
+  jobData.owner = jobData.job_name || 'www-anon';
+  jobData.folder = jobData.job_name || 'ixitbot';
+  request({
+    method: 'POST',
+    url: process.env.VAULT_RESOURCE + '/upload/automate',
+    body: jobData,
+    json: true
+  }, function (err, r, ixitFile) {
+    if (!err && r.statusCode <= 210) {
+      done(ixitFile);
     } else {
       if (err) {
         done(new errors.ConnectionError('vault resource connection error', err));
@@ -186,7 +214,7 @@ function defineJobs (jobname) {
   debug('defining jobs');
   queue.process(jobname + '-start job', startjob);
   queue.process(jobname + '-start osmosis', startOsmosis);
-  queue.process(jobname + '-send to vault', sendToVault);
+  queue.process(jobname + '-send to vault', uploadWhileCrawling);
   queue.process(jobname + '-save progress to db', updateJobCount);
 }
 
@@ -201,46 +229,18 @@ function onePageCrawl (job, done) {
       // count after we have totally sent them
       // to the Vault,
       return done(listing);
-      var nameString = (job_data.job_record) ? job_data.job_record.job_name : job_data.job_name;
-
-        //increment the current job count in redis
-        client.incr(nameString + '_session_count', function (err, count) {
-          if (err) {
-            console.log(err);
-            return done(err);
-          }
-          if (!count) {
-            count = 1;
-          }
-            done(saved);
-          //save the current url in redis also.
-          var new_model = new Models();
-
-          //save data
-          new_model.saveFileMeta(listing, job_data)
-          .then(function (saved) {
-            debug('saved and updated including file meta');
-            debug(saved);
-          }, function (err) {
-            console.log(err);
-            console.log('we got an error');
-            done(err);
-          });
-        });
-
-      return done();
-
-  };
+  }
 
   //start scraper
   scraper(osmosis, _data, job_data);
 }
 
 function tweetAsPost (post) {
-  var tweet = new require('./share')(post.title, post.body);
-  tweet.tweet();
+  var Tweet =  require('./share');
+  var tweet = new Tweet(post.title, post.body);
+  tweet.tweet(post);
 
-};
+}
 
 
 
@@ -249,7 +249,8 @@ function tweetAsPost (post) {
 module.exports = {
   queue: queue,
   tweetAsPost: tweetAsPost,
-  sendToVault : sendToVault,
+  uploadWhileCrawling : uploadWhileCrawling,
+  uploadOneFile: uploadOneFile,
   defineJobs : defineJobs,
   onePageCrawl : onePageCrawl
 }

@@ -11,8 +11,11 @@ var q = Q.defer();
 var debug = require('debug')('ixitbot:httpService');
 var server = new Hapi.Server();
 
-if (!process.env.IASS_HTTP_PORT) {
-    throw new errors.ConnectionError('IASS_HTTP_PORT value unavailable');
+if (
+  !process.env.IASS_HTTP_PORT ||
+  !process.env.VAULT_RESOURCE  ||
+  !process.env.API_RESOURCE ) {
+    throw new errors.ConnectionError('env var value unavailable');
 }
 server.connection({
     host: 'localhost',
@@ -44,30 +47,35 @@ server.route({
                 documentDefinition.props[m] = request.payload[m];
             }
         }
-        debug(documentDefinition);
         var _logic = new ModelLogic();
         // _logic.after('saveFileMeta', RunnerMofo.tweetAsPost);
-        // _logic.after
-            RunnerMofo.onePageCrawl(documentDefinition, function (savedItem) {
+        InstigatorLOL.then(function () {
+            console.log('db one crawled_item')
+            RunnerMofo.onePageCrawl(documentDefinition, function (crawled_item) {
                 //saved item
-                _logic.saveFileMeta(savedItem, documentDefinition)
-                //send to vault
-                .then(function () {
-                    RunnerMofo.sendToVault(documentDefinition, function () {
+                debug(crawled_item);
+                RunnerMofo.uploadOneFile(crawled_item, function (ixit_file) {
+                    return _logic.saveFileMeta(ixit_file, crawled_item)
 
+                    //send to vault
+                    //
+                    .then(function () {
+                      //get ixit link and tweet it
+                      var hashr = require('./libs/hash');
+                      RunnerMofo.tweetAsPost({
+                        status: 'Download & Listen ' + crawled_item.title + '-> http://i-x.it/'+ hashr.hashInt(ixit_file.mediaNumber) +' #shareIxitLinks #followUsfastDownloadSpeeds'
+                      });
+                      reply(ixit_file.mediaNumber);
+                    }, function (err) {
+                        throw err;
                     })
-                }, function (err) {
-                    throw err;
-                })
-                .catch(function (e) {
-                    console.log(e);
-                    console.log(e.stack);
+                    .catch(function (e) {
+                        console.log(e);
+                        console.log(e.stack);
+                    });
                 });
-                reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
             });
-        // InstigatorLOL.on('connected', function () {
-        //     // RunnerMofo.queue.start(documentDefinition.job_name + 'peel a blog', documentDefinition);
-        // });
+        });
 
     }
     // config: {

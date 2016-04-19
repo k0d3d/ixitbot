@@ -279,17 +279,17 @@ MainClass.prototype.listJobProgress = function listJobProgress (options) {
   return q.promise;
 };
 
-MainClass.prototype.saveFileMeta = function saveFileMeta(fileData, jobData) {
+MainClass.prototype.saveFileMeta = function saveFileMeta(ixit_file, jobData) {
   var q = Q.defer();
   debug('saveFileMeta')
   var newFile = new Schema.File();
-  newFile.identifier =  fileData.identifier;
-  newFile.mediaNumber = fileData.mediaNumber;
+  newFile.identifier =  ixit_file.identifier;
+  newFile.mediaNumber = ixit_file.mediaNumber;
   newFile.jobId =   jobData._id;
-  newFile.title =  fileData.title || fileData.filename;
-  newFile.targetSrc =  fileData.targetSrc;
-  newFile.url =  fileData.url;
-  newFile.props =  fileData.props;
+  newFile.title =  jobData.title || jobData.filename;
+  newFile.targetSrc =  jobData.targetSrc;
+  newFile.url =  jobData.url;
+  newFile.props =  jobData.props;
   newFile.save(function (err, saved) {
 debug(saved)
     if (err) {

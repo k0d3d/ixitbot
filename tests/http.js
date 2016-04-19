@@ -4,6 +4,15 @@ describe('A Http server to listen to incoming connections', function () {
   var HTTP = rewire('../http'),
     request = require('request');
 
+
+
+  beforeEach(function () {
+    HTTP.__set__('RunnerMofo.onePageCrawl', function onePageCrawl (c, cb) {
+      var ci = require('./crawled_item.json');
+      cb(ci);
+    });
+  });
+
   it ('should properlly listen for connections when the server is connected', function (done) {
 
       HTTP.then(function () {
@@ -17,7 +26,7 @@ describe('A Http server to listen to incoming connections', function () {
 
   }, 10000);
 
-  it('should make a successful request to the new feed item endpoint', function (done) {
+  it('should make a successful request to the new feed item endpoint', function () {
     HTTP.then(function () {
       request.post({
         url: 'http://localhost:' + process.env.IASS_HTTP_PORT + '/newpost/tooexclusive/rss',
@@ -32,6 +41,7 @@ describe('A Http server to listen to incoming connections', function () {
         },
         json: true
       }, function (err, resp) {
+        console.log('nonsense');
           expect(resp.statusCode).to.equal(200).and.not.above(210);
           done();
         });

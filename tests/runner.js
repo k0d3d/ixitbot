@@ -1,32 +1,21 @@
 describe('Runner contains functions which are run with jobs', function() {
-  var rewire = require('rewire');
+  // var rewire = require('rewire');
   var runner = require('../libs/runner');
   var expect = require('chai').expect;
 
 
   it('should send an item to the ISAS', function (done) {
-    var j = {
-      targetPageUrl: 'http://tooxclusive.com/audio/emmcee-rnb-blessings-ft-jake-chowman-kaptain-oteaz/',
-      props: {
-        mainImage: 'http://net.tooxclusive.com/wp-content/uploads/2016/04/EmmCee-RNB_Blessings-art-cover.jpg',
-        targetSrcString: 'EmmCee RNB – “Blessings” ft. Jake Chowman, Kaptain, Oteaz'
-      },
-      title: 'EmmCee RNB – “Blessings” ft. Jake Chowman, Kaptain, Oteaz',
-     targetSrc: 'http://net.tooxclusive.com/wp-content/uploads/2016/04/EmmCee-RNB-Blessings-Ft.-Jake-Chowman-Kaptain-Oteaz-Prod.-SongSmith.mp3',
-     url: 'http://tooxclusive.com/audio/emmcee-rnb-blessings-ft-jake-chowman-kaptain-oteaz/',
-     job_name : 'tooexclusive',
-    starting_url : 'http://tooxclusive.com/main/audio/',
-    proceed_from_url: 'http://tooxclusive.com/main/audio/'
-    };
-    runner.sendToVault(j, function (ixitFile) {
+    var j = require('./crawled_item.json');
+    runner.uploadOneFile(j, function (ixitFile) {
       if (typeof ixitFile === 'string') {
         ixitFile = JSON.parse(ixitFile);
       }
-      console.log(ixitFile);
-      expect(false).to.be.true;
+      // expect(false).to.be.true;``
       // expect(ixitFile.mediaNumber).to.be.ok;
       expect(ixitFile.error).to.be.undefined;
+      var er_name = (ixitFile.name && ixitFile.name.toLowerCase().indexOf('error') > 1) ? undefined: true;
+      expect(er_name).to.be.undefined;
       done();
     });
-  }, 25000);
+  }, 10000);
 });

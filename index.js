@@ -49,8 +49,8 @@ require('newrelic');
  * page on each iteration.
 */
 var mongoose = require('mongoose'),
-    // Q = require('q'),
-    // defer = Q.defer(),
+    Q = require('q'),
+    defer = Q.defer(),
     debug = require('debug')('ixitbot:boot'),
     runner = require('./libs/runner'),
     CronJob = require('cron').CronJob,
@@ -107,6 +107,7 @@ mongoose.connect(dbURI);
 // When successfully connected
 db.on('connected', function() {
     debug('database connected');
+    defer.resolve(db);
         // return initialize();
         return;
     var job = new CronJob({
@@ -128,7 +129,7 @@ db.on('connected', function() {
 // If the connection throws an error
 db.on('error', function(err) {
     debug('Mongoose default connection error: ' + err);
-    // defer.reject(err);
+    defer.reject(err);
 
 });
 // When the connection is disconnected
@@ -143,7 +144,7 @@ process.on('SIGINT', function() {
     });
 });
 
-module.exports.db = db;
+module.exports = defer.promise;
 
 
 

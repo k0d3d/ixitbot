@@ -1,4 +1,5 @@
 var Twitter = require('twitter');
+var debug = require('debug')('ixitbot:share');
 var FB = require('fb');
 
 function SocialClass (title, body, attach) {
@@ -8,7 +9,7 @@ function SocialClass (title, body, attach) {
 
 SocialClass.prototype.constructor = SocialClass;
 
-SocialClass.prototype.tweet = function tweet (params) {
+SocialClass.prototype.tweet = function tweet (params, cb) {
   var client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -19,7 +20,8 @@ SocialClass.prototype.tweet = function tweet (params) {
   params = params || {};
 
   client.post('statuses/update', params, function (error, tweet, response) {
-    console.log(response.body);
+    debug(response.body);
+    // cb(response.body)
   });
 };
 
