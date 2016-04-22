@@ -11,6 +11,7 @@
   "dependencies": {
     "JSONStream": "^1.0.7",
     "colors": "^1.1.2",
+    "common-errors": "^0.5.3",
     "cron": "^1.1.0",
     "event-stream": "^3.3.2",
     "fb": "^1.0.2",

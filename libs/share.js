@@ -9,7 +9,7 @@ function SocialClass (title, body, attach) {
 
 SocialClass.prototype.constructor = SocialClass;
 
-SocialClass.prototype.tweet = function tweet (params, cb) {
+SocialClass.prototype.tweet = function tweet (params) {
   var client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
