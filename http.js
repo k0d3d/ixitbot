@@ -18,7 +18,7 @@ if (
     throw new errors.ConnectionError('env var value unavailable');
 }
 server.connection({
-    host: 'localhost',
+    // host: 'localhost',
     port: process.env.IASS_HTTP_PORT
 });
 
@@ -26,6 +26,9 @@ server.connection({
 
 
 server.route({
+    // TODO:: change to GET method,
+    // change path, possible to include search string
+    // or url parameter.
     method: 'POST',
     path: '/newpost/{domainId}/rss',
     handler: function (request, reply) {
@@ -50,7 +53,7 @@ server.route({
         var _logic = new ModelLogic();
         // _logic.after('saveFileMeta', RunnerMofo.tweetAsPost);
         InstigatorLOL.then(function () {
-            console.log('db one crawled_item')
+            debug('db one crawled_item');
             RunnerMofo.onePageCrawl(documentDefinition, function (crawled_item) {
                 //saved item
                 debug(crawled_item);
@@ -96,7 +99,7 @@ server.start(function (err) {
     if (err) {
         throw new errors.HttpStatusError(500, err);
     }
-    console.log('%s running at: %s', appPkj.name, process.env.IASS_HTTP_PORT);
+    debug('%s running at: %s', appPkj.name, process.env.IASS_HTTP_PORT);
     q.resolve(server);
 });
 

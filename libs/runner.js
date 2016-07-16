@@ -161,7 +161,15 @@ function uploadWhileCrawling (job, done) {
   });
 }
 
-
+/**
+ * sends a request to ISAS to download a file.
+ * The request is composed using parameters that
+ * contain a source url which should contain the
+ * binary data to be downloaded.
+ * @param  {[type]}   jobData [description]
+ * @param  {Function} done    [description]
+ * @return {[type]}           [description]
+ */
 function uploadOneFile (jobData, done) {
   var md5 = require('md5');
   jobData.chunkNumber = 1;
@@ -218,6 +226,12 @@ function defineJobs (jobname) {
   queue.process(jobname + '-save progress to db', updateJobCount);
 }
 
+/**
+ * this function will....
+ * @param  {[type]}   job  [description]
+ * @param  {Function} done [description]
+ * @return {[type]}        [description]
+ */
 function onePageCrawl (job, done) {
   debug('starting onepage crawler');
   var job_data = job;

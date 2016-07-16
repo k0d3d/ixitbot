@@ -27,7 +27,8 @@
     "newrelic": "latest",
     "osmosis": "^0.1.3",
     "request": "^2.69.0",
-    "twitter": "^1.2.5"
+    "twitter": "^1.2.5",
+    "yargs": "^4.8.0"
   },
   "devDependencies": {
     "eslint-config-airbnb": "^6.2.0",

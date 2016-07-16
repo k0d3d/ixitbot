@@ -55,8 +55,15 @@ var mongoose = require('mongoose'),
     runner = require('./libs/runner'),
     CronJob = require('cron').CronJob,
     fs = require('fs'),
+    errors = require('common-errors'),
+    argv = require('yargs').argv,
     dbURI = process.env.IXIT_APP_MONGO_DB || process.env.IAMDB;
 
+if (
+  !process.env.IASS_HTTP_PORT ||
+  !process.env.VAULT_RESOURCE ) {
+    throw new errors.ConnectionError('env var value unavailable');
+}
 
 function handleError (er) {
     if (er instanceof Error) {
@@ -66,37 +73,73 @@ function handleError (er) {
     }
 }
 
-function initialize () {
-    // Lets read in the definitions directory
-    fs.readdir('./def', function (err, files) {
-        if (err) {
-            handleError(err);
-        }
-        if (files.length) {
-            //first we have to process each json into
-            //a collection
-            var defDocument = [];
-            for (var a = 0; a < files.length; a++) {
-                if (files[a].indexOf('.js') > -1) {
-                    var d = require('./def/' + files[a]);
-                    d.defUri =  './def/' + files[a];
-                    defDocument.push(d);
-                }
+function initialize_crawl (jobName) {
 
-            }
-            for (var i = 0; i < defDocument.length; i++) {
-                var this_doc = defDocument[i];
-                if (!this_doc.def && !this_doc.def.job_name) {
-                    throw new Error('required filename or title not present in schema');
-                }
-                // create dynamic job definitions, then start job
-                runner.defineJobs(this_doc.def.job_name);
-                runner.queue.create(this_doc.def.job_name + '-start job', this_doc).removeOnComplete( true ).save();
-            }
-        } else {
-            handleError('No definitions found, Read it up somewhere. I know I told u how to work this');
+        //first we have to process each json into
+        //a collection
+        var d;
+        try {
+            d = require('./def/' + jobName);
+            d.defUri =  './def/' + jobName;
+
+        } catch (e) {
+            console.log(e);
+            debug('its possible the definition file for this job is absent. Check the def/ directory');
+            throw e;
         }
-    });
+
+        var this_doc = d;
+        if (!this_doc.def && !this_doc.def.job_name) {
+            throw new Error('required filename or title not present in schema');
+        }
+        // create dynamic job definitions, then start job
+        runner.defineJobs(this_doc.def.job_name);
+        runner.queue.create(this_doc.def.job_name + '-start job', this_doc).removeOnComplete( true ).save();
+
+
+}
+
+function latest_posts (entryUrl, domainId) {
+        var InstigatorLOL = require('./index');
+        var RunnerMofo = require('./libs/runner');
+        var ModelLogic = require('./libs/model');
+
+        var documentDefinition = {
+          'job_name' : domainId,
+          'proceed_from_url': entryUrl,
+          'props': {}
+        };
+
+
+        var _logic = new ModelLogic();
+        // _logic.after('saveFileMeta', RunnerMofo.tweetAsPost);
+        InstigatorLOL.then(function () {
+            debug('db one crawled_item');
+            RunnerMofo.onePageCrawl(documentDefinition, function (crawled_item) {
+                //saved item
+                debug(crawled_item);
+                RunnerMofo.uploadOneFile(crawled_item, function (ixit_file) {
+                    return _logic.saveFileMeta(ixit_file, crawled_item)
+
+                    //send to vault
+                    //
+                    .then(function () {
+                      //get ixit link and tweet it
+                      var hashr = require('./libs/hash');
+                      RunnerMofo.tweetAsPost({
+                        status: 'Download & Listen ' + crawled_item.title + '-> http://i-x.it/'+ hashr.hashInt(ixit_file.mediaNumber) +' #shareIxitLinks #followUsfastDownloadSpeeds'
+                      });
+                      // reply(ixit_file.mediaNumber);
+                    }, function (err) {
+                        throw err;
+                    })
+                    .catch(function (e) {
+                        console.log(e);
+                        console.log(e.stack);
+                    });
+                });
+            });
+        });
 }
 
 var db = mongoose.connection;
@@ -109,7 +152,19 @@ db.on('connected', function() {
     debug('database connected');
     defer.resolve(db);
         // return initialize();
-        return;
+        if (argv.mode === 'crawl') {
+            if (argv.domainId) {
+                var jobName = argv.domainId;
+                return initialize_crawl(jobName);
+            }
+        } else if (argv.mode === 'new-post') {
+            if (!argv.entryUrl ||
+                !argv.domainId) {
+                return debug('specify domainId and entryUrl arguments');
+            }
+            return latest_posts(argv.entryUrl, argv.domainId);
+        }
+        return debug('No valid command in arguments');
     var job = new CronJob({
     /*
      * Runs every minute of every day.
@@ -117,7 +172,7 @@ db.on('connected', function() {
       cronTime: '* * * 1/1 *',
       onTick: function() {
         debug('inits');
-        initialize();
+        initialize_crawl();
       },
       start: false,
       timeZone: 'Africa/Lagos'
