@@ -25,6 +25,7 @@ function startOsmosis (job, done) {
   job_data.scraper = require('../def/' + job_data.job_record.job_name).scraper;
 
   function _data(listing) {
+    debug('crawled result', listing);
       // assuming this is going to fire for
       // every row in our collection, we need
       // to update our database with the row
@@ -71,9 +72,9 @@ function startOsmosis (job, done) {
 
 
 function startjob (job, done) {
-  var jobData = job.data;
-  debug('Running Job on: %s', jobData.def.job_name);
-  var doc = Models.prepareInitialDocument(jobData.def);
+  var card = job.data.def;
+  debug('Running Job on: %s', card.job_name);
+  var doc = Models.prepareInitialDocument(card);
   doc.then(function (p) {
 
     var save_doc = new Models();
@@ -82,13 +83,14 @@ function startjob (job, done) {
     //per iteration and uses that to construct the task to
     //be carried out when ever that definition is used.
     //
-    save_doc.findOrUpdateJobProgress(p, {
-      no_of_records_saved: p.no_of_records_saved,
-      proceed_from_url: p.proceed_from_url
-    })
+    // save_doc.findOrUpdateJobProgress(p, {
+    //   no_of_records_saved: p.no_of_records_saved,
+    //   proceed_from_url: p.proceed_from_url
+    // })
+    save_doc.findOrUpdateJobProgress(p.job_name, p)
     .then(function (useThisD) {
       var preped = Models.prepareUpdatedDocument(useThisD);
-      queue.create(jobData.def.job_name + '-start osmosis',
+      queue.create(card.job_name + '-start osmosis',
         preped,
         function () {
         })
@@ -235,6 +237,17 @@ function defineJobs (jobname) {
 function onePageCrawl (job, done) {
   debug('starting onepage crawler');
   var job_data = job;
+
+  var d;
+  try {
+      d = require('../def/' + job.job_name);
+      d.defUri =  '../def/' + job.job_name;
+
+  } catch (e) {
+      console.log(e);
+      debug('its possible the definition file for this job is absent. Check the def/ directory');
+      throw e;
+  }
   var scraper = require('../def/' + job_data.job_name).onePage;
   function _data(listing) {
       // assuming this is going to fire for

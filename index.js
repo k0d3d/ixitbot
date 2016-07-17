@@ -3,11 +3,17 @@ require('newrelic');
  * BOOTUP
  * *INDEXING*
  * When ixitbot runs from the command line,
- * it checks the definitions folder & files
- * to see what jobs are defined. It then
- * starts a cron for each job, that repeates
- * it self every 5mins proceeding to the next
- * page on each iteration.
+ * the below arguments are required to
+ * create an instance of IASS that should
+ * peform the crawl.
+ * eg. `index.js --mode=crawl --jobName=tooexclusive.com`
+ *
+ * --jobName this should correspond with the definitions
+ *            file store in ./def .
+ *            eg. `--jobName=linda` -> ./def/linda.json
+ *
+ *
+ *
  *
  * *ACTION ON EACH RECORD FROM A PAGE*
  * Each iteration contains a minimum of one
@@ -59,9 +65,7 @@ var mongoose = require('mongoose'),
     argv = require('yargs').argv,
     dbURI = process.env.IXIT_APP_MONGO_DB || process.env.IAMDB;
 
-if (
-  !process.env.IASS_HTTP_PORT ||
-  !process.env.VAULT_RESOURCE ) {
+if (!process.env.VAULT_RESOURCE ) {
     throw new errors.ConnectionError('env var value unavailable');
 }
 
@@ -99,13 +103,13 @@ function initialize_crawl (jobName) {
 
 }
 
-function latest_posts (entryUrl, domainId) {
+function latest_posts (entryUrl, jobName) {
         var InstigatorLOL = require('./index');
         var RunnerMofo = require('./libs/runner');
         var ModelLogic = require('./libs/model');
 
         var documentDefinition = {
-          'job_name' : domainId,
+          'job_name' : jobName,
           'proceed_from_url': entryUrl,
           'props': {}
         };
@@ -118,17 +122,14 @@ function latest_posts (entryUrl, domainId) {
             RunnerMofo.onePageCrawl(documentDefinition, function (crawled_item) {
                 //saved item
                 debug(crawled_item);
-                RunnerMofo.uploadOneFile(crawled_item, function (ixit_file) {
-                    return _logic.saveFileMeta(ixit_file, crawled_item)
+                return _logic.saveFileMeta({}, crawled_item).then(function () {
+                    debug(crawled_item);
 
-                    //send to vault
-                    //
-                    .then(function () {
                       //get ixit link and tweet it
-                      var hashr = require('./libs/hash');
-                      RunnerMofo.tweetAsPost({
-                        status: 'Download & Listen ' + crawled_item.title + '-> http://i-x.it/'+ hashr.hashInt(ixit_file.mediaNumber) +' #shareIxitLinks #followUsfastDownloadSpeeds'
-                      });
+                      // var hashr = require('./libs/hash');
+                      // RunnerMofo.tweetAsPost({
+                      //   status: 'Download & Listen ' + crawled_item.title + '-> http://i-x.it/'+ hashr.hashInt(ixit_file.mediaNumber) +' #shareIxitLinks #followUsfastDownloadSpeeds'
+                      // });
                       // reply(ixit_file.mediaNumber);
                     }, function (err) {
                         throw err;
@@ -137,7 +138,7 @@ function latest_posts (entryUrl, domainId) {
                         console.log(e);
                         console.log(e.stack);
                     });
-                });
+
             });
         });
 }
@@ -153,16 +154,15 @@ db.on('connected', function() {
     defer.resolve(db);
         // return initialize();
         if (argv.mode === 'crawl') {
-            if (argv.domainId) {
-                var jobName = argv.domainId;
-                return initialize_crawl(jobName);
+            if (argv.jobName) {
+                return initialize_crawl(argv.jobName);
             }
         } else if (argv.mode === 'new-post') {
             if (!argv.entryUrl ||
-                !argv.domainId) {
-                return debug('specify domainId and entryUrl arguments');
+                !argv.jobName) {
+                return debug('specify jobName and entryUrl arguments');
             }
-            return latest_posts(argv.entryUrl, argv.domainId);
+            return latest_posts(argv.entryUrl, argv.jobName);
         }
         return debug('No valid command in arguments');
     var job = new CronJob({
