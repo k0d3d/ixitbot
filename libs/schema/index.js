@@ -66,6 +66,7 @@ var FileMetaSchema = new Schema ({
   // url: this has to be the url where the file download
   // and meta data is found
   url: {type: String,  es_indexed:true },
+  date_created: {type: Date, default: Date.now},
   // props: should contain meta information.
   // because scraped data is inconsistent.
   // file properties which can be retrieved from

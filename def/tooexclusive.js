@@ -59,7 +59,7 @@ module.exports = {
                 'user_agent': 'Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36'
               })
               .get(jb.proceed_from_url)
-              .paginate(def_card.paginate, 1)
+              .paginate(def_card.paginate)
               // .find(def.scope)
               .follow('ul li a@href')
               .set({
