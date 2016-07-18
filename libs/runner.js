@@ -16,6 +16,7 @@ var
     // JSONStream = require('JSONStream'),
     // es = require('event-stream'),
     osmosis = require('osmosis');
+var errors = require('common-errors');
 
 
 function startOsmosis (job, done) {
@@ -24,6 +25,7 @@ function startOsmosis (job, done) {
   job_data.scraper = require('../def/' + job_data.job_record.job_name).scraper;
 
   function _data(listing) {
+    debug('crawled result', listing);
       // assuming this is going to fire for
       // every row in our collection, we need
       // to update our database with the row
@@ -70,9 +72,9 @@ function startOsmosis (job, done) {
 
 
 function startjob (job, done) {
-  var jobData = job.data;
-  debug('Running Job on: %s', jobData.def.job_name);
-  var doc = Models.prepareInitialDocument(jobData.def);
+  var card = job.data.def;
+  debug('Running Job on: %s', card.job_name);
+  var doc = Models.prepareInitialDocument(card);
   doc.then(function (p) {
 
     var save_doc = new Models();
@@ -81,13 +83,14 @@ function startjob (job, done) {
     //per iteration and uses that to construct the task to
     //be carried out when ever that definition is used.
     //
-    save_doc.findOrUpdateJobProgress(p, {
-      no_of_records_saved: p.no_of_records_saved,
-      proceed_from_url: p.proceed_from_url
-    })
+    // save_doc.findOrUpdateJobProgress(p, {
+    //   no_of_records_saved: p.no_of_records_saved,
+    //   proceed_from_url: p.proceed_from_url
+    // })
+    save_doc.findOrUpdateJobProgress(p.job_name, p)
     .then(function (useThisD) {
       var preped = Models.prepareUpdatedDocument(useThisD);
-      queue.create(jobData.def.job_name + '-start osmosis',
+      queue.create(card.job_name + '-start osmosis',
         preped,
         function () {
         })
@@ -108,22 +111,21 @@ function startjob (job, done) {
  * @param  {Function} done [description]
  * @return {[type]}        [description]
  */
-function sendToVault (job, done) {
+function uploadWhileCrawling (job, done) {
   var md5 = require('md5');
-  var jobData = job.data;
+  var jobData = (job.job_name)?job :job.data;
   jobData.chunkNumber = 1;
-  jobData.totalChunks = 1;
+  jobData.totalChunks = 2;
   jobData.filename = jobData.filename || md5(jobData.title);
   jobData.owner = jobData.job_name || 'www-anon';
   jobData.folder = jobData.job_name || 'ixitbot';
-  // debug(jobData);
   request({
     method: 'POST',
     url: process.env.VAULT_RESOURCE + '/upload/automate',
     body: jobData,
     json: true
   }, function (err, r, ixitFile) {
-    if (!err) {
+    if (!err && r.statusCode <= 210) {
       //increment the current job count in redis
       var nameString = (jobData.job_record) ? jobData.job_record.job_name : jobData.job_name;
       client.incr(nameString + '_session_count', function (err, count) {
@@ -134,22 +136,65 @@ function sendToVault (job, done) {
         if (!count) {
           count = 1;
         }
-          var saveUrl = job_data.proceed_from_url || job_data.url || job_data.starting_url
-
+        var saveUrl = jobData.proceed_from_url || jobData.proceed_from_url;
+        if (arguments.length > 2) {
           client.set(nameString + '_last_url', saveUrl);
+        }
+
         var new_model = new Models();
         new_model.saveFileMeta(ixitFile, jobData)
         .then(function () {
           console.log('saved and updated including file meta');
-          done();
+          done(ixitFile);
         }, function (err) {
           console.log(err);
           console.log('we got an error');
-          done(err);
+           done(new errors.ConnectionError('vault resource operation error', err));
         });
       });
+    } else {
+      if (err) {
+        done(new errors.ConnectionError('vault resource connection error', err));
+      } else {
+        done(new errors.ConnectionError('vault resource operation failure. This is a very strange event. Get bug buster'));
+      }
     }
-    done();
+    // done();
+  });
+}
+
+/**
+ * sends a request to ISAS to download a file.
+ * The request is composed using parameters that
+ * contain a source url which should contain the
+ * binary data to be downloaded.
+ * @param  {[type]}   jobData [description]
+ * @param  {Function} done    [description]
+ * @return {[type]}           [description]
+ */
+function uploadOneFile (jobData, done) {
+  var md5 = require('md5');
+  jobData.chunkNumber = 1;
+  jobData.totalChunks = 2;
+  jobData.filename = jobData.filename || md5(jobData.title);
+  jobData.owner = jobData.job_name || 'www-anon';
+  jobData.folder = jobData.job_name || 'ixitbot';
+  request({
+    method: 'POST',
+    url: process.env.VAULT_RESOURCE + '/upload/automate',
+    body: jobData,
+    json: true
+  }, function (err, r, ixitFile) {
+    if (!err && r.statusCode <= 210) {
+      done(ixitFile);
+    } else {
+      if (err) {
+        done(new errors.ConnectionError('vault resource connection error', err));
+      } else {
+        done(new errors.ConnectionError('vault resource operation failure. This is a very strange event. Get bug buster'));
+      }
+    }
+    // done();
   });
 }
 
@@ -179,14 +224,62 @@ function defineJobs (jobname) {
   debug('defining jobs');
   queue.process(jobname + '-start job', startjob);
   queue.process(jobname + '-start osmosis', startOsmosis);
-  queue.process(jobname + '-send to vault', sendToVault);
+  queue.process(jobname + '-send to vault', uploadWhileCrawling);
   queue.process(jobname + '-save progress to db', updateJobCount);
+}
+
+/**
+ * this function will....
+ * @param  {[type]}   job  [description]
+ * @param  {Function} done [description]
+ * @return {[type]}        [description]
+ */
+function onePageCrawl (job, done) {
+  debug('starting onepage crawler');
+  var job_data = job;
+
+  var d;
+  try {
+      d = require('../def/' + job.job_name);
+      d.defUri =  '../def/' + job.job_name;
+
+  } catch (e) {
+      console.log(e);
+      debug('its possible the definition file for this job is absent. Check the def/ directory');
+      throw e;
+  }
+  var scraper = require('../def/' + job_data.job_name).onePage;
+  function _data(listing) {
+      // assuming this is going to fire for
+      // every row in our collection, we need
+      // to update our database with the row
+      // count after we have totally sent them
+      // to the Vault,
+      return done(listing);
+  }
+
+  //start scraper
+  scraper(osmosis, _data, job_data);
+}
+
+function tweetAsPost (post) {
+  var Tweet =  require('./share');
+  var tweet = new Tweet(post.title, post.body);
+  tweet.tweet(post);
+
 }
 
 
 
 
-module.exports.defineJobs = defineJobs;
-module.exports.queue = queue;
+
+module.exports = {
+  queue: queue,
+  tweetAsPost: tweetAsPost,
+  uploadWhileCrawling : uploadWhileCrawling,
+  uploadOneFile: uploadOneFile,
+  defineJobs : defineJobs,
+  onePageCrawl : onePageCrawl
+}
 
 

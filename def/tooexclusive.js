@@ -14,11 +14,11 @@
 //     "set" :
 // }
 
-var def = {
+var def_card = {
   'job_name' : 'tooexclusive',
-  'starting_url' : 'http://tooxclusive.com/main/audio/',
-  'paginate' : '.pagination .prev a@href',
-  'limit' : 2,
+  'starting_url' : 'http://tooxclusive.com/main/download-mp3/',
+  'paginate' : '//*[@id="content"]/ul/li[26]/span[4]/a',
+  'limit' : 1,
   //the container for our scraper
   'scope' : '#content',
 };
@@ -26,22 +26,49 @@ var def = {
 
 
 module.exports = {
+  onePage: function (osmosis, cb, jb) {
+// console.lo(arguments)
+              return osmosis
+              .config({
+                'user_agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
+              })
+              .get('http://tooxclusive.com/tag/audio/')
+              .follow('#content li a@href')
+              .set({
+                'title': '#content h1',
+                'targetSrc': '//a/@href[contains(.,".mp3")]', //  //a/@href[contains(., 'letter')]
+                // 'props' :
+              })
+              .set('props', {
+                  targetSrcString: '//*[@id="content"]/p[]',
+                  mainImage: '//*[@id="content"]/p[1]/a/img@src'
+
+                })
+              .then(function (context, data, next) {
+                data.url = context.doc().request.url;
+                next(context, data);
+              })
+              .data(cb)
+              .log(console.log)
+              .error(console.log)
+              .debug(console.log);
+  },
   scraper : function (osmosis, cb, jb) {
               return osmosis
               .config({
                 'user_agent': 'Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36'
               })
               .get(jb.proceed_from_url)
-              .paginate(def.paginate, def.limit)
+              .paginate(def_card.paginate)
               // .find(def.scope)
               .follow('ul li a@href')
               .set({
                 'title': '#content h1',
-                'targetSrc': '#content p a@href',
+                'targetSrc': '//a/@href[contains(.,".mp3")]',
                 // 'props' :
               })
               .set('props', {
-                  targetSrcString: '#content p a',
+                  targetSrcString: '//*[@id="content"]/p[]',
                   mainImage: '#content p img@src'
 
                 })
@@ -73,5 +100,5 @@ module.exports = {
               .debug(console.log);
               // .data(_data);
   },
-  def: def
+  def: def_card
 };

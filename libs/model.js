@@ -42,9 +42,7 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
     updateDocument.statusLog = {
         status_date: Date.now(),
         status: 'active',
-        no_of_records: 0
     };
-    debug('card is like', card);
     client.get(card.job_name + '_last_url', function (err, url) {
       debug(url);
       if (err && err instanceof Error) {
@@ -90,18 +88,18 @@ MainClass.prepareUpdatedDocument = function prepareUpdatedDocument (d) {
  * a job progress record, It updates the status
  * of the job and returns the result of the update.
  * it also records a log of what was updated.
- * @param  {[type]} doc a criteria to find the record
+ * @param  {[type]} job_name a job_name to find the record
  * @param  {[type]} changes a document to update the record
  * @return {[type]}     [Definition]
  */
-MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (doc, changes) {
+MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (job_name, changes) {
   var q = Q.defer(),
       updateDoc = {} ;
 
   Schema.JobProgress
   .findOne({
     // 'starting_url': doc.proceed_from_url,
-    'job_name': doc.job_name
+    'job_name': job_name
   })
   .exec(function (err, found) {
     if (err) {
@@ -110,7 +108,7 @@ MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (
     //update
     if (found && changes)  {
       debug('changes found with existing document');
-      found.status_log.push(changes.statusLog);
+      // found.status_log.push(changes.statusLog);
       for (var p in changes) {
         if (changes.hasOwnProperty(p) && p !== 'statusLog') {
           found[p] = changes[p];
@@ -132,15 +130,15 @@ MainClass.prototype.findOrUpdateJobProgress = function findOrUpdateJobProgress (
     //if not found
     if (!found) {
       debug('document not found');
-      for (var prop in doc) {
-        if (doc.hasOwnProperty(prop) && prop !== 'statusLog') {
-          updateDoc[prop] = doc[prop];
+      for (var prop in changes) {
+        if (changes.hasOwnProperty(prop) && prop !== 'statusLog') {
+          updateDoc[prop] = changes[prop];
         }
       }
 
       var jp = new Schema.JobProgress(updateDoc);
-      if (doc.statusLog) {
-        jp.status_log = [doc.statusLog];
+      if (changes.statusLog) {
+        jp.status_log = [changes.statusLog];
       }
       jp.save(function (err, saved) {
         debug('document created and saved ')
@@ -279,18 +277,19 @@ MainClass.prototype.listJobProgress = function listJobProgress (options) {
   return q.promise;
 };
 
-MainClass.prototype.saveFileMeta = function saveFileMeta(fileData, jobData) {
+MainClass.prototype.saveFileMeta = function saveFileMeta(crawled_data, jobData) {
   var q = Q.defer();
-  debug(fileData)
+  debug('saveFileMeta', jobData);
   var newFile = new Schema.File();
-  // newFile.identifier =  fileData.identifier;
-  // newFile.mediaNumber = fileData.mediaNumber;
-  newFile.jobId =   jobData._id;
-  newFile.title =  fileData.title || fileData.filename;
-  newFile.targetSrc =  fileData.targetSrc;
-  newFile.url =  fileData.url;
-  newFile.props =  fileData.props;
+  // newFile.identifier =  crawled_data.identifier;
+  // newFile.mediaNumber = ixit_file.mediaNumber;
+  // newFile.jobId =   jobData._id;
+  newFile.title =  crawled_data.title || crawled_data.filename;
+  newFile.targetSrc =  crawled_data.targetSrc;
+  newFile.url =  crawled_data.url;
+  newFile.props =  crawled_data.props;
   newFile.save(function (err, saved) {
+debug(saved);
     if (err) {
       return q.reject(err);
     }
