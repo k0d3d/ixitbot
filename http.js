@@ -29,8 +29,8 @@ server.route({
     // TODO:: change to GET method,
     // change path, possible to include search string
     // or url parameter.
-    method: 'POST',
-    path: '/newpost/{domainId}/rss',
+    method: 'GET',
+    path: '/a/{songName}',
     handler: function (request, reply) {
         //{{EntryTitle}} {{EntryUrl}} {{EntryAuthor}} {{EntryContent}} {{EntryImageUrl}} {{EntryPublished}}
         if (!request.payload.EntryUrl ||

@@ -39,9 +39,7 @@ function startOsmosis (job, done) {
             console.log(err);
             return done(err);
           }
-          if (!count) {
-            count = 1;
-          }
+          debug('count as at increment', count);
           //save the current url in redis also.
           var saveUrl = job_data.proceed_from_url || job_data.proceed_from_url;
           client.set(nameString + '_last_url', saveUrl);
