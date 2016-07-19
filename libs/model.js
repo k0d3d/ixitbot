@@ -58,7 +58,7 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
         no_of_records_saved: 0
     };
     client.get(card.job_name + '_last_url', function (err, url) {
-      debug(url);
+      debug('url:', url);
       if (err && err instanceof Error) {
         throw err;
       }
@@ -69,11 +69,8 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
       }
 
       updateDocument['job_record.job_name'] = card.job_name;
-      updateDocument['job_record.scope'] = card.scope;
-      updateDocument['job_record.limit'] = card.limit;
       updateDocument.current_status = 'active';
       updateDocument.paginate = card.paginate;
-      updateDocument.scope = card.scope;
 //       updateDocument.schema = card.schema;
       var nameString = (card.job_record) ? card.job_record.job_name : card.job_name;
       client.get(nameString + '_session_count', function (err, count) {

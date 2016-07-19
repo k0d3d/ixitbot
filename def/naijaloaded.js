@@ -16,8 +16,9 @@
 
 var def_card = {
   'job_name' : 'naijaloaded',
-  'starting_url' : 'http://www.naijaloaded.com.ng/music/page/2',
-  'paginate' : '//*[@id="content"]/ul/li[31]/span[4]/a',
+  'starting_url' : 'http://www.naijaloaded.com.ng/music/page/3',
+  'paginate' : '.paginate span.prev a@href',
+  // 'paginate' : '//*[@id="content"]/ul/li[31]/span[4]/a',
   'limit' : 1,
   //the container for our scraper
   'scope' : '#content',
@@ -45,8 +46,8 @@ module.exports = {
               })
               .set('props', {
                   targetSrcString: '.post-content',
-                  mainImage: '.post-content p.img.alignnone@src',
-                  altDownloadSrc: '//*[@class="post-content"]/div[1]/p[5]/a[2]/@src'
+                  mainImage: ['.post-content p.img.alignnone@src'],
+                  altDownloadSrc: ['//*[@class="post-content"]/div[1]/p[5]/a[2]/@src']
                   // mainImage: 'img.alignnone@src'
 
                 })

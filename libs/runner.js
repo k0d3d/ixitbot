@@ -86,7 +86,6 @@ function startjob (job, done) {
     save_doc.findOrUpdateJobProgress(p.job_name, p)
     .then(function (useThisD) {
       var preped = Models.prepareUpdatedDocument(useThisD);
-      debug('prepped', preped);
       queue.create(card.job_name + '-start osmosis',
         preped,
         function () {
