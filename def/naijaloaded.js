@@ -16,8 +16,8 @@
 
 var def_card = {
   'job_name' : 'naijaloaded',
-  'starting_url' : 'http://www.naijaloaded.com.ng/music/',
-  'paginate' : 'a.next',
+  'starting_url' : 'http://www.naijaloaded.com.ng/music/page/2',
+  'paginate' : '//*[@id="content"]/ul/li[31]/span[4]/a',
   'limit' : 1,
   //the container for our scraper
   'scope' : '#content',
@@ -27,6 +27,7 @@ var def_card = {
 
 module.exports = {
   scraper : function (osmosis, cb, jb) {
+    console.log(jb);
               return osmosis
               .config({
                 'user_agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36'
@@ -34,7 +35,7 @@ module.exports = {
               .get(jb.proceed_from_url)
               .paginate(def_card.paginate)
               // .find(def.scope)
-              .follow('#content h3 a')
+              .follow('#content h3 a@href')
               // .follow('ul li a@href')
               .set({
                 // 'title': '//*[@id="post-167949"]/header/h1',
@@ -45,7 +46,7 @@ module.exports = {
               .set('props', {
                   targetSrcString: '.post-content',
                   mainImage: '.post-content p.img.alignnone@src',
-                  altDownloadSrc: '//*[@id="post-166979"]/div[1]/p[5]/a'
+                  altDownloadSrc: '//*[@class="post-content"]/div[1]/p[5]/a[2]/@src'
                   // mainImage: 'img.alignnone@src'
 
                 })

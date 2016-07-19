@@ -25,7 +25,6 @@ function startOsmosis (job, done) {
   job_data.scraper = require('../def/' + job_data.job_record.job_name).scraper;
 
   function _data(listing) {
-    debug('crawled result', listing);
       // assuming this is going to fire for
       // every row in our collection, we need
       // to update our database with the row
@@ -47,9 +46,8 @@ function startOsmosis (job, done) {
 
           //save data
           new_model.saveFileMeta(listing, job_data)
-          .then(function (saved) {
+          .then(function () {
             debug('saved and updated including file meta');
-            debug(saved);
             done();
           }, function (err) {
             console.log(err);
@@ -88,6 +86,7 @@ function startjob (job, done) {
     save_doc.findOrUpdateJobProgress(p.job_name, p)
     .then(function (useThisD) {
       var preped = Models.prepareUpdatedDocument(useThisD);
+      debug('prepped', preped);
       queue.create(card.job_name + '-start osmosis',
         preped,
         function () {

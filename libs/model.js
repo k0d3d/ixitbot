@@ -55,6 +55,7 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
     updateDocument.statusLog = {
         status_date: Date.now(),
         status: 'active',
+        no_of_records_saved: 0
     };
     client.get(card.job_name + '_last_url', function (err, url) {
       debug(url);
@@ -75,9 +76,7 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
       updateDocument.scope = card.scope;
 //       updateDocument.schema = card.schema;
       var nameString = (card.job_record) ? card.job_record.job_name : card.job_name;
-      debug(nameString);
       client.get(nameString + '_session_count', function (err, count) {
-        debug('redis get error', err);
         debug(count);
         updateDocument.no_of_records_saved = count || 0;
         return q.resolve(updateDocument);
