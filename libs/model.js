@@ -16,6 +16,19 @@ var Schema = require('./schema/index'),
  */
 var MainClass = function MainClass () {
   Base.call(this);
+  var _File = Schema.File,
+      stream = _File.synchronize(),
+      count = 0;
+
+  stream.on('data', function(err, doc){
+    count++;
+  });
+  stream.on('close', function(){
+    debug('indexed ' + count + ' documents!');
+  });
+  stream.on('error', function(err){
+    console.log(err);
+  });
 };
 
 MainClass.prototype = Object.create(Base.prototype);
@@ -281,7 +294,7 @@ MainClass.prototype.listJobProgress = function listJobProgress (options) {
 
 MainClass.prototype.saveFileMeta = function saveFileMeta(crawled_data, jobData) {
   var q = Q.defer();
-  debug('saveFileMeta', jobData);
+  // debug('saveFileMeta', jobData);
   var newFile = new Schema.File();
   // newFile.identifier =  crawled_data.identifier;
   // newFile.mediaNumber = ixit_file.mediaNumber;
@@ -291,10 +304,11 @@ MainClass.prototype.saveFileMeta = function saveFileMeta(crawled_data, jobData) 
   newFile.url =  crawled_data.url;
   newFile.props =  crawled_data.props;
   newFile.save(function (err, saved) {
-debug(saved);
+    debug(saved);
     if (err) {
       return q.reject(err);
     }
+    // saved.index();
     return q.resolve(saved);
   });
   return q.promise;

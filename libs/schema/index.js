@@ -62,7 +62,7 @@ var FileMetaSchema = new Schema ({
   // title: the title for this job/page can be used as a filename
   title: {type: String,  es_indexed:true },
   // targetSrc: the link that returns an actual download
-  targetSrc: {type: String},
+  targetSrc: {type: String,  es_indexed:true },
   // url: this has to be the url where the file download
   // and meta data is found
   url: {type: String,  es_indexed:true },

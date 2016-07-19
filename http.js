@@ -2,6 +2,7 @@
 var appPkj = require('./package.json');
 var InstigatorLOL = require('./index');
 var RunnerMofo = require('./libs/runner');
+var Schema = require('./libs/schema/index');
 var ModelLogic = require('./libs/model');
 var Hapi = require('hapi');
 var errors = require('common-errors');
@@ -13,8 +14,7 @@ var server = new Hapi.Server();
 
 if (
   !process.env.IASS_HTTP_PORT ||
-  !process.env.VAULT_RESOURCE  ||
-  !process.env.API_RESOURCE ) {
+  !process.env.VAULT_RESOURCE) {
     throw new errors.ConnectionError('env var value unavailable');
 }
 server.connection({
@@ -32,65 +32,18 @@ server.route({
     method: 'GET',
     path: '/a/{songName}',
     handler: function (request, reply) {
-        //{{EntryTitle}} {{EntryUrl}} {{EntryAuthor}} {{EntryContent}} {{EntryImageUrl}} {{EntryPublished}}
-        if (!request.payload.EntryUrl ||
-            !request.payload.EntryAuthor) {
-            return reply('EmptyPost');
-        }
-        var documentDefinition = {
-          'job_name' : request.params.domainId,
-          'proceed_from_url': request.payload.EntryUrl,
-          'title': request.payload.EntryTitle,
-          'props': {}
-        };
 
-        documentDefinition.props = {};
-        for(var m in request.payload) {
-            if (request.payload.hasOwnProperty(m)) {
-                documentDefinition.props[m] = request.payload[m];
-            }
-        }
-        var _logic = new ModelLogic();
-        // _logic.after('saveFileMeta', RunnerMofo.tweetAsPost);
-        InstigatorLOL.then(function () {
-            debug('db one crawled_item');
-            RunnerMofo.onePageCrawl(documentDefinition, function (crawled_item) {
-                //saved item
-                debug(crawled_item);
-                RunnerMofo.uploadOneFile(crawled_item, function (ixit_file) {
-                    return _logic.saveFileMeta(ixit_file, crawled_item)
-
-                    //send to vault
-                    //
-                    .then(function () {
-                      //get ixit link and tweet it
-                      var hashr = require('./libs/hash');
-                      RunnerMofo.tweetAsPost({
-                        status: 'Download & Listen ' + crawled_item.title + '-> http://i-x.it/'+ hashr.hashInt(ixit_file.mediaNumber) +' #shareIxitLinks #followUsfastDownloadSpeeds'
-                      });
-                      reply(ixit_file.mediaNumber);
-                    }, function (err) {
-                        throw err;
-                    })
-                    .catch(function (e) {
-                        console.log(e);
-                        console.log(e.stack);
-                    });
-                });
-            });
-        });
-
+        var _file = Schema.File;
+        _file.search({
+            query_string: {query: "star"}
+        }, {
+            hydrate:true
+        }, function (e, docs) {
+            debug(e. docs);
+            reply(docs);
+        })
     }
-    // config: {
-    //     validate: {
-    //         params: {
-    //             domainId: Joi.string().min(3).max(10)
-    //         },
-    //         payload: {
-    //             '*': Joi.string()
-    //         }
-    //     }
-    // }
+
 });
 
 // Start the server
