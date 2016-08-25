@@ -17,14 +17,13 @@
 var def_card = {
   'job_name' : 'naijaloaded',
   'starting_url' : 'http://www.naijaloaded.com.ng/music/page/3',
-  'paginate' : '.paginate span.prev a@href',
+  'paginate' : '.prev a@href',
 };
 
 
 
 module.exports = {
   scraper : function (osmosis, cb, jb) {
-    console.log(jb);
               return osmosis
               .config({
                 'user_agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36'
