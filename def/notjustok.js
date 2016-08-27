@@ -16,7 +16,7 @@
 
 var def = {
   'job_name' : 'notjustok',
-  'starting_url' : 'http://notjustok.com/category/music/',
+  'starting_url' : 'https://my.notjustok.com',
   'paginate' : '.pagination-next a',
   'limit' : 100,
   //the container for our scraper
@@ -32,29 +32,39 @@ module.exports = {
               .config({
                 'user_agent': 'Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36'
               })
-              .get('http://notjustok.com/category/music/')
+              .get('https://my.notjustok.com/site/discover')
               .paginate(def.paginate, 2)
               // .find(def.scope)
-              .follow('.card-content span.title a@href')
+              .follow('.media-heading a@href')
               .set({
-                'title': 'main.content .entry-title',
-                'text' : '.entry-content',
-                'targetSrc':'//a/@href[contains(.,".mp3")]'
+                'title': '.media-heading a',
+                'text' : '.track-with-user-info a',
+                // 'targetSrc':'//a/@href[contains(.,".mp3")]'
               })
               .then(function (context, data, next) {
                 data.url = context.doc().request.url;
                 next(context, data);
               })
               // .doc()
-              .follow('.content a@href')
+              // .follow('.content a@href')
               .set('props', {
-                'altTargetSrc':'//a/@href[contains(.,".mp3")]'
+                'imageSrc' : '.groupPhoto@src',
+                'downloadCount': '.player-count-downloads',
+                'playCount': '.player-count-plays'
               })
-              // .then(function (context, data, next) {
-              //   data.targetSrc = '//a/@href[contains(.,".mp3")]';
-              //   // data.targetSrc = context.find('audio');
-              //   next(context, data);
-              // })
+              .follow('.download-track@href')
+              .then(function (context, data, next) {
+                var rx = /replace\(\"(.*)\"\);/;
+                var t = context.body.text();
+                var m = rx.exec(t);
+                if (m && m.length > 0) {
+                  data.targetSrc = m[1];
+                }
+
+                // t[0] = t[0].replace("\"", t[0]);
+                // data.targetSrc = context.find('audio');
+                next(context, data);
+              })
               .then(function (context, data, next) {
                 data.targetPageUrl =  context.doc().request.url;
                 next(context, data);
