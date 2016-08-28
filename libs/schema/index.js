@@ -53,9 +53,10 @@ var JobProgressSchema = new Schema ({
 
 var FileMetaSchema = new Schema ({
   // identifier: string that identifies this download
-  // on ixits vault
+  // on isas
   identifier: {type: String},
-  // mediaNUmber: Number that identifies.......
+  // mediaNUmber: the media number for this FileMeta
+  // on isas.media documents
   mediaNumber: {type: Number},
   // jobId: relative _id of the job that created this
   jobId:  {type: Schema.ObjectId, ref: 'JobProgressSchema'},
@@ -66,7 +67,7 @@ var FileMetaSchema = new Schema ({
   // url: this has to be the url where the file download
   // and meta data is found
   url: {type: String,  es_indexed:true },
-  date_created: {type: Date, default: Date.now},
+  date_created: {type: Date, default: Date.now, es_indexed:true},
   // props: should contain meta information.
   // because scraped data is inconsistent.
   // file properties which can be retrieved from

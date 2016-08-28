@@ -46,6 +46,27 @@ server.route({
 
 });
 
+server.route({
+    // TODO:: change to GET method,
+    // change path, possible to include search string
+    // or url parameter.
+    method: 'GET',
+    path: '/req/{mediaNumber}',
+    handler: function (request, reply) {
+
+        var _file = Schema.File;
+        _file.search({
+            query_string: {query: "star"}
+        }, {
+            hydrate:true
+        }, function (e, docs) {
+            debug(e. docs);
+            reply(docs);
+        })
+    }
+
+});
+
 // Start the server
 server.start(function (err) {
 
