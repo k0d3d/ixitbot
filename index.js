@@ -123,17 +123,18 @@ function latest_posts (entryUrl, jobName) {
             RunnerMofo.latestPost(documentDefinition, function (crawled_item) {
                 //saved item
                 debug(crawled_item);
-                return _logic.saveFileMeta({}, crawled_item).then(function () {
-                    debug(crawled_item);
+                if (!crawled_item) {
+                    return false;
+                }
+                return _logic.saveFileMeta(crawled_item).then(function (file_saved) {
 
                       //get ixit link and tweet it
                       var hashr = require('./libs/hash');
                       RunnerMofo.tweetAsPost({
                         status: 'Download & Listen ' + crawled_item.title +
-                            ' http://ixit.pw/'+ hashr.hashInt(crawled_item.mediaNumber) +
+                            ' http://ixit.com.ng/bot/'+ hashr.hashOid(file_saved._id) +
                             ' #iXit4Music @ixitbot #followUsfastDownloadSpeeds'
                       });
-                      debug(crawled_item.mediaNumber);
                     }, function (err) {
                         throw err;
                     })
@@ -165,23 +166,23 @@ db.on('connected', function() {
                 !argv.jobName) {
                 return debug('specify jobName and entryUrl arguments');
             }
-            latest_posts(argv.entryUrl, argv.jobName);
 
-            var job = new CronJob({
-            /*
-             * Runs every minute of every day.
-             */
-              cronTime: '* * * 1/1 *',
-              onTick: function() {
-                debug('running-> ', argv.jobName);
-                // initialize_crawl();
-              },
-              start: true,
-              timeZone: 'Africa/Lagos'
-            });
-            return job.start();
+            var j = new CronJob ('* * * 1/1 *',
+            function () {
+                latest_posts(argv.entryUrl, argv.jobName);
+                debug('running-> ');
+            },
+            function () {
+                debug('stopped');
+            },
+            true,
+            'Africa/Lagos',
+            false,
+            true);
+
+            j.start();
         }
-        return debug('No valid command in arguments');
+        // return debug('No valid command in arguments');
 
     // defer.resolve();
 });

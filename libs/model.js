@@ -288,7 +288,7 @@ MainClass.prototype.listJobProgress = function listJobProgress (options) {
   return q.promise;
 };
 
-MainClass.prototype.saveFileMeta = function saveFileMeta(crawled_data, jobData) {
+MainClass.prototype.saveFileMeta = function saveFileMeta(crawled_data) {
   var q = Q.defer();
   // debug('saveFileMeta', jobData);
   var newFile = new Schema.File();

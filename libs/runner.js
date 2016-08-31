@@ -292,7 +292,12 @@ function latestPost (job, done) {
       if (qcount) {
         return done(false);
       }
-      qcount++;
+
+      if (listing.title) {
+        qcount++;
+      } else {
+        return done(false);
+      }
 
       debug('Listing found %d. Title is: %s', qcount, listing.title);
       // Check redis for this post.
