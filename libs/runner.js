@@ -271,7 +271,7 @@ function onePageCrawl (job, done) {
 }
 function latestPost (job, done) {
   debug('starting onepage crawler');
-  var job_data = job,
+  var
       qcount = 0,
       scraping;
 
@@ -279,15 +279,21 @@ function latestPost (job, done) {
   try {
       d = require('../def/' + job.job_name);
       d.defUri =  '../def/' + job.job_name;
+      d.first = true;
+      d.proceed_from_url = job.proceed_from_url;
 
   } catch (e) {
       console.log(e);
       debug('its possible the definition file for this job is absent. Check the def/ directory');
       throw e;
   }
-  var scraper = require('../def/' + job_data.job_name).scraper;
+  var scraper = d.scraper;
   function _data(listing) {
+      if (qcount) {
+        return done(false);
+      }
       qcount++;
+
       debug('Listing found %d. Title is: %s', qcount, listing.title);
       // Check redis for this post.
       // the idea is, if (this post is
@@ -334,7 +340,7 @@ function latestPost (job, done) {
   }
 
   //start scraper
-  scraping = scraper(osmosis, _data, job_data);
+  scraping = scraper(osmosis, _data, d);
 }
 
 function tweetAsPost (post) {

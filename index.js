@@ -112,8 +112,7 @@ function latest_posts (entryUrl, jobName) {
 
         var documentDefinition = {
           'job_name' : jobName,
-          'proceed_from_url': entryUrl,
-          'props': {}
+          'proceed_from_url': entryUrl
         };
 
 

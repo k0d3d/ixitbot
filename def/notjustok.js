@@ -17,7 +17,9 @@
 var def = {
   'job_name' : 'notjustok',
   'starting_url' : 'https://my.notjustok.com',
+  'first_post' : '#most-played > div:nth-child(1) > div.media-body.pull-left > h4 > a',
   'paginate' : '.pagination-next a',
+  'follow': '.card-content span.title a@href',
   'limit' : 100,
   //the container for our scraper
   'scope' : '#content',
@@ -26,15 +28,16 @@ var def = {
 
 
 module.exports = {
-  scraper : function (osmosis, cb) {
+  scraper : function (osmosis, cb, job_data) {
 
               return osmosis
               .config({
                 'user_agent': 'Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36'
               })
-              .get('https://my.notjustok.com/site/discover')
+              .get(job_data.proceed_from_url ? job_data.proceed_from_url : def.starting_url)
               // .find(def.scope)
-              .follow('#most-played > div:nth-child(1) > div.media-body.pull-left > h4 > a')
+              .follow(job_data.first ? def.first_post : def.follow)
+              .paginate(job_data.paginate)
               .set({
                 'title': '.media-heading a',
                 'text' : '.track-with-user-info a',
