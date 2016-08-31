@@ -12,6 +12,8 @@ require('newrelic');
  *            file store in ./def .
  *            eg. `--jobName=linda` -> ./def/linda.json
  *
+ * --entryUrl
+ *
  *
  *
  *
@@ -119,18 +121,20 @@ function latest_posts (entryUrl, jobName) {
         // _logic.after('saveFileMeta', RunnerMofo.tweetAsPost);
         InstigatorLOL.then(function () {
             debug('db one crawled_item');
-            RunnerMofo.onePageCrawl(documentDefinition, function (crawled_item) {
+            RunnerMofo.latestPost(documentDefinition, function (crawled_item) {
                 //saved item
                 debug(crawled_item);
                 return _logic.saveFileMeta({}, crawled_item).then(function () {
                     debug(crawled_item);
 
                       //get ixit link and tweet it
-                      // var hashr = require('./libs/hash');
-                      // RunnerMofo.tweetAsPost({
-                      //   status: 'Download & Listen ' + crawled_item.title + '-> http://i-x.it/'+ hashr.hashInt(ixit_file.mediaNumber) +' #shareIxitLinks #followUsfastDownloadSpeeds'
-                      // });
-                      // reply(ixit_file.mediaNumber);
+                      var hashr = require('./libs/hash');
+                      RunnerMofo.tweetAsPost({
+                        status: 'Download & Listen ' + crawled_item.title +
+                            ' http://ixit.pw/'+ hashr.hashInt(crawled_item.mediaNumber) +
+                            ' #iXit4Music @ixitbot #followUsfastDownloadSpeeds'
+                      });
+                      debug(crawled_item.mediaNumber);
                     }, function (err) {
                         throw err;
                     })
@@ -162,22 +166,24 @@ db.on('connected', function() {
                 !argv.jobName) {
                 return debug('specify jobName and entryUrl arguments');
             }
-            return latest_posts(argv.entryUrl, argv.jobName);
+            latest_posts(argv.entryUrl, argv.jobName);
+
+            var job = new CronJob({
+            /*
+             * Runs every minute of every day.
+             */
+              cronTime: '* * * 1/1 *',
+              onTick: function() {
+                debug('running-> ', argv.jobName);
+                // initialize_crawl();
+              },
+              start: true,
+              timeZone: 'Africa/Lagos'
+            });
+            return job.start();
         }
         return debug('No valid command in arguments');
-    var job = new CronJob({
-    /*
-     * Runs every minute of every day.
-     */
-      cronTime: '* * * 1/1 *',
-      onTick: function() {
-        debug('inits');
-        initialize_crawl();
-      },
-      start: false,
-      timeZone: 'Africa/Lagos'
-    });
-    job.start();
+
     // defer.resolve();
 });
 

@@ -310,6 +310,23 @@ MainClass.prototype.saveFileMeta = function saveFileMeta(crawled_data, jobData) 
   return q.promise;
 };
 
+MainClass.prototype.findFileById = function findFileById (id) {
+  var q = Q.defer();
+
+  Schema.File()
+  .findOne({
+    _id: id
+  })
+  .exec(function (err, doc) {
+    if (err) {
+      return q.reject(err);
+    }
+    return q.resolve(doc);
+  });
+
+  return q.promise;
+};
+
 MainClass.prototype.toString = function toString () {
   return 'MainClass';
 };

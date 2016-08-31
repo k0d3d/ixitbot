@@ -11,6 +11,7 @@ var
     request = require('request'),
     Models = require('./model'),
     _ = require('lodash'),
+    Q = require('q'),
     debug = require('debug')('ixitbot:runner'),
     // counter_debug = require('debug')('ixitbot:counter'),
     // JSONStream = require('JSONStream'),
@@ -21,7 +22,7 @@ var errors = require('common-errors');
 
 function startOsmosis (job, done) {
   debug('starting crawler');
-  var job_data = job.data;
+  var job_data = job.data, osmosis_instance;
   job_data.scraper = require('../def/' + job_data.job_record.job_name).scraper;
 
   function _data(listing) {
@@ -63,7 +64,7 @@ function startOsmosis (job, done) {
   };
 
   //start scraper
-  job_data.scraper(osmosis, _data, job_data);
+  osmosis_instance = job_data.scraper(osmosis, _data, job_data);
 }
 
 
@@ -165,11 +166,14 @@ function uploadWhileCrawling (job, done) {
  * contain a source url which should contain the
  * binary data to be downloaded.
  * @param  {[type]}   jobData [description]
- * @param  {Function} done    [description]
- * @return {[type]}           [description]
+ * @param  {Function} done    callback function
+ * @return {[type]}           Promise
  */
 function uploadOneFile (jobData, done) {
   var md5 = require('md5');
+  var q = Q.defer();
+
+
   jobData.chunkNumber = 1;
   jobData.totalChunks = 2;
   jobData.filename = jobData.filename || md5(jobData.title);
@@ -182,16 +186,24 @@ function uploadOneFile (jobData, done) {
     json: true
   }, function (err, r, ixitFile) {
     if (!err && r.statusCode <= 210) {
-      done(ixitFile);
+      return (typeof done === 'function') ? done(ixitFile)
+        : q.resolve(ixitFile);
+
     } else {
       if (err) {
-        done(new errors.ConnectionError('vault resource connection error', err));
+        return (typeof done === 'function') ? done(new errors.ConnectionError('vault resource connection error', err))
+          : q.resolve(ixitFile);
+
       } else {
-        done(new errors.ConnectionError('vault resource operation failure. This is a very strange event. Get bug buster'));
+        return (typeof done === 'function') ? done(new errors.ConnectionError('vault resource operation failure. This is a very strange event. Get bug buster'))
+          : q.resolve(ixitFile);
+
       }
     }
     // done();
   });
+
+  return q.promise;
 }
 
 function updateJobCount (job, done) {
@@ -257,6 +269,73 @@ function onePageCrawl (job, done) {
   //start scraper
   scraper(osmosis, _data, job_data);
 }
+function latestPost (job, done) {
+  debug('starting onepage crawler');
+  var job_data = job,
+      qcount = 0,
+      scraping;
+
+  var d;
+  try {
+      d = require('../def/' + job.job_name);
+      d.defUri =  '../def/' + job.job_name;
+
+  } catch (e) {
+      console.log(e);
+      debug('its possible the definition file for this job is absent. Check the def/ directory');
+      throw e;
+  }
+  var scraper = require('../def/' + job_data.job_name).scraper;
+  function _data(listing) {
+      qcount++;
+      debug('Listing found %d. Title is: %s', qcount, listing.title);
+      // Check redis for this post.
+      // the idea is, if (this post is
+      // not found in redis) && (its found
+      // and listing.title === post.title
+      // ), its a new post.
+      // and you can post a new facebook,
+      // email, tweet....
+      // then you need to save it as the
+      // "current post".
+      //
+      // kill or stop osmosis.. this operation
+      // is over.
+      //    else
+      // if its found, thats because, its old
+      // do nothing
+      client.get('ixit-current-post', function (err, post) {
+        if (err) {
+          return done(err);
+        }
+        // we found something, lets check if its old
+        if (post && post === listing.title) {
+          // just return false
+          return done(false);
+        }
+          //overkill
+        if (post && post !== listing.title) {
+          // overkill
+          done(listing);
+          client.expire('ixit-current-post', 2 * 60);
+          return client.set('ixit-current-post', listing.title);
+        }
+        // if its not found, its new
+        if (!post) {
+          done(listing);
+          client.expire('ixit-current-post', 2 * 60);
+          return client.set('ixit-current-post', listing.title);
+        }
+
+        // the default
+        scraping.stop();
+        done(false);
+      });
+  }
+
+  //start scraper
+  scraping = scraper(osmosis, _data, job_data);
+}
 
 function tweetAsPost (post) {
   var Tweet =  require('./share');
@@ -274,8 +353,9 @@ module.exports = {
   tweetAsPost: tweetAsPost,
   uploadWhileCrawling : uploadWhileCrawling,
   uploadOneFile: uploadOneFile,
+  latestPost: latestPost,
   defineJobs : defineJobs,
   onePageCrawl : onePageCrawl
-}
+};
 
 
