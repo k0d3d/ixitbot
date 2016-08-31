@@ -37,7 +37,7 @@ module.exports = {
               .get(job_data.proceed_from_url ? job_data.proceed_from_url : def.starting_url)
               // .find(def.scope)
               .follow(job_data.first ? def.first_post : def.follow)
-              .paginate(job_data.paginate)
+              .paginate(def.paginate)
               .set({
                 'title': '.media-heading a',
                 'text' : '.track-with-user-info a',
