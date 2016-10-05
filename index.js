@@ -181,6 +181,7 @@ db.on('connected', function() {
             true);
 
             j.start();
+
         }
         // return debug('No valid command in arguments');
 
