@@ -8,6 +8,7 @@ var Schema = require('./schema/index'),
     debug = require('debug')('ixitbot:models'),
     Q = require('q');
 
+const errors = require('commons-errors');
 
 /**
  * standard crud class I guesss.
@@ -74,6 +75,9 @@ MainClass.prepareInitialDocument = function prepareInitialDocument (card) {
 //       updateDocument.schema = card.schema;
       var nameString = (card.job_record) ? card.job_record.job_name : card.job_name;
       client.get(nameString + '_session_count', function (err, count) {
+        if (err) {
+          throw new errors.Error(err);
+        }
         debug(count);
         updateDocument.no_of_records_saved = count || 0;
         return q.resolve(updateDocument);

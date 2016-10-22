@@ -6,7 +6,7 @@ require('newrelic');
  * the below arguments are required to
  * create an instance of IASS that should
  * peform the crawl.
- * eg. `index.js --mode=crawl --jobName=tooexclusive.com`
+ * eg. `index.js --mode=crawl --jobName=tooexclusive`
  *
  * --jobName this should correspond with the definitions
  *            file store in ./def .
@@ -182,6 +182,9 @@ db.on('connected', function() {
 
             j.start();
 
+        } else{
+            debug("You did not tell me what task I should do. Add the required CLI argument.");
+            process.exit(0);
         }
         // return debug('No valid command in arguments');
 
