@@ -132,7 +132,7 @@ function latest_posts (entryUrl, jobName) {
                       var hashr = require('./libs/hash');
                       RunnerMofo.tweetAsPost({
                         status: 'Download & Listen ' + crawled_item.title +
-                            ' http://ixit.com.ng/bot/'+ hashr.hashOid(file_saved._id) +
+                            ' http://ixit.pw/'+ hashr.hashOid(file_saved._id) +
                             ' #iXit4Music @ixitbot #followUsfastDownloadSpeeds'
                       });
                     }, function (err) {
