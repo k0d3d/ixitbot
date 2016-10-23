@@ -6,6 +6,7 @@ var client = redis.createClient({
 var Schema = require('./schema/index'),
     Base = require('./base.js'),
     debug = require('debug')('ixitbot:models'),
+    File = require('./schema/files.js'),
     Q = require('q');
 
 const errors = require('common-errors');
@@ -17,8 +18,8 @@ const errors = require('common-errors');
  */
 var MainClass = function MainClass () {
   Base.call(this);
-  var _File = Schema.File,
-      stream = _File.synchronize(),
+  var
+      stream = File.synchronize(),
       count = 0;
 
   stream.on('data', function(err, doc){
@@ -295,7 +296,7 @@ MainClass.prototype.listJobProgress = function listJobProgress (options) {
 MainClass.prototype.saveFileMeta = function saveFileMeta(crawled_data) {
   var q = Q.defer();
   // debug('saveFileMeta', jobData);
-  var newFile = new Schema.File();
+  var newFile = new File();
   // newFile.identifier =  crawled_data.identifier;
   // newFile.mediaNumber = ixit_file.mediaNumber;
   // newFile.jobId =   jobData._id;
