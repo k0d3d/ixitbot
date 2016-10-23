@@ -8,7 +8,7 @@ var Schema = require('./schema/index'),
     debug = require('debug')('ixitbot:models'),
     Q = require('q');
 
-const errors = require('commons-errors');
+const errors = require('common-errors');
 
 /**
  * standard crud class I guesss.

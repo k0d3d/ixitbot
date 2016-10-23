@@ -16,7 +16,7 @@
 
 var def_card = {
   'job_name' : 'tooexclusive',
-  'starting_url' : 'http://tooxclusive.com/main/download-mp3/',
+  'starting_url' : 'http://tooxclusive.com',
   'paginate' : '//*[@id="content"]/ul/li[26]/span[4]/a',
   'limit' : 1,
   //the container for our scraper

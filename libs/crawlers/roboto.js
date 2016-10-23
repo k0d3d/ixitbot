@@ -24,14 +24,14 @@ module.exports = function (job, done) {
     
     let crawler = new roboto.Crawler({
       startUrls: [
-        "http://tooxclusive.com",
-        // 'http://naijaloaded.com',
-        // 'http://notjustok.com',
+        // "http://tooxclusive.com",
+        'http://naijaloaded.com',
+        'http://notjustok.com',
       ],
       allowedDomains: [
-        "tooxclusive.com",
-        // 'naijaloaded.com',
-        // 'notjustok.com'
+        // "tooxclusive.com",
+        'naijaloaded.com',
+        'notjustok.com'
       ],
       // Note that there is a delay due to directive 'Crawl-Delay: 30'
       // defined in their robots.txt
