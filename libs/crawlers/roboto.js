@@ -24,15 +24,54 @@ module.exports = function (job, done) {
     
     let crawler = new roboto.Crawler({
       startUrls: [
-        // "http://tooxclusive.com",
-        'http://naijaloaded.com',
-        'http://notjustok.com',
+
+      "www.mp3naija.com.ng",
+      "http://naijagreen.com.ng",
+      "Free9jamusic.net",
+      "mp3skull.com",
+      "Naijapals.com",
+      "http://jaguda.com/",
+      "http://www.9jabaze.com",
+      "http://www.360nobs.com/",
+      "http://www.free9jamusic.com/",
+      "http://www.gospelify.com/",
+      "http://www.gidimp3.net/",
+      "http://www.jambaze.com/",
+      "http://music.naij.com/",
+      "http://www.mp3naija.com/",
+      "http://www.mp3skull.com/",
+      "http://www.gistus.com/",
+      "http://www.hotnaijamusic.com/",
+      "http://www.nigeriamusicnetwork.com/",
+      "http://www.naijamusic.net/",
+      "tooxclusive.com",
+      "www.jambaze.com",
+      "notjustok.com",
+      "www.mymusic.com.ng",
+      "www.hitzgh.com",
+      "www.jaguda.com",
+      "www.ghanamotion.com",
+      "www.naijaloaded.com.ng/music",
+      "www.ghanaplaylist.com",
+      "mp3naija.com.ng/music",
+      "www.gistus.com/music",
+      "naijabambam.com",
+      "busysinging.com",
+      "www.loudsoundgh.com",
+      "urbanroll.net",
+      "www.ghxclusive.com",
+      "music.Naij.com",
+      "www.ghananation.com/music",
+      "music.com.gh",
+      "mymusic.com.ng",
+      "www.naijamusic.net"
       ],
-      allowedDomains: [
-        // "tooxclusive.com",
-        'naijaloaded.com',
-        'notjustok.com'
-      ],
+      constrainToRootDomains: true,
+      // allowedDomains: [
+      //   // "tooxclusive.com",
+      //   'naijaloaded.com',
+      //   'notjustok.com'
+      // ],
       // Note that there is a delay due to directive 'Crawl-Delay: 30'
       // defined in their robots.txt
       obeyRobotsTxt: false,
