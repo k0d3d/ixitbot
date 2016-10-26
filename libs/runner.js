@@ -41,7 +41,7 @@ function startjob (job, done) {
     save_doc.findOrUpdateJobProgress(p.job_name, p)
     .then(function (useThisD) {
       var preped = Models.prepareUpdatedDocument(useThisD);
-      queue.create(card.job_name + '-start roboto',
+      queue.create(card.job_name + '-start '+card.crawler || 'osmosis',
         preped,
         function () {
         })
