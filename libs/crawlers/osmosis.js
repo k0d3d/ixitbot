@@ -26,11 +26,12 @@ function startOsmosis (job, done) {
       // to update our database with the row
       // count after we have totally sent them
       // to the Vault,
-      
-      if (!listing.targetSrc) return done();
-      var nameString = (job_data.job_record) ? job_data.job_record.job_name : job_data.job_name;
-
-        //increment the current job count in redis
+      //
+      // instead, we now follow every link out, exceot
+      // the link has something we can download.
+      // target src
+      if (listing.targetSrc) {
+        var nameString = (job_data.job_record) ? job_data.job_record.job_name : job_data.job_name;
         client.incr(nameString + '_session_count', function (err, count) {
           if (err) {
             console.log(err);
@@ -52,7 +53,15 @@ function startOsmosis (job, done) {
             console.log('we got an error');
             done(err);
           });
-        });
+        });      
+      } else {
+        // kinda recursive, would be better to add ass a job
+        job_data.proceed_from_url = listing.url;
+        job_data.scraper(osmosis, onItemCallback, job_data);        
+      }
+
+        //increment the current job count in redis
+
 
       return done();
       // queue.create(nameString+ '-send to vault', _.extend({}, listing, job_data))
@@ -61,7 +70,8 @@ function startOsmosis (job, done) {
   };
 
   //start scraper
-  osmosis_instance = job_data.scraper(osmosis, onItemCallback, job_data);
+  // osmosis_instance = job_data.scraper(osmosis, onItemCallback, job_data);
+  job_data.scraper(osmosis, onItemCallback, job_data);
 }
 
 
