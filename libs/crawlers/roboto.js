@@ -73,8 +73,6 @@ module.exports = function (job, done) {
       "www.naijapals.com",
       "video.naij.com",
       "www.nigerianmovies.us",
-      "www.download-nigerian-movies.com",
-      "www.irokotv.com",
       "nollymovies.net",
       "nollywoodtv.blogspot.com",
       "nollywooddatabase.blogspot.com",
@@ -84,7 +82,6 @@ module.exports = function (job, done) {
       "tvnolly.com",
       "nigeriamoviechannel.com",
       "nigerianmovies.disnaija.com",
-      "www.realnollytv.com"      
       ],
       constrainToRootDomains: true,
       // allowedDomains: [
