@@ -1,7 +1,8 @@
 var redis = require('redis');
 var client = redis.createClient({
   detect_buffers: true,
-  url: process.env.REDIS_URL
+  url: process.env.REDIS_URL,
+  no_ready_check: true
 });
 var
     kue = require('kue'),

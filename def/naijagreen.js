@@ -31,7 +31,7 @@ module.exports = {
 // console.lo(arguments)
               return osmosis
               .config({
-                'user_agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
+                'user_agent': 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36'
               })
               .get(jb.proceed_from_url || 'http://naijagreen.com.ng/tag/jenifas-diary/')
               .follow('a@href')

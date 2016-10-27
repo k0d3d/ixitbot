@@ -1,7 +1,8 @@
 var redis = require("redis");
 var client = redis.createClient({
   detect_buffers: true,
-  url: process.env.REDIS_URL
+  url: process.env.REDIS_URL,
+  no_ready_check: true
 });
 var Schema = require('./schema/index'),
     Base = require('./base.js'),
@@ -312,6 +313,41 @@ MainClass.prototype.saveFileMeta = function saveFileMeta(crawled_data) {
     // saved.index();
     return q.resolve(saved);
   });
+  return q.promise;
+};
+
+
+MainClass.prototype.createFileMeta = function createFileMeta(crawled_data) {
+  var q = Q.defer();
+  // debug('saveFileMeta', jobData);
+
+  
+  File.findOne({
+    'title': crawled_data.title || crawled_data.filename,
+    'targetSrc' : crawled_data.targetSrc,
+    'url' : crawled_data.url
+  })
+  .exec((err, docFound) =>  {
+    if (err) {
+      return q.reject(err);
+    }
+    // update here
+    if (!docFound) {
+      var newFile = new File();
+      newFile.title =  crawled_data.title || crawled_data.filename;
+      newFile.targetSrc =  crawled_data.targetSrc;
+      newFile.url =  crawled_data.url;
+      newFile.props =  crawled_data.props;      
+      newFile.save(function (err, saved) {
+        debug(saved);
+        if (err) {
+          return q.reject(err);
+        }
+        // saved.index();
+        return q.resolve(saved);
+      });
+    }
+  })
   return q.promise;
 };
 
