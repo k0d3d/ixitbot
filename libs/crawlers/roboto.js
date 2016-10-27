@@ -144,7 +144,7 @@ module.exports = function (job, done) {
               var new_model = new Models();
     
               //save data
-              new_model.saveFileMeta(item, job_data)
+              new_model.createFileMeta(item, job_data)
               .then(function () {
                 debug('saved and updated including file meta');
                 done();
