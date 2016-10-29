@@ -324,7 +324,6 @@ MainClass.prototype.createFileMeta = function createFileMeta(crawled_data) {
   
   File.findOne({
     'title': crawled_data.title || crawled_data.filename,
-    'targetSrc' : crawled_data.targetSrc,
     'url' : crawled_data.url
   })
   .exec((err, docFound) =>  {
