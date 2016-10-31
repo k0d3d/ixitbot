@@ -15,11 +15,12 @@
 // }
 
 var def_card = {
-  'job_name' : 'naijagreen',
-  'starting_url' : 'http://notjustok.com/',
-  'limit' : 1000,
+  'job_name' : 'buzznigeria',
+  'starting_url' : 'http://buzznigeria.com/watch-nigerian-home-videos-online/',
+  //'paginate' : '//*[@id="content"]/ul/li[26]/span[4]/a',
+  //'limit' : 1000,
   //the container for our scraper
-  'scope' : '#content',
+  //'scope' : '#content',
   'crawler' : 'osmosis'
 };
 
@@ -32,7 +33,7 @@ module.exports = {
               .config({
                 'user_agent': 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36'
               })
-              .get(jb.proceed_from_url || 'http://notjustok.com')
+              .get(jb.proceed_from_url || 'http://www.realchannel65.com.ng/top-sites-for-tv-show-and-movie-downloads-in-nigeria/')
               .follow('a@href')
               .set({
                 'title': 'title',

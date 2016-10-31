@@ -17,8 +17,8 @@
 var def_card = {
   'job_name' : 'tooexclusive',
   'starting_url' : 'http://tooxclusive.com',
-  'paginate' : '//*[@id="content"]/ul/li[26]/span[4]/a',
-  'limit' : 1,
+  // 'paginate' : '//*[@id="content"]/ul/li[26]/span[4]/a',
+  // 'limit' : 1,
   //the container for our scraper
   'scope' : '#content',
 };
@@ -32,12 +32,11 @@ module.exports = {
               .config({
                 'user_agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
               })
-              .get('http://tooxclusive.com/tag/audio/')
-              .follow('#content li a@href')
+              .get(jb.proceed_from_url || 'http://tooxclusive.com')
+              .follow('a@href')
               .set({
                 'title': '#content h1',
-                'targetSrc': '//a/@href[contains(.,".mp3")]', //  //a/@href[contains(., 'letter')]
-                // 'props' :
+                'targetSrc': "a[href*='.mp3'], a[href*='.mp4']"
               })
               .set('props', {
                   targetSrcString: '//*[@id="content"]/p[]',
