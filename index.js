@@ -12,49 +12,7 @@ require('newrelic');
  *            file store in ./def .
  *            eg. `--jobName=linda` -> ./def/linda.json
  *
- * --entryUrl
  *
- *
- *
- *
- * *ACTION ON EACH RECORD FROM A PAGE*
- * Each iteration contains a minimum of one
- * element in an array.
- * Each element/item in the array is sent to
- * kue, to be executed in increments of
- * 3mins. Use a schedule and a forLoop.
- *
- * The kue task will make a request to
- * VAULT when it is run.
- * This data is forwarded
- * in its schema to the API Server and VAULT,
- * The data in the schema is recorded as tags, to
- * enable intelligent collection/indexing.
- * create an ixit link/entry and return the data
- * to ixitbot.
- * VAULT uses the data sent to download the file,
- * IXITBot creates / updates the job entry for
- * this iteration, like the count, the .
- *
- *
- * *TWEETING*
- * When ixitbot runs from the command line,
- * it checks the definitions folder & files
- * to see what jobs are defined. It then
- * starts a cron for each job.
- *
- * *BACKGROUND PROCESS*
- *
- * For each starting url, the first page is crawled,
- * the first item on the result array is collected,
- * sent as an AGENDA task to be downloaded, nd the
- * response from vault is tweeted.
- *
- *
- *
- * that repeates
- * it self every 5mins proceeding to the next
- * page on each iteration.
 */
 var mongoose = require('mongoose'),
     Q = require('q'),
@@ -79,6 +37,11 @@ function handleError (er) {
     }
 }
 
+/**
+ * This is the main crawl / spider control function.
+ * Using Kue, I can schedule how spider jobs are run. 
+ * Without having to write a queue manager.
+ */
 function initialize_crawl (jobName) {
 
         //first we have to process each json into

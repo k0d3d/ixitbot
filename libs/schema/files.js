@@ -3,6 +3,10 @@ var mongoosastic=require("mongoosastic"),
     url = require('url'),
     Schema = require('mongoose').Schema;
 
+/**
+ * moongoose schema for MongoDB 
+ * documents
+*/
 var FileMetaSchema = new Schema ({
   // identifier: string that identifies this download
   // on isas

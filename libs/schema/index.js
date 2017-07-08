@@ -2,6 +2,10 @@ var mongoose = require('mongoose'),
     Schema = require('mongoose').Schema;
 
 /**
+ * moongoose schema for MongoDB 
+ * documents
+*/
+/**
  * This schema primarily states what a job
  * should do when its executed. Each job should
  * clearly define these required fields .

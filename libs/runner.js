@@ -183,6 +183,13 @@ function updateJobCount (job, done) {
   });
 }
 
+/**
+ * Define what callbacks are run and when.
+ * Kue handles the queuing so this function can be 
+ * called as many times, with as many different 
+ * jobs which in this case means, different spiders
+ * scheduled. 
+ */ 
 function defineJobs (jobname) {
   debug('defining jobs');
   queue.process(jobname + '-start job', startjob);
