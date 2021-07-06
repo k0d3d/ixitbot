@@ -14,7 +14,7 @@ This helps with CPU and Memory management when running multiple spiders concurre
 
 To start scraping structured data from the web using IASS, you will need to have REDIS running somewhere, locally or remotely. 
 Remember to set these environment variable
-
+```
 export APP_SECRET="UeISAdQDIW:Lcsa2-=22mcn4ksIO30dWPW*@ndsa1238321-1384MCgMMEe9bYNNIbhLMTDu6"
 export ELASTICSEARCH_URL="http://xxxxxx
 export MONGO_URL="mongodb://xxxxx
@@ -23,6 +23,7 @@ export REDIS_URL="redis://xxxxx"
 export VAULT_RESOURCE="https://xxxx"
 export IWAC_RESOURCE="https://xxxxxx"
 export DEBUG="isas"  // optional
+```
 
 
 ### Prerequisites
